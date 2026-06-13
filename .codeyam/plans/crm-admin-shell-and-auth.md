@@ -8,6 +8,14 @@ dependsOn: ["landing-page-faithful-reproduction"]
 
 ## Summary
 
+> **Stack note (updated):** the Astro stack already ships a **Sveltia CMS**
+> integration (`CMS_SETUP.md`) plus a `cms-auth-worker/` (GitHub OAuth for the
+> CMS). The "CRM" should very likely be built on these — Sveltia editing the
+> `events`/`team` collections and `settings`/`nav` singletons, authenticated via
+> the auth worker — rather than a hand-rolled Next.js `/admin` app. Investigate
+> `CMS_SETUP.md` and `cms-auth-worker/` first; the Next.js shell below is
+> superseded by that approach.
+
 Stand up the CRM/admin tool's shell and access control. The CRM is a
 protected area for editing the site's static content (events, board members,
 etc.). This plan delivers the authenticated layout, navigation, and dashboard —

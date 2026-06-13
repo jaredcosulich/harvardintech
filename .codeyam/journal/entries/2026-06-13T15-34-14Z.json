@@ -1,0 +1,651 @@
+{
+  "timestamp": "2026-06-13T15:34:14Z",
+  "title": "Harvard in Tech — Landing Page Faithful Reproduction",
+  "type": "feature",
+  "userRequest": "## Summary\n\nRebuild the public home page of https://www.harvardintech.com/ as a modern,\nstatically-exported Next.js page that faithfully reproduces the original site's\nsection structure, copy, and feel. The site is content-driven but uses **no\ndatabase** — all page content lives in static content modules under\n`content/` (plain TypeScript/JSON), seeded with the *actual* data currently on\nthe live site. The two \"dynamic-looking\" sections — **Upcoming Events** and\n**Board of Directors** — read from these static content modules, so they render\npopulated on day one yet are structured so a later CRM can edit/extend them.\nThis plan covers only the landing page; Events/Chapters pages, the CRM, auth,\nand GitHub Pages deployment are deferred to follow-on plans.\n\n## Key Decisions\n\n- **Static content, not a DB.** Per the user, there is no real database. Section\n  content lives in typed modules under `content/` (e.g. `content/events.ts`,\n  `content/board.ts`, `content/site.ts`). This deviates from the template's\n  Prisma/SQLite default on purpose; Prisma stays unused for now. The components\n  accept their data as props/imports so a future CRM can swap the source.\n- **Faithful reproduction.** Match the original's section order, headings, and\n  copy as closely as possible — modernized typography/markup, same information\n  architecture. Not a redesign.\n- **Static export target.** Configure Next.js for `output: 'export'` so the\n  public site can ship to GitHub Pages later. No server-only features on this\n  page.\n- **Component-per-section.** Each landing section is its own component so it can\n  be captured as an isolated-component scenario in multiple data states (empty\n  vs populated events/board) without standing up the whole page.\n- **Scaffolding runs first.** This is a fresh project — the editor's\n  `ui-prepare` step scaffolds the `nextjs-prisma-sqlite` template\n  (`codeyam-editor editor template nextjs-prisma-sqlite`) before any of the work\n  below. All paths below are relative to that scaffolded app.\n\n## Implementation\n\n### 1. Scaffold the project (ui-prepare)\n\nHandled by the editor workflow's `ui-prepare` step via\n`codeyam-editor editor template nextjs-prisma-sqlite`. Do not run\n`create-next-app` directly. After scaffolding, set `output: 'export'` (and\n`images.unoptimized: true`) in `next.config` so the page is static-exportable.\n\n### 2. Static content modules\n\n**New files**: `content/site.ts`, `content/events.ts`, `content/board.ts`\n\nTyped content modules holding the real copy and data from the live site:\n- `site.ts` — org overview text, mailing-list CTA, WhatsApp community steps,\n  Get Involved copy, Support Us options (with `ben@harvardintech.com` mailto\n  links), Contact links (Twitter / email / Facebook), footer (© 2020), nav\n  labels (Home, Events, Chapters: NYC/SF/LA/Japan).\n- `events.ts` — `Event[]` (title, date, location, blurb, link). Seed with the\n  events currently surfaced on the live site; empty array is a valid state.\n- `board.ts` — `BoardMember[]` (name, role, photo, optional link). Seed with the\n  current Board of Directors entries.\n\nExport TypeScript types (`Event`, `BoardMember`) so the future CRM and the\nsection components share one contract.\n\n### 3. Layout, nav, and footer\n\n**Files**: `app/layout.tsx`, `app/components/SiteNav.tsx`, `app/components/SiteFooter.tsx`\n\nGlobal shell: top nav with the original links (Home, Events, Chapters dropdown:\nNYC / San Francisco / L.A. / Japan) and the Harvard in Tech branding/banner;\nfooter with copyright + cookie-policy notice. Nav targets for not-yet-built\npages can be placeholder hrefs for now.\n\n### 4. Landing page composed of section components\n\n**File**: `app/page.tsx`\n\n**New files** under `app/components/landing/`:\n- `Hero.tsx` — branded banner / hero.\n- `OrgOverview.tsx` — \"official Harvard Alumni Group for technology\" mission\n  copy + mailing-list subscription CTA.\n- `WhatsappCommunity.tsx` — verify-alumni → request-access two-step CTA.\n- `UpcomingEvents.tsx` — renders `events` from `content/events.ts`; graceful\n  empty state (\"No upcoming events right now\") when the array is empty.\n- `GetInvolved.tsx` — volunteer/speaker/host/sponsor copy + signup link.\n- `BoardOfDirectors.tsx` — grid of `board` members from `content/board.ts`;\n  empty state when none.\n- `SupportUs.tsx` — five CTA options with mailto links.\n- `EventGallery.tsx` — responsive photo grid (placeholder images acceptable\n  initially; wire real gallery assets here).\n- `ContactUs.tsx` — Twitter / email / Facebook links.\n\n`app/page.tsx` imports the content modules and renders the sections in the\noriginal order: Hero → OrgOverview → WhatsappCommunity → UpcomingEvents →\nGetInvolved → BoardOfDirectors → SupportUs → EventGallery → ContactUs.\n\n### 5. Styling\n\nUse the template's styling system to approximate the original's clean,\nprofessional look (branded header imagery, generous spacing, event photography).\nKeep it responsive.\n\n## Reused existing code\n\n- None yet — fresh project, empty glossary. The `nextjs-prisma-sqlite` template\n  scaffolded in `ui-prepare` provides `app/layout.tsx`, `app/page.tsx`, and the\n  styling baseline to build on.\n\n## Scenarios to Demonstrate\n\n- **Landing page — populated (default):** full page with real seeded events and\n  board members — the production day-one state for this static-content site.\n- **UpcomingEvents — empty state:** isolated component with `events: []` showing\n  the \"no upcoming events\" message.\n- **UpcomingEvents — rich state:** several events to exercise list layout.\n- **BoardOfDirectors — populated vs empty:** grid with members, and the empty\n  fallback.\n- **Edge case — long event title / missing optional link:** verify layout holds\n  with overflowing copy and absent optional fields.",
+  "description": "Rebuilt the Harvard in Tech public home page as a statically-exported Astro site that faithfully reproduces harvardintech.com (originally a no-code Strikingly site) — matching its brand blue, Roboto/Helvetica type, centered uppercase sections, real copy, real buttons (Subscribe→MailChimp, View Upcoming Events→Eventbrite, Volunteer→switchy.io), the hero/Get-Involved background photos, the Board of Directors graphic, the WhatsApp image, and the event-photo gallery, all hosted locally for GitHub Pages. Content is data-driven via Astro content collections (events, team) plus editable settings/nav singletons — no database. Covered by two application scenarios (populated + empty-events) and a buildMailto unit test.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/plans/landing-page-faithful-reproduction.md\t.codeyam/plans/completed/landing-page-faithful-reproduction.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/crm-admin-shell-and-auth.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/crm-content-editing.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/events-and-chapters-pages.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/github-pages-deployment.md",
+      "status": "modified"
+    },
+    {
+      "path": "README.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/hooks/__pycache__/_step_metadata.cpython-310.pyc",
+      "status": "added"
+    },
+    {
+      "path": ".claude/hooks/__pycache__/editor-step-hook.cpython-310.pyc",
+      "status": "added"
+    },
+    {
+      "path": ".claude/hooks/_step_metadata.py",
+      "status": "added"
+    },
+    {
+      "path": ".claude/hooks/claude-notify.sh",
+      "status": "added"
+    },
+    {
+      "path": ".claude/hooks/editor-pretool-hook.py",
+      "status": "added"
+    },
+    {
+      "path": ".claude/hooks/editor-step-hook.py",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/codeyam-audit/SKILL.md",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/codeyam-design/SKILL.md",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/codeyam-edit-plan/SKILL.md",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/codeyam-editor/SKILL.md",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/codeyam-explore/SKILL.md",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/codeyam-new-app/SKILL.md",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/codeyam-onboard/SKILL.md",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/codeyam-plan/SKILL.md",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/codeyam-see-app/SKILL.md",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/codeyam-see-recent-change/SKILL.md",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/codeyam-slice/SKILL.md",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/review-session/SKILL.md",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/review-session/scripts/extract-session-helpers.mjs",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/review-session/scripts/extract-session.mjs",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/review-session/scripts/find-last-session-helpers.mjs",
+      "status": "added"
+    },
+    {
+      "path": ".claude/skills/review-session/scripts/find-last-session.mjs",
+      "status": "added"
+    },
+    {
+      "path": ".codex/config.toml",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/.last-reconcile.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/cache/step-metadata.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/capture.js",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/data-structure.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/README.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/atlas.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/bureau-north.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/clean-dashboard.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/coder.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/console.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/editorial.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/ethereal.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/gardener.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/gummy.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/keylime.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/letters-to-sean.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/manifesto.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/marquee.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/minimalistic.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/mono-brutalist.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/n15.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/neo-brutalist.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/plinth.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/design/design_systems/space-odyssey.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/editor.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/first-build-session.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/glossary-index.txt",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/package.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/reconciliation-log.jsonl",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/runner-timing-history.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenario-handlers.js",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenario-interactivity.js",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenario-issues.js",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenario-metrics.js",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenario-mocks.js",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenario-playwright.js",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-landing-page.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-no-upcoming-events.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/seed-adapter.ts",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/setup-answers.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/stack.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/state/finalize-debt.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/state/provider-auth-verdict.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/state/scenario-taxonomy.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/test-run-marker.json",
+      "status": "added"
+    },
+    {
+      "path": ".gitattributes",
+      "status": "added"
+    },
+    {
+      "path": ".github/workflows/deploy.yml",
+      "status": "added"
+    },
+    {
+      "path": ".gitignore",
+      "status": "added"
+    },
+    {
+      "path": "CMS_SETUP.md",
+      "status": "added"
+    },
+    {
+      "path": "DEPLOY_SETUP.md",
+      "status": "added"
+    },
+    {
+      "path": "astro.config.mjs",
+      "status": "added"
+    },
+    {
+      "path": "cms-auth-worker/worker.js",
+      "status": "added"
+    },
+    {
+      "path": "cms-auth-worker/wrangler.toml",
+      "status": "added"
+    },
+    {
+      "path": "docker-compose.cloud.yml",
+      "status": "added"
+    },
+    {
+      "path": "package-lock.json",
+      "status": "added"
+    },
+    {
+      "path": "package.json",
+      "status": "added"
+    },
+    {
+      "path": "public/.nojekyll",
+      "status": "added"
+    },
+    {
+      "path": "public/admin/config.yml",
+      "status": "added"
+    },
+    {
+      "path": "public/admin/index.html",
+      "status": "added"
+    },
+    {
+      "path": "public/favicon.svg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/bg/get-involved-bg.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/bg/hero-bg.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/gallery/event-01.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/gallery/event-02.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/gallery/event-03.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/gallery/event-04.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/gallery/event-05.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/gallery/event-06.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/gallery/event-07.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/gallery/event-08.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/gallery/event-09.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/gallery/event-10.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/gallery/event-11.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/gallery/event-12.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/hero/hero.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/sections/board.png",
+      "status": "added"
+    },
+    {
+      "path": "public/images/sections/whatsapp.jpeg",
+      "status": "added"
+    },
+    {
+      "path": "public/robots.txt",
+      "status": "added"
+    },
+    {
+      "path": "src/components/EmbedForm.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/Greeting.test.tsx",
+      "status": "added"
+    },
+    {
+      "path": "src/components/Greeting.tsx",
+      "status": "added"
+    },
+    {
+      "path": "src/components/SEO.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/landing/BoardOfDirectors.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/landing/ContactUs.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/landing/EventGallery.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/landing/GetInvolved.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/landing/Hero.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/landing/SupportUs.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/landing/UpcomingEvents.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/landing/WhatsappCommunity.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/content/blog/welcome.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/config.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/content/events/founders-investors-mixer-sf.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/events/harvard-in-tech-summit-2026.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/events/women-in-tech-panel.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/pages/about.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/team/ben-wei.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/team/jessica-li.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/team/krysia-lenzo.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/team/nadia-eldeib.md",
+      "status": "added"
+    },
+    {
+      "path": "src/content/team/peter-boyce.md",
+      "status": "added"
+    },
+    {
+      "path": "src/data/nav.json",
+      "status": "added"
+    },
+    {
+      "path": "src/data/settings.json",
+      "status": "added"
+    },
+    {
+      "path": "src/layouts/BaseLayout.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/mailto.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/mailto.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/site.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/404.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/blog/[slug].astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/index.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "added"
+    },
+    {
+      "path": "src/styles/tokens.css",
+      "status": "added"
+    },
+    {
+      "path": "tsconfig.json",
+      "status": "added"
+    },
+    {
+      "path": "ui/src/helpers/stepLabels.generated.ts",
+      "status": "added"
+    },
+    {
+      "path": "vitest.config.ts",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Harvard in Tech - Landing Page",
+      "screenshotPath": "harvard-in-tech-landing-page--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 8,
+        "passed": 8
+      }
+    ]
+  }
+}

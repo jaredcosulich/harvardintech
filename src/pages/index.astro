@@ -1,0 +1,32 @@
+---
+// Harvard in Tech homepage — a faithful reproduction of harvardintech.com,
+// composed from per-section components in the same order as the live site.
+// Content comes from the editable settings singleton and the `events` / `team`
+// content collections (seeded with site data; editable later via the CMS).
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { settings } from '../lib/site';
+import Hero from '../components/landing/Hero.astro';
+import WhatsappCommunity from '../components/landing/WhatsappCommunity.astro';
+import UpcomingEvents from '../components/landing/UpcomingEvents.astro';
+import GetInvolved from '../components/landing/GetInvolved.astro';
+import BoardOfDirectors from '../components/landing/BoardOfDirectors.astro';
+import SupportUs from '../components/landing/SupportUs.astro';
+import EventGallery from '../components/landing/EventGallery.astro';
+import ContactUs from '../components/landing/ContactUs.astro';
+
+const events = (await getCollection('events'))
+  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())
+  .map((e) => ({ slug: e.slug, ...e.data }));
+---
+
+<BaseLayout title={undefined} description={settings.description}>
+  <Hero />
+  <WhatsappCommunity />
+  <UpcomingEvents events={events} />
+  <GetInvolved />
+  <BoardOfDirectors />
+  <SupportUs email={settings.contactEmail} />
+  <EventGallery />
+  <ContactUs socials={settings.socials} email={settings.contactEmail} />
+</BaseLayout>

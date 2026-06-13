@@ -8,6 +8,13 @@ dependsOn: ["crm-admin-shell-and-auth"]
 
 ## Summary
 
+> **Stack note (updated):** on the Astro stack, "editing static content" maps to
+> **Sveltia CMS editing content-collection markdown** under `src/content/` and
+> the `src/data/*.json` singletons, committing via the GitHub OAuth flow in
+> `cms-auth-worker/`. Much of the hand-rolled form/persistence work below is
+> likely replaced by configuring Sveltia collections. Confirm against
+> `CMS_SETUP.md` when this plan is picked up.
+
 Give the CRM real editing power: authenticated admins can add, edit, and remove
 **Events** and **Board of Directors** entries, and those changes flow back into
 the static `content/` modules that the public site renders. This is the payoff

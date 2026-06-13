@@ -1,0 +1,23 @@
+{
+  "siteTitle": "Harvard in Tech",
+  "description": "The official Harvard Alumni Group for technology — encouraging innovation and connecting technologists across the Harvard community.",
+  "contactEmail": "ben@harvardintech.com",
+  "footerText": "© 2020 Harvard in Tech. All rights reserved. · Cookie Policy",
+  "socials": [
+    {
+      "label": "Twitter",
+      "url": "https://twitter.com/harvardintech",
+      "icon": "twitter"
+    },
+    {
+      "label": "Facebook",
+      "url": "https://facebook.com/harvardintech",
+      "icon": "facebook"
+    },
+    {
+      "label": "Email",
+      "url": "mailto:ben@harvardintech.com",
+      "icon": "email"
+    }
+  ]
+}

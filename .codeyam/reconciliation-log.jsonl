@@ -1,0 +1,3 @@
+{"timestamp":"2026-06-13T15:22:21Z","kind":"registry-add","message":"registry `Greeting › renders the name in the headline`: added from runner `tests` output"}
+{"timestamp":"2026-06-13T15:22:21Z","kind":"registry-add","message":"registry `Greeting › omits the subtitle when no subtitle prop is given`: added from runner `tests` output"}
+{"timestamp":"2026-06-13T15:22:21Z","kind":"registry-add","message":"registry `Greeting › increments the counter on click`: added from runner `tests` output"}

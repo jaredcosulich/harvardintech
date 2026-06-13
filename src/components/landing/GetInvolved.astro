@@ -1,0 +1,34 @@
+---
+// "GET INVOLVED" — faithful to harvardintech.com: a full-bleed background photo
+// with a dark overlay and light text, the volunteer-run message, and a
+// Volunteer button. Background rendered as an <img> for proxy-safe loading.
+interface Props {
+  contactUrl?: string;
+  image?: string;
+}
+const {
+  contactUrl = 'https://hi.switchy.io/wEYK',
+  image = '/images/bg/get-involved-bg.jpg',
+} = Astro.props;
+---
+
+<section style="position: relative; overflow: hidden;" id="get-involved">
+  <img
+    src={image}
+    alt=""
+    style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"
+  />
+  <div style="position: absolute; inset: 0; background: rgba(20,24,33,0.62); z-index: 1;"></div>
+  <div class="s-section" style="position: relative; z-index: 2;">
+    <div class="s-narrow" style="text-align: center; color: #fff;">
+      <h2 class="s-title" style="color: #fff;">Get Involved</h2>
+      <p style="font-size: 1.1rem; color: rgba(255,255,255,0.92); margin: 0 0 var(--space-lg);">
+        We're a volunteer-run organization focused on building a community that
+        supports Harvard hi-tech entrepreneurs and technologists. If you're
+        interested in helping support our organization, either as a speaker,
+        host, sponsor, or volunteer, please don't hesitate to contact us.
+      </p>
+      <a class="s-btn" href={contactUrl} rel="noopener">Volunteer</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Event",
+    "description": "An upcoming or past Harvard in Tech event. Stored as a markdown file in the `events` content collection; rendered in the landing page's Upcoming Events section.",
+    "category": "datastore",
+    "order": 1,
+    "fields": [
+      { "name": "slug", "type": "string", "isId": true, "required": true },
+      { "name": "title", "type": "string", "required": true },
+      { "name": "date", "type": "date", "required": true },
+      { "name": "location", "type": "string", "required": false },
+      { "name": "description", "type": "string", "required": false },
+      { "name": "link", "type": "string", "required": false },
+      { "name": "body", "type": "string", "required": false }
+    ]
+  },
+  {
+    "name": "TeamMember",
+    "description": "A Board of Directors / team member. Stored as a markdown file in the `team` content collection; rendered in the landing page's Board of Directors section.",
+    "category": "datastore",
+    "order": 2,
+    "fields": [
+      { "name": "slug", "type": "string", "isId": true, "required": true },
+      { "name": "name", "type": "string", "required": true },
+      { "name": "role", "type": "string", "required": true },
+      { "name": "photo", "type": "string", "required": false },
+      { "name": "bio", "type": "string", "required": false },
+      { "name": "order", "type": "number", "required": false }
+    ]
+  },
+  {
+    "name": "Page",
+    "description": "A free-form site page (About, chapter pages, etc.) in the `pages` content collection. Body markdown is the page content.",
+    "category": "datastore",
+    "order": 3,
+    "fields": [
+      { "name": "slug", "type": "string", "isId": true, "required": true },
+      { "name": "title", "type": "string", "required": true },
+      { "name": "description", "type": "string", "required": false },
+      { "name": "order", "type": "number", "required": false },
+      { "name": "body", "type": "string", "required": false }
+    ]
+  },
+  {
+    "name": "BlogPost",
+    "description": "A news/blog post in the `blog` content collection.",
+    "category": "datastore",
+    "order": 4,
+    "fields": [
+      { "name": "slug", "type": "string", "isId": true, "required": true },
+      { "name": "title", "type": "string", "required": true },
+      { "name": "date", "type": "date", "required": true },
+      { "name": "summary", "type": "string", "required": false },
+      { "name": "coverImage", "type": "string", "required": false },
+      { "name": "body", "type": "string", "required": false }
+    ]
+  },
+  {
+    "name": "Settings",
+    "description": "Site-wide editable settings singleton (`src/data/settings.json`): title, description, contact email, footer, socials. Loaded by every layout; edited by the CMS as a file collection.",
+    "category": "datastore",
+    "order": 5,
+    "fields": [
+      { "name": "siteTitle", "type": "string", "required": true },
+      { "name": "description", "type": "string", "required": true },
+      { "name": "contactEmail", "type": "string", "required": true },
+      { "name": "footerText", "type": "string", "required": true },
+      { "name": "socials", "type": "array", "required": false }
+    ]
+  },
+  {
+    "name": "Nav",
+    "description": "Editable navigation menu singleton (`src/data/nav.json`) with nested dropdowns (e.g. Chapters → NYC/SF/LA/Japan). Loaded by the base layout.",
+    "category": "datastore",
+    "order": 6,
+    "fields": [
+      { "name": "items", "type": "array", "required": true }
+    ]
+  }
+]

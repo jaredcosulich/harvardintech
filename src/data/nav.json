@@ -1,0 +1,33 @@
+{
+  "items": [
+    {
+      "label": "Home",
+      "url": "/"
+    },
+    {
+      "label": "Events",
+      "url": "/events"
+    },
+    {
+      "label": "Chapters",
+      "children": [
+        {
+          "label": "NYC",
+          "url": "/chapters/nyc"
+        },
+        {
+          "label": "San Francisco",
+          "url": "/chapters/san-francisco"
+        },
+        {
+          "label": "L.A.",
+          "url": "/chapters/la"
+        },
+        {
+          "label": "Japan",
+          "url": "/chapters/japan"
+        }
+      ]
+    }
+  ]
+}

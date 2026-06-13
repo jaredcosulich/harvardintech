@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 4,
+  "version": 3,
+  "partition": "all",
+  "hash": "648fba58cca612af",
+  "runners": [
+    {
+      "name": "tests",
+      "format": "vitest-json",
+      "output": "{\"numTotalTestSuites\":4,\"numPassedTestSuites\":4,\"numFailedTestSuites\":0,\"numPendingTestSuites\":0,\"numTotalTests\":8,\"numPassedTests\":8,\"numFailedTests\":0,\"numPendingTests\":0,\"numTodoTests\":0,\"snapshot\":{\"added\":0,\"failure\":false,\"filesAdded\":0,\"filesRemoved\":0,\"filesRemovedList\":[],\"filesUnmatched\":0,\"filesUpdated\":0,\"matched\":0,\"total\":0,\"unchecked\":0,\"uncheckedKeysByFile\":[],\"unmatched\":0,\"updated\":0,\"didUpdate\":false},\"startTime\":1781364927422,\"success\":true,\"testResults\":[{\"assertionResults\":[{\"ancestorTitles\":[\"Greeting\"],\"fullName\":\"Greeting renders the name in the headline\",\"status\":\"passed\",\"title\":\"renders the name in the headline\",\"duration\":77.37572999999998,\"failureMessages\":[],\"meta\":{}},{\"ancestorTitles\":[\"Greeting\"],\"fullName\":\"Greeting omits the subtitle when no subtitle prop is given\",\"status\":\"passed\",\"title\":\"omits the subtitle when no subtitle prop is given\",\"duration\":7.8429969999999685,\"failureMessages\":[],\"meta\":{}},{\"ancestorTitles\":[\"Greeting\"],\"fullName\":\"Greeting increments the counter on click\",\"status\":\"passed\",\"title\":\"increments the counter on click\",\"duration\":98.80193399999985,\"failureMessages\":[],\"meta\":{}}],\"startTime\":1781364929175,\"endTime\":1781364929358.802,\"status\":\"passed\",\"message\":\"\",\"name\":\"src/components/Greeting.test.tsx\"},{\"assertionResults\":[{\"ancestorTitles\":[\"buildMailto\"],\"fullName\":\"buildMailto builds a bare mailto when only a recipient is given\",\"status\":\"passed\",\"title\":\"builds a bare mailto when only a recipient is given\",\"duration\":6.593222999999853,\"failureMessages\":[],\"meta\":{}},{\"ancestorTitles\":[\"buildMailto\"],\"fullName\":\"buildMailto appends the subject as a query parameter\",\"status\":\"passed\",\"title\":\"appends the subject as a query parameter\",\"duration\":4.046180999999933,\"failureMessages\":[],\"meta\":{}},{\"ancestorTitles\":[\"buildMailto\"],\"fullName\":\"buildMailto encodes spaces in the subject as %20 rather than plus\",\"status\":\"passed\",\"title\":\"encodes spaces in the subject as %20 rather than plus\",\"duration\":0.6798820000001342,\"failureMessages\":[],\"meta\":{}},{\"ancestorTitles\":[\"buildMailto\"],\"fullName\":\"buildMailto includes both subject and body when supplied\",\"status\":\"passed\",\"title\":\"includes both subject and body when supplied\",\"duration\":1.1118700000001809,\"failureMessages\":[],\"meta\":{}},{\"ancestorTitles\":[\"buildMailto\"],\"fullName\":\"buildMailto handles a body with no subject\",\"status\":\"passed\",\"title\":\"handles a body with no subject\",\"duration\":0.5213649999998324,\"failureMessages\":[],\"meta\":{}}],\"startTime\":1781364928939,\"endTime\":1781364928953.5215,\"status\":\"passed\",\"message\":\"\",\"name\":\"src/lib/mailto.test.ts\"}]}\n",
+      "invoked_command": "npx vitest run --reporter=json",
+      "exit_code": 0,
+      "tests": [
+        {
+          "key": "Greeting › renders the name in the headline",
+          "status": "passed",
+          "file": "src/components/Greeting.test.tsx",
+          "line": null,
+          "runner": "tests",
+          "format": "vitest"
+        },
+        {
+          "key": "Greeting › omits the subtitle when no subtitle prop is given",
+          "status": "passed",
+          "file": "src/components/Greeting.test.tsx",
+          "line": null,
+          "runner": "tests",
+          "format": "vitest"
+        },
+        {
+          "key": "Greeting › increments the counter on click",
+          "status": "passed",
+          "file": "src/components/Greeting.test.tsx",
+          "line": null,
+          "runner": "tests",
+          "format": "vitest"
+        },
+        {
+          "key": "buildMailto › builds a bare mailto when only a recipient is given",
+          "status": "passed",
+          "file": "src/lib/mailto.test.ts",
+          "line": null,
+          "runner": "tests",
+          "format": "vitest"
+        },
+        {
+          "key": "buildMailto › appends the subject as a query parameter",
+          "status": "passed",
+          "file": "src/lib/mailto.test.ts",
+          "line": null,
+          "runner": "tests",
+          "format": "vitest"
+        },
+        {
+          "key": "buildMailto › encodes spaces in the subject as %20 rather than plus",
+          "status": "passed",
+          "file": "src/lib/mailto.test.ts",
+          "line": null,
+          "runner": "tests",
+          "format": "vitest"
+        },
+        {
+          "key": "buildMailto › includes both subject and body when supplied",
+          "status": "passed",
+          "file": "src/lib/mailto.test.ts",
+          "line": null,
+          "runner": "tests",
+          "format": "vitest"
+        },
+        {
+          "key": "buildMailto › handles a body with no subject",
+          "status": "passed",
+          "file": "src/lib/mailto.test.ts",
+          "line": null,
+          "runner": "tests",
+          "format": "vitest"
+        }
+      ]
+    }
+  ]
+}

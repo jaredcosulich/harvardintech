@@ -1,0 +1,43 @@
+---
+// "CONTACT US" — reproduces the live site's contact section: "We'd love to hear
+// from you!" plus Twitter / E-mail / Facebook links. Reads the editable socials
+// + contact email from the settings singleton.
+import { buildMailto } from '../../lib/mailto';
+import type { SocialLink } from '../../lib/site';
+
+interface Props {
+  socials: SocialLink[];
+  email: string;
+}
+const { socials, email } = Astro.props;
+const contactHref = buildMailto({ to: email, subject: 'Hello from the website' });
+
+// Render the live site's labels in order: Twitter, E-mail, Facebook.
+const links = [
+  ...socials.filter((s) => /twitter/i.test(s.label)),
+  { label: 'E-mail', url: contactHref },
+  ...socials.filter((s) => /facebook/i.test(s.label)),
+];
+---
+
+<section class="s-section" id="contact">
+  <div class="s-narrow" style="text-align: center;">
+    <h2 class="s-title">Contact Us</h2>
+    <p style="font-size: 1.15rem; color: var(--color-muted); margin: 0 0 var(--space-lg);">
+      We'd love to hear from you!
+    </p>
+    <div style="display: flex; flex-wrap: wrap; gap: var(--space-lg); justify-content: center;">
+      {
+        links.map((link) => (
+          <a
+            href={link.url}
+            rel="noopener"
+            style="font-family: var(--font-title); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.9rem; color: var(--color-accent);"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

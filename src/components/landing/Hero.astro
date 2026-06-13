@@ -1,0 +1,34 @@
+---
+// Top section "HARVARD ALUMNI IN TECH" — faithful to harvardintech.com: a
+// full-bleed background photo with a dark overlay and light text, the mission
+// paragraph, and a SUBSCRIBE button to the MailChimp signup. The background is
+// rendered as an <img> (survives the preview reverse-proxy / base-path rewrite).
+interface Props {
+  description?: string;
+  subscribeUrl?: string;
+  image?: string;
+}
+const {
+  description = 'We are the official Harvard Alumni Group for technology. We hope to further the development of technology through encouraging innovation, providing Harvard alumni technologists with resources and networks, and promoting technological activity throughout the Harvard community. We are currently active in New York City and will be growing chapters in other cities. To stay up to date about future events, please sign up for our mailing list:',
+  subscribeUrl = 'https://mailchi.mp/0222623e1169/fbrj32e9wb',
+  image = '/images/bg/hero-bg.jpg',
+} = Astro.props;
+---
+
+<section style="position: relative; overflow: hidden;" id="about">
+  <img
+    src={image}
+    alt=""
+    style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"
+  />
+  <div style="position: absolute; inset: 0; background: rgba(20,24,33,0.6); z-index: 1;"></div>
+  <div class="s-section" style="position: relative; z-index: 2;">
+    <div class="s-narrow" style="text-align: center; color: #fff;">
+      <h2 class="s-title" style="color: #fff;">Harvard Alumni in Tech</h2>
+      <p style="font-size: 1.15rem; color: rgba(255,255,255,0.92); margin: 0 0 var(--space-lg);">
+        {description}
+      </p>
+      <a class="s-btn" href={subscribeUrl} rel="noopener">Subscribe</a>
+    </div>
+  </div>
+</section>

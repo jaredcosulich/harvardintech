@@ -1,0 +1,77 @@
+{
+  "tests": [
+    {
+      "description": "Clicking the button increments the hydrated counter, proving the island is genuinely interactive and not a static render.",
+      "file": "src/components/Greeting.test.tsx",
+      "format": "vitest",
+      "key": "Greeting › increments the counter on click",
+      "line": 22,
+      "registeredAt": "2026-06-13T15:22:21Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The subtitle is optional: when omitted the island must not render an empty paragraph, which is what the \"missing optional prop\" scenario exercises.",
+      "file": "src/components/Greeting.test.tsx",
+      "format": "vitest",
+      "key": "Greeting › omits the subtitle when no subtitle prop is given",
+      "line": 15,
+      "registeredAt": "2026-06-13T15:22:21Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The headline must include the provided name so the island renders the prop, not a hardcoded string.",
+      "file": "src/components/Greeting.test.tsx",
+      "format": "vitest",
+      "key": "Greeting › renders the name in the headline",
+      "line": 8,
+      "registeredAt": "2026-06-13T15:22:21Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A subject is appended as a query parameter.",
+      "file": "src/lib/mailto.test.ts",
+      "format": "vitest",
+      "key": "buildMailto › appends the subject as a query parameter",
+      "line": 11,
+      "registeredAt": "2026-06-13T15:32:37.162204395+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "With only a recipient, the result is a bare mailto: with no query string.",
+      "file": "src/lib/mailto.test.ts",
+      "format": "vitest",
+      "key": "buildMailto › builds a bare mailto when only a recipient is given",
+      "line": 6,
+      "registeredAt": "2026-06-13T15:32:37.162204395+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Spaces in the subject must encode as %20, not +, for mail clients.",
+      "file": "src/lib/mailto.test.ts",
+      "format": "vitest",
+      "key": "buildMailto › encodes spaces in the subject as %20 rather than plus",
+      "line": 16,
+      "registeredAt": "2026-06-13T15:32:37.162204395+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "A body alone (no subject) still produces a valid query string.",
+      "file": "src/lib/mailto.test.ts",
+      "format": "vitest",
+      "key": "buildMailto › handles a body with no subject",
+      "line": 30,
+      "registeredAt": "2026-06-13T15:32:37.162204395+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Both subject and body are included in the query string.",
+      "file": "src/lib/mailto.test.ts",
+      "format": "vitest",
+      "key": "buildMailto › includes both subject and body when supplied",
+      "line": 23,
+      "registeredAt": "2026-06-13T15:32:37.162204395+00:00",
+      "runner": "tests"
+    }
+  ],
+  "version": 2
+}

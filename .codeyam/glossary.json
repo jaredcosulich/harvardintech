@@ -1,0 +1,68 @@
+[
+  {
+    "description": "Template React island: a name greeting with an interactive click counter. Not used on the Harvard in Tech landing page; retained from the scaffold.",
+    "filePath": "src/components/Greeting.tsx",
+    "name": "Greeting",
+    "testFile": "src/components/Greeting.test.tsx"
+  },
+  {
+    "description": "Harvard in Tech public home page — a faithful reproduction of harvardintech.com composed of section components (Hero, WhatsApp Community, Upcoming Events, Get Involved, Board of Directors, Support Us, Event Gallery, Contact Us), reading the events/team content collections and settings/nav singletons.",
+    "filePath": "src/pages/index.astro",
+    "name": "LandingPage",
+    "scenarios": [
+      "harvard-in-tech-landing-page",
+      "harvard-in-tech-no-upcoming-events"
+    ]
+  },
+  {
+    "description": "Builds a mailto: URL with optional pre-filled subject/body, normalizing space encoding to %20. Used by the Support Us, Contact Us, and footer links.",
+    "filePath": "src/lib/mailto.ts",
+    "name": "buildMailto",
+    "testFile": "src/lib/mailto.test.ts"
+  },
+  {
+    "description": "Escapes HTML special characters for safe interpolation into the CMS auth worker's HTML responses.",
+    "filePath": "cms-auth-worker/worker.js",
+    "name": "escapeHtml",
+    "untestabilityReason": {
+      "justification": "Template CMS auth worker shipped by the astro-github-pages scaffold; not part of the landing-page feature.",
+      "kind": "scaffold"
+    }
+  },
+  {
+    "description": "Handles the password-form submission in the CMS auth worker's OAuth handshake.",
+    "filePath": "cms-auth-worker/worker.js",
+    "name": "handlePasswordSubmit",
+    "untestabilityReason": {
+      "justification": "Template CMS auth worker shipped by the astro-github-pages scaffold; not part of the landing-page feature.",
+      "kind": "scaffold"
+    }
+  },
+  {
+    "description": "Renders the CMS auth worker's OAuth handshake page.",
+    "filePath": "cms-auth-worker/worker.js",
+    "name": "handshakePage",
+    "untestabilityReason": {
+      "justification": "Template CMS auth worker shipped by the astro-github-pages scaffold; not part of the landing-page feature.",
+      "kind": "scaffold"
+    }
+  },
+  {
+    "description": "Builds an HTML Response object for the CMS auth worker.",
+    "filePath": "cms-auth-worker/worker.js",
+    "name": "htmlResponse",
+    "untestabilityReason": {
+      "justification": "Template CMS auth worker shipped by the astro-github-pages scaffold; not part of the landing-page feature.",
+      "kind": "scaffold"
+    }
+  },
+  {
+    "description": "Renders the CMS auth worker's password-gate form page.",
+    "filePath": "cms-auth-worker/worker.js",
+    "name": "passwordFormPage",
+    "untestabilityReason": {
+      "justification": "Template CMS auth worker shipped by the astro-github-pages scaffold; not part of the landing-page feature.",
+      "kind": "scaffold"
+    }
+  }
+]

@@ -1,0 +1,199 @@
+{
+  "files": {
+    ".claude/skills/review-session/scripts/find-last-session.mjs": {
+      "imports": [
+        ".claude/skills/review-session/scripts/find-last-session-helpers.mjs"
+      ],
+      "importedBy": []
+    },
+    ".claude/skills/review-session/scripts/extract-session-helpers.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    ".claude/hooks/editor-step-hook.py": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/mailto.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/mailto.test.ts"
+      ]
+    },
+    ".claude/skills/review-session/scripts/extract-session.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/site.ts": {
+      "imports": [
+        "src/data/settings.json",
+        "src/data/nav.json"
+      ],
+      "importedBy": []
+    },
+    ".astro/content-assets.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    ".astro/types.d.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    ".astro/content-modules.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    "ui/src/helpers/stepLabels.generated.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    ".claude/hooks/editor-pretool-hook.py": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/components/Greeting.tsx": {
+      "imports": [],
+      "importedBy": [
+        "src/components/Greeting.test.tsx"
+      ]
+    },
+    "src/components/Greeting.test.tsx": {
+      "imports": [
+        "src/components/Greeting.tsx"
+      ],
+      "importedBy": []
+    },
+    ".astro/content.d.ts": {
+      "imports": [
+        "src/content/config.js"
+      ],
+      "importedBy": []
+    },
+    "cms-auth-worker/worker.js": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/content/config.js": {
+      "imports": [],
+      "importedBy": [
+        ".astro/content.d.ts"
+      ]
+    },
+    "src/data/nav.json": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/site.ts"
+      ]
+    },
+    "src/content/config.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    "vitest.config.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    ".claude/skills/review-session/scripts/find-last-session-helpers.mjs": {
+      "imports": [],
+      "importedBy": [
+        ".claude/skills/review-session/scripts/find-last-session.mjs"
+      ]
+    },
+    "src/data/settings.json": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/site.ts"
+      ]
+    },
+    ".claude/hooks/_step_metadata.py": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/mailto.test.ts": {
+      "imports": [
+        "src/lib/mailto.ts"
+      ],
+      "importedBy": []
+    },
+    "astro.config.mjs": {
+      "imports": [],
+      "importedBy": []
+    }
+  },
+  "entities": {
+    "src/data/nav.json::__file_root__": {
+      "filePath": "src/data/nav.json",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/lib/site.ts::__file_root__"
+      ]
+    },
+    "src/lib/mailto.test.ts::__file_root__": {
+      "filePath": "src/lib/mailto.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/mailto.ts::buildMailto"
+      ],
+      "importedBy": []
+    },
+    "src/lib/site.ts::__file_root__": {
+      "filePath": "src/lib/site.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/data/settings.json::__file_root__",
+        "src/data/nav.json::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/components/Greeting.test.tsx::__file_root__": {
+      "filePath": "src/components/Greeting.test.tsx",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/Greeting.tsx::Greeting"
+      ],
+      "importedBy": []
+    },
+    "src/content/config.js::__file_root__": {
+      "filePath": "src/content/config.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".astro/content.d.ts::ContentConfig"
+      ]
+    },
+    ".claude/skills/review-session/scripts/find-last-session.mjs::__file_root__": {
+      "filePath": ".claude/skills/review-session/scripts/find-last-session.mjs",
+      "name": "__file_root__",
+      "imports": [
+        ".claude/skills/review-session/scripts/find-last-session-helpers.mjs::claudeProjectHashFromPath"
+      ],
+      "importedBy": []
+    },
+    ".claude/skills/review-session/scripts/find-last-session-helpers.mjs::claudeProjectHashFromPath": {
+      "filePath": ".claude/skills/review-session/scripts/find-last-session-helpers.mjs",
+      "name": "claudeProjectHashFromPath",
+      "imports": [],
+      "importedBy": [
+        ".claude/skills/review-session/scripts/find-last-session.mjs::__file_root__"
+      ]
+    },
+    ".astro/content.d.ts::ContentConfig": {
+      "filePath": ".astro/content.d.ts",
+      "name": "ContentConfig",
+      "imports": [
+        "src/content/config.js::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/data/settings.json::__file_root__": {
+      "filePath": "src/data/settings.json",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/lib/site.ts::__file_root__"
+      ]
+    }
+  },
+  "lastUpdated": "2026-06-13T15:35:31Z"
+}

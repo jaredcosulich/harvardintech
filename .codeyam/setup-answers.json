@@ -1,0 +1,8 @@
+{
+  "appFormats": [
+    "static"
+  ],
+  "designApproach": "skip",
+  "techStackId": "astro-github-pages",
+  "startingSurface": "landing"
+}

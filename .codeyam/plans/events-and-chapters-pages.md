@@ -8,6 +8,12 @@ dependsOn: ["landing-page-faithful-reproduction"]
 
 ## Summary
 
+> **Stack note (updated):** the project scaffolded on the **Astro +
+> GitHub Pages** stack, not Next.js. Routes are `src/pages/**`; chapter/about
+> content lives in the `pages` content collection; the Events page reads the
+> `events` collection. Treat the Next.js paths below as intent — they'll be
+> mapped to Astro equivalents when this plan is picked up.
+
 Complete the public site's remaining top-level pages so every item in the nav
 resolves to a real page: a full **Events** page and the four **Chapters** pages
 (NYC, San Francisco, L.A., Japan). All content stays static (sourced from the

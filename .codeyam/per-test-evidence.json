@@ -1,0 +1,121 @@
+{
+  "Greeting › increments the counter on click": {
+    "file": "src/components/Greeting.test.tsx",
+    "lastRunAt": "2026-06-13T15:35:29.652653017+00:00",
+    "lastStatus": "pass",
+    "lastRunKind": "full",
+    "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-13T15:35:29.652653017+00:00",
+        "kind": "full"
+      },
+      {
+        "status": "pass",
+        "at": "2026-06-13T15:32:27.539521774+00:00",
+        "kind": "full"
+      }
+    ]
+  },
+  "Greeting › omits the subtitle when no subtitle prop is given": {
+    "file": "src/components/Greeting.test.tsx",
+    "lastRunAt": "2026-06-13T15:35:29.652653017+00:00",
+    "lastStatus": "pass",
+    "lastRunKind": "full",
+    "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-13T15:35:29.652653017+00:00",
+        "kind": "full"
+      },
+      {
+        "status": "pass",
+        "at": "2026-06-13T15:32:27.539521774+00:00",
+        "kind": "full"
+      }
+    ]
+  },
+  "Greeting › renders the name in the headline": {
+    "file": "src/components/Greeting.test.tsx",
+    "lastRunAt": "2026-06-13T15:35:29.652653017+00:00",
+    "lastStatus": "pass",
+    "lastRunKind": "full",
+    "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-13T15:35:29.652653017+00:00",
+        "kind": "full"
+      },
+      {
+        "status": "pass",
+        "at": "2026-06-13T15:32:27.539521774+00:00",
+        "kind": "full"
+      }
+    ]
+  },
+  "buildMailto › appends the subject as a query parameter": {
+    "file": "src/lib/mailto.test.ts",
+    "lastRunAt": "2026-06-13T15:35:29.652653017+00:00",
+    "lastStatus": "pass",
+    "lastRunKind": "full",
+    "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-13T15:35:29.652653017+00:00",
+        "kind": "full"
+      }
+    ]
+  },
+  "buildMailto › builds a bare mailto when only a recipient is given": {
+    "file": "src/lib/mailto.test.ts",
+    "lastRunAt": "2026-06-13T15:35:29.652653017+00:00",
+    "lastStatus": "pass",
+    "lastRunKind": "full",
+    "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-13T15:35:29.652653017+00:00",
+        "kind": "full"
+      }
+    ]
+  },
+  "buildMailto › encodes spaces in the subject as %20 rather than plus": {
+    "file": "src/lib/mailto.test.ts",
+    "lastRunAt": "2026-06-13T15:35:29.652653017+00:00",
+    "lastStatus": "pass",
+    "lastRunKind": "full",
+    "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-13T15:35:29.652653017+00:00",
+        "kind": "full"
+      }
+    ]
+  },
+  "buildMailto › handles a body with no subject": {
+    "file": "src/lib/mailto.test.ts",
+    "lastRunAt": "2026-06-13T15:35:29.652653017+00:00",
+    "lastStatus": "pass",
+    "lastRunKind": "full",
+    "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-13T15:35:29.652653017+00:00",
+        "kind": "full"
+      }
+    ]
+  },
+  "buildMailto › includes both subject and body when supplied": {
+    "file": "src/lib/mailto.test.ts",
+    "lastRunAt": "2026-06-13T15:35:29.652653017+00:00",
+    "lastStatus": "pass",
+    "lastRunKind": "full",
+    "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-13T15:35:29.652653017+00:00",
+        "kind": "full"
+      }
+    ]
+  }
+}

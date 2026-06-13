@@ -8,6 +8,13 @@ dependsOn: ["landing-page-faithful-reproduction"]
 
 ## Summary
 
+> **Stack note (updated):** the project scaffolded on **Astro + GitHub Pages**,
+> which already ships `.github/workflows/deploy.yml` and `DEPLOY_SETUP.md`. This
+> plan is now mostly *configuration* — set `site`/`base` in `astro.config.mjs`,
+> enable Pages (Source: GitHub Actions), and verify the shipped workflow — rather
+> than authoring a deploy pipeline from scratch. The Next.js details below are
+> superseded.
+
 Ship the statically-exported public site to GitHub Pages via a GitHub Actions
 workflow. Covers the static-export configuration details (basePath/assetPrefix
 for project pages, `.nojekyll`), the CI build, and the Pages deploy. The landing

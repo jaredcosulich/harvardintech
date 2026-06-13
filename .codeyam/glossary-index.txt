@@ -1,0 +1,9 @@
+# regenerated from glossary.json on 2026-06-13T15:33:02Z; do not hand-edit
+Greeting :: src/components/Greeting.tsx :: tags= :: test=src/components/Greeting.test.tsx
+LandingPage :: src/pages/index.astro :: tags=
+buildMailto :: src/lib/mailto.ts :: tags= :: test=src/lib/mailto.test.ts
+escapeHtml :: cms-auth-worker/worker.js :: tags=
+handlePasswordSubmit :: cms-auth-worker/worker.js :: tags=
+handshakePage :: cms-auth-worker/worker.js :: tags=
+htmlResponse :: cms-auth-worker/worker.js :: tags=
+passwordFormPage :: cms-auth-worker/worker.js :: tags=

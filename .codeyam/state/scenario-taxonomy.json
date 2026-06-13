@@ -1,0 +1,36 @@
+{
+  "views": {
+    "/": {
+      "empty": {
+        "status": "added"
+      },
+      "single": {
+        "status": "n-a",
+        "reason": "Single-event page renders in the same responsive grid as the populated state; the load-bearing boundary here is empty vs populated, both covered."
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "n-a",
+        "reason": "Events grid wraps responsively with no truncation or pagination; more events only add rows, not a distinct visual state."
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "Fully static (statically-exported) page with content collections resolved at build; no async/loading state."
+      },
+      "edge": {
+        "status": "n-a",
+        "reason": "Optional-field branches (an event with no link) are exercised within the typical scenario; no distinct edge layout."
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "Static content page with no data fetching; no failure/error state can occur."
+      },
+      "key-interaction": {
+        "status": "n-a",
+        "reason": "Primary actions are outbound links (Subscribe, Volunteer, View Events, mailto); no in-page interactive state to capture."
+      }
+    }
+  }
+}

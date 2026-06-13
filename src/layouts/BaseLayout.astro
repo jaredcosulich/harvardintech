@@ -1,0 +1,123 @@
+---
+// The site-wide shell: <head> meta (via SEO), a data-driven header/nav, and a
+// footer built from the editable `settings` singleton. Reproduces the
+// harvardintech.com Strikingly "persona" header (wordmark left, nav right with
+// a Chapters dropdown) and footer. Changing the site title, a menu item, a
+// social link, or the contact email is a data edit to `src/data/*.json`.
+import '../styles/tokens.css';
+import SEO from '../components/SEO.astro';
+import { settings, nav } from '../lib/site';
+import { buildMailto } from '../lib/mailto';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description, image } = Astro.props;
+const contactHref = buildMailto({
+  to: settings.contactEmail,
+  subject: `Hello from ${settings.siteTitle}`,
+});
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <SEO title={title} description={description} image={image} />
+  </head>
+  <body>
+    <header
+      style="position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.97); border-bottom: 1px solid var(--color-border); backdrop-filter: saturate(180%) blur(6px);"
+    >
+      <div
+        style="max-width: var(--content-width); margin: 0 auto; padding: var(--space-md) var(--space-lg); display: flex; align-items: center; justify-content: space-between; gap: var(--space-md);"
+      >
+        <a
+          href="/"
+          style="font-family: var(--font-title); font-weight: 500; font-size: 1.15rem; color: var(--color-fg);"
+          >{settings.siteTitle}</a
+        >
+        <nav>
+          <ul
+            style="list-style: none; display: flex; align-items: center; gap: var(--space-lg); margin: 0; padding: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.06em;"
+          >
+            {
+              nav.items.map((item) =>
+                item.children && item.children.length > 0 ? (
+                  <li style="position: relative;">
+                    <details class="nav-dd">
+                      <summary style="cursor: pointer; list-style: none; color: var(--color-fg);">
+                        {item.label} ▾
+                      </summary>
+                      <ul style="list-style: none; position: absolute; right: 0; margin: var(--space-sm) 0 0; padding: var(--space-sm) 0; background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius); min-width: 180px; box-shadow: 0 8px 24px rgba(0,0,0,0.08);">
+                        {item.children.map((child) => (
+                          <li style="padding: 0;">
+                            <a
+                              href={child.url}
+                              style="display: block; padding: var(--space-sm) var(--space-md); color: var(--color-fg); text-transform: none; letter-spacing: 0;"
+                            >
+                              {child.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  </li>
+                ) : (
+                  <li>
+                    <a href={item.url} style="color: var(--color-fg);">
+                      {item.label}
+                    </a>
+                  </li>
+                ),
+              )
+            }
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer style="background: var(--color-bg-dark); color: #cfd2d6;">
+      <div
+        style="max-width: var(--content-width); margin: 0 auto; padding: var(--space-lg); text-align: center;"
+      >
+        {
+          settings.socials.length > 0 ? (
+            <ul style="list-style: none; display: flex; gap: var(--space-lg); justify-content: center; margin: 0 0 var(--space-md); padding: 0;">
+              {settings.socials.map((social) => (
+                <li>
+                  <a href={social.url} rel="noopener" style="color: #fff;">
+                    {social.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : null
+        }
+        <p style="margin: 0 0 var(--space-sm);">
+          <a href={contactHref} style="color: #fff;">{settings.contactEmail}</a>
+        </p>
+        <p style="margin: 0; color: var(--color-faint); font-size: 0.85rem;">{settings.footerText}</p>
+      </div>
+    </footer>
+
+    <style>
+      .nav-dd summary::-webkit-details-marker {
+        display: none;
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The admin app must never be indexed; it is an editing surface, not content. -->
+    <meta name="robots" content="noindex" />
+    <title>Content Manager</title>
+  </head>
+  <body>
+    <!--
+      Sveltia CMS — a modern, Decap-compatible, git-based content editor.
+
+      It auto-loads ./config.yml (served from this same public/admin/ folder)
+      and commits markdown straight into the site's content collections. There
+      is no build step and no server you run: Astro copies everything under
+      public/ verbatim, so this file lands at /admin/ on the live site and at
+      /admin/ on the local dev server unchanged.
+
+      The script auto-initialises on load — the same convention Decap uses — so
+      no inline init code is needed here. The auth backend (GitHub OAuth, a
+      password-gated Cloudflare Worker, or local-repository mode) is selected
+      entirely in config.yml; see CMS_SETUP.md for the three paths and how the
+      build agent wires the one you pick.
+
+      Pinned to the v0 major from the CDN for reproducible scaffolds.
+    -->
+    <script src="https://unpkg.com/@sveltia/cms@0/dist/sveltia-cms.js"></script>
+  </body>
+</html>

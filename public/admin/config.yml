@@ -1,0 +1,136 @@
+# Sveltia CMS configuration (Decap-compatible).
+#
+# CONTRACT: every field `name` under a collection below must also exist in the
+# matching Astro content-collection schema in `src/content/config.ts`. If they
+# drift, the CMS will write frontmatter the site can't validate at build time.
+# codeyam's template test `astro_cms_config_fields_subset_of_content_schema`
+# enforces this for the shipped template — keep it true when you add fields.
+# The reserved `body` field maps to the markdown body, not frontmatter, so it
+# is intentionally absent from the content schema.
+
+# How the CMS authenticates and where it commits. The build agent rewrites this
+# block for the auth path you choose in CMS_SETUP.md:
+#   - GitHub OAuth (hosted): add `base_url` / `auth_endpoint` pointing at an
+#     OAuth relay (Sveltia's hosted helper or your own).
+#   - Password (hosted): point `base_url` at the Cloudflare Worker in
+#     `cms-auth-worker/`.
+#   - Local: leave `local_backend: true` below and open /admin from a local
+#     dev server — no auth, no relay.
+backend:
+  name: github
+  repo: OWNER/REPO # AGENT: set to "<github-user>/<repo-name>"
+  branch: main
+
+# Local-repository editing. When /admin is opened from a local dev server,
+# Sveltia offers "Work with Local Repository" and writes straight to disk — no
+# auth, no network. This only activates on localhost, so it is safe to ship
+# enabled alongside a hosted backend.
+local_backend: true
+
+# Uploaded images. `media_folder` is repo-relative; living under public/ means
+# Astro serves them verbatim (no asset-pipeline step), so the `public_folder`
+# URL resolves on a static build. If you set a GitHub Pages `base` in
+# astro.config.mjs, prefix that base here too.
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  # ── Site-wide singletons ────────────────────────────────────────────────
+  # "file" collections edit one fixed file rather than a folder of entries.
+  # These back the editable global settings and navigation: every field name
+  # below must be a top-level key in the matching `src/data/*.json`, or the
+  # site loader (`src/lib/site.ts`) reads data the schema doesn't declare. The
+  # template test `astro_cms_config_fields_subset_of_content_schema` enforces
+  # both the folder-collection and singleton sides of this contract.
+  - name: settings
+    label: "Site Settings"
+    files:
+      - name: general
+        label: "General"
+        file: "src/data/settings.json"
+        fields:
+          - { name: siteTitle, label: "Site title", widget: string }
+          - { name: description, label: "Description", widget: text }
+          - { name: contactEmail, label: "Contact email", widget: string }
+          - { name: footerText, label: "Footer text", widget: string }
+          - name: socials
+            label: "Social links"
+            widget: list
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: url, label: URL, widget: string }
+              - { name: icon, label: Icon, widget: string, required: false }
+
+  - name: nav
+    label: "Navigation"
+    files:
+      - name: menu
+        label: "Menu"
+        file: "src/data/nav.json"
+        fields:
+          - name: items
+            label: "Menu items"
+            widget: list
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: url, label: URL, widget: string, required: false }
+              - name: children
+                label: "Dropdown items"
+                widget: list
+                required: false
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: url, label: URL, widget: string }
+
+  # ── Content collections ─────────────────────────────────────────────────
+  # Field names mirror the matching schema in src/content/config.ts. Optional
+  # schema fields are `required: false` here. `body` is the reserved
+  # markdown-body widget (not frontmatter).
+  - name: blog
+    label: "Blog"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime }
+      - { name: summary, label: Summary, widget: string, required: false }
+      - { name: coverImage, label: "Cover image", widget: image, required: false }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: pages
+    label: "Pages"
+    folder: "src/content/pages"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: description, label: Description, widget: string, required: false }
+      - { name: order, label: Order, widget: number, required: false }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: team
+    label: "Team"
+    folder: "src/content/team"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: name, label: Name, widget: string }
+      - { name: role, label: Role, widget: string }
+      - { name: photo, label: Photo, widget: image, required: false }
+      - { name: bio, label: Bio, widget: markdown, required: false }
+      - { name: order, label: Order, widget: number, required: false }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: events
+    label: "Events"
+    folder: "src/content/events"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime }
+      - { name: location, label: Location, widget: string, required: false }
+      - { name: description, label: Description, widget: string, required: false }
+      - { name: link, label: Link, widget: string, required: false }
+      - { name: body, label: Body, widget: markdown }

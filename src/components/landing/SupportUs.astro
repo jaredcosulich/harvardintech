@@ -1,0 +1,36 @@
+---
+// "SUPPORT US" — reproduces the live site's five ways to support, each a
+// pre-filled mailto link to the organizer (uses the shared buildMailto helper).
+import { buildMailto } from '../../lib/mailto';
+
+interface Props {
+  email?: string;
+}
+const { email = 'ben@harvardintech.com' } = Astro.props;
+
+const options = [
+  { label: 'Sponsor an Event', subject: 'Sponsoring a Harvard in Tech event' },
+  { label: 'Host us in your space', subject: 'Hosting a Harvard in Tech event' },
+  { label: 'Share with us job opportunities', subject: 'Sharing a job opportunity' },
+  { label: 'Speak at a future event', subject: 'Speaking at a Harvard in Tech event' },
+  { label: 'Volunteer your time', subject: 'Volunteering with Harvard in Tech' },
+];
+---
+
+<section class="s-section" id="support">
+  <div class="s-inner">
+    <h2 class="s-title">Support Us</h2>
+    <div style="display: grid; gap: var(--space-md); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); max-width: 920px; margin: 0 auto;">
+      {
+        options.map((opt) => (
+          <a
+            href={buildMailto({ to: email, subject: opt.subject })}
+            style="display: block; background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius); padding: var(--space-lg); text-align: center; color: var(--color-fg); font-weight: 400;"
+          >
+            {opt.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

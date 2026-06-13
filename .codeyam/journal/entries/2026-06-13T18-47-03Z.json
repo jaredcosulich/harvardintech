@@ -1,0 +1,61 @@
+{
+  "timestamp": "2026-06-13T18:47:03Z",
+  "title": "Fix Island Hydration NoMatchingImport on Pages Deploy",
+  "type": "feature",
+  "userRequest": "## Summary\n\nThe GitHub Pages deploy build fails while pre-rendering the component-isolation\nharness route `/isolated-components/Greeting/`:\n\n```\n[NoMatchingImport] Could not render `Island`. No matching import has been found\nfor `Island`.\n  at generateHydrateScript (.../server_BoWnV8VZ.mjs:571:11)\n  ├─ /isolated-components/Greeting/index.html\n```\n\nThe root cause is in `src/pages/isolated-components/[name].astro`. The Greeting\nReact island is rendered through a **variable indirection** —\n`const Island = island?.Component` and then `<Island {...} client:load />`.\nAstro hydrates `client:*` components by statically mapping the rendered\ncomponent back to its import specifier to generate the hydration script. A\ncomponent referenced through a runtime variable (`Island`) can't be traced back\nto an import, so `generateHydrateScript` fails with `NoMatchingImport`. The fix\nis to render the directly-imported `Greeting` component with `client:load`\ninstead of going through the `Island` variable, while keeping the `islands`\nregistry as the source of props.\n\n## Key Decisions\n\n- **Reference the island component directly, not via a variable** — Astro\n  requires `client:*` components to be statically analyzable so it can emit the\n  correct hydration import. Rendering `<Greeting ... client:load />` directly\n  satisfies that; `<Island ... client:load />` does not. This is a documented\n  Astro constraint, not a bug in our component.\n- **Keep the `islands` registry for props only** — the registry still cleanly\n  holds each island's preview props (`name`, `subtitle`). We branch on the\n  route `name` to pick the concrete component, so adding a second island is a\n  small, explicit edit (one more branch + registry entry) rather than a generic\n  dynamic dispatch that breaks hydration.\n- **Leave the EmbedForm path untouched** — `EmbedForm` is a static Astro\n  component (no `client:*` directive), so its dynamic `<EmbedForm {...props} />`\n  render is fine. Only the hydrated island path is affected.\n\n## Implementation\n\n### 1. Render the Greeting island directly instead of through `Island`\n\n**File**: `src/pages/isolated-components/[name].astro`\n\n- Remove the `const Island = island?.Component;` indirection (or keep `island`\n  only for its props).\n- In the template body, replace the `Island ? (<Island {...island.props}\n  client:load />)` branch with a direct, statically-analyzable render of the\n  imported `Greeting` component, gated on the route name. For example, resolve\n  the island props from the registry but render `Greeting` by name:\n\n  ```astro\n  {\n    name === 'Greeting' ? (\n      <Greeting {...islands.Greeting.props} client:load />\n    ) : embedFormProps ? (\n      <EmbedForm {...embedFormProps} />\n    ) : (\n      <p>Unknown component: {name}</p>\n    )\n  }\n  ```\n\n- Keep the `islands` const so props stay declared in one place; it just no\n  longer drives a dynamic component variable. Update the explanatory comment so\n  it documents that hydrated islands must be referenced directly by import (and\n  that adding an island means adding a registry entry **and** a render branch).\n- Preserve the existing `getStaticPaths` entries (`Greeting`, `EmbedForm`,\n  `EmbedForm-Embedded`, `EmbedForm-Unconfigured`) unchanged.\n\n## Reused existing code\n\n- `Greeting` from `src/components/Greeting.tsx` (glossary entry: `Greeting`) —\n  the React island; now rendered directly with `client:load`.\n- `EmbedForm` from `src/components/EmbedForm.astro` (glossary entry:\n  `EmbedForm`) — static Astro component; render path unchanged.\n- Existing test `src/components/Greeting.test.tsx` (per test registry) covers\n  the Greeting component itself and stays green.\n\n## Scenarios to Demonstrate\n\n- **Astro build succeeds** — `npm run build` (or the `withastro/action@v3` CI\n  step) completes with no `NoMatchingImport` error and emits\n  `dist/isolated-components/Greeting/index.html`.\n- **Greeting isolation page renders and hydrates** — visiting\n  `/isolated-components/Greeting/` shows the greeting headline + subtitle and\n  the counter button increments on click (hydration works).\n- **EmbedForm isolation pages still render** — `/isolated-components/EmbedForm/`,\n  `/isolated-components/EmbedForm-Embedded/`, and\n  `/isolated-components/EmbedForm-Unconfigured/` each render their static state\n  unchanged.\n- **Unknown component name** — an unmatched route name falls through to the\n  \"Unknown component\" message.",
+  "description": "Fixed the GitHub Pages static build failure (NoMatchingImport during generateHydrateScript) by rendering the Greeting React island directly with client:load in src/pages/isolated-components/[name].astro, instead of through a runtime Island variable that Astro could not statically trace back to its import. Also fixed two pre-existing astro-check type errors by dropping `as const` from the EventsPage/ChapterPage isolation fixtures so their arrays match the components mutable prop types. The full npm run build (astro check + astro build) now passes and emits all 16 pages including /isolated-components/Greeting/.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/pages-fix-island-hydration-no-matching-import.md\t.codeyam/plans/completed/pages-fix-island-hydration-no-matching-import.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/provider-auth-verdict.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/events/spring-founder-dinner-nyc.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/greeting-hydrated-counter-clicked.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/greeting-hydrated-counter-clicked--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/greeting-hydrated-counter-clicked--desktop.png.hash",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 19,
+    "passed": 19,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 19,
+        "passed": 19
+      }
+    ]
+  }
+}

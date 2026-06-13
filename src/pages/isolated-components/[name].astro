@@ -59,10 +59,12 @@ const SAMPLE_EVENTS = [
     link: 'https://www.harvardintech.com/events/spring-founder-dinner',
   },
 ];
+// NOTE: no `as const` — these fixtures feed components whose props are mutable
+// arrays (`EventLike[]`), so a deeply-readonly literal would fail the type check.
 const eventsPageStates = {
   Default: { events: SAMPLE_EVENTS, now: '2026-06-13' },
-  Empty: { events: [], now: '2026-06-13' },
-} as const;
+  Empty: { events: [] as typeof SAMPLE_EVENTS, now: '2026-06-13' },
+};
 
 // ChapterPage states: a full NYC-style chapter vs a sparse one (city + region
 // only, no blurb / leads / links) proving the missing-optional layout.
@@ -84,7 +86,7 @@ const chapterPageStates = {
     city: 'Japan',
     region: 'Tokyo',
   },
-} as const;
+};
 
 export async function getStaticPaths() {
   // getStaticPaths runs in an isolated scope and cannot reference the
@@ -102,8 +104,13 @@ export async function getStaticPaths() {
 }
 
 const { name } = Astro.params;
-const island = islands[name as keyof typeof islands];
-const Island = island?.Component;
+// The `islands` registry above holds each hydrated island's preview props. The
+// island component itself is rendered DIRECTLY in the template below (not
+// through a variable). Astro generates a `client:*` hydration script by
+// statically tracing the rendered component back to its import; a component
+// referenced through a runtime variable (`<Island />`) can't be traced and
+// fails the static build with `[NoMatchingImport]`. Adding a hydrated island
+// therefore means BOTH a registry entry here AND a direct render branch.
 
 // Resolve the EmbedForm visual state from the route name suffix.
 let embedFormProps: (typeof embedFormStates)[keyof typeof embedFormStates] | null = null;
@@ -134,8 +141,8 @@ if (name && name.startsWith('ChapterPage')) {
   <body>
     <div id="codeyam-capture" style="padding: var(--space-lg);">
       {
-        Island ? (
-          <Island {...island.props} client:load />
+        name === 'Greeting' ? (
+          <Greeting {...islands.Greeting.props} client:load />
         ) : embedFormProps ? (
           <EmbedForm {...embedFormProps} />
         ) : eventsPageProps ? (

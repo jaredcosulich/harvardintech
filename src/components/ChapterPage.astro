@@ -7,6 +7,7 @@
 import ChapterHeader from './ChapterHeader.astro';
 import ChapterLeads from './ChapterLeads.astro';
 import ChapterLinks from './ChapterLinks.astro';
+import { withBase } from '../lib/url';
 
 interface Lead {
   name: string;
@@ -28,7 +29,7 @@ const { city, region, blurb, leads = [], links = [] } = Astro.props;
 
 <section class="s-section">
   <div class="s-narrow">
-    <a href="/#events" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em;">
+    <a href={withBase('/#events')} style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em;">
       ← All chapters
     </a>
 

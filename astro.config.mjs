@@ -13,12 +13,20 @@ import sitemap from '@astrojs/sitemap';
 // `export const prerender = false`. Content collections survive that move
 // unchanged, so the codeyam data/scenario model built on them keeps working.
 //
-// Two base modes, chosen at setup:
-// - For a custom domain (e.g., harvardintech.com), use base: '/'
-// - For a default project site (e.g., user.github.io/repo), use base: '/<repo-name>/'
+// `base`/`site` are env-driven so local dev and the codeyam preview always
+// serve from '/', while the Pages CI build can publish under a project subpath.
+// Two base modes, chosen by the deploy environment:
+// - Custom domain (e.g., harvardintech.com): leave DEPLOY_BASE_PATH unset → base '/'.
+// - Default project site (e.g., user.github.io/repo): the deploy workflow sets
+//   DEPLOY_BASE_PATH=/<repo-name> and PAGES_SITE=https://<user>.github.io.
+// Hand-written internal links are prefixed with import.meta.env.BASE_URL via
+// src/lib/url.ts so they resolve under either base.
+const base = process.env.DEPLOY_BASE_PATH || '/';
+const site = process.env.PAGES_SITE || 'https://jaredcosulich.github.io';
+
 export default defineConfig({
   output: 'static',
-  // site: 'https://<user>.github.io',
-  // base: '/',
+  site,
+  base,
   integrations: [react(), sitemap()],
 });

@@ -8,6 +8,7 @@ import '../styles/tokens.css';
 import SEO from '../components/SEO.astro';
 import { settings, nav } from '../lib/site';
 import { buildMailto } from '../lib/mailto';
+import { withBase } from '../lib/url';
 
 interface Props {
   title?: string;
@@ -42,7 +43,7 @@ const contactHref = buildMailto({
         style="max-width: var(--content-width); margin: 0 auto; padding: var(--space-md) var(--space-lg); display: flex; align-items: center; justify-content: space-between; gap: var(--space-md);"
       >
         <a
-          href="/"
+          href={withBase('/')}
           style="font-family: var(--font-title); font-weight: 500; font-size: 1.15rem; color: var(--color-fg);"
           >{settings.siteTitle}</a
         >
@@ -62,7 +63,7 @@ const contactHref = buildMailto({
                         {item.children.map((child) => (
                           <li style="padding: 0;">
                             <a
-                              href={child.url}
+                              href={withBase(child.url ?? '/')}
                               style="display: block; padding: var(--space-sm) var(--space-md); color: var(--color-fg); text-transform: none; letter-spacing: 0;"
                             >
                               {child.label}
@@ -74,7 +75,7 @@ const contactHref = buildMailto({
                   </li>
                 ) : (
                   <li>
-                    <a href={item.url} style="color: var(--color-fg);">
+                    <a href={withBase(item.url ?? '/')} style="color: var(--color-fg);">
                       {item.label}
                     </a>
                   </li>

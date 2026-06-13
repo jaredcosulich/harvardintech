@@ -1,4 +1,4 @@
-# regenerated from glossary.json on 2026-06-13T17:41:50Z; do not hand-edit
+# regenerated from glossary.json on 2026-06-13T19:07:19Z; do not hand-edit
 ChapterPage :: src/components/ChapterPage.astro :: tags=
 ChapterRoute :: src/pages/chapters/[slug].astro :: tags=
 EmbedForm :: src/components/EmbedForm.astro :: tags=
@@ -15,3 +15,4 @@ htmlResponse :: cms-auth-worker/worker.js :: tags=
 passwordFormPage :: cms-auth-worker/worker.js :: tags=
 splitEvents :: src/lib/events.ts :: tags= :: test=src/lib/events.test.ts
 toEventDate :: src/lib/events.ts :: tags= :: test=src/lib/events.test.ts
+withBase :: src/lib/url.ts :: tags= :: test=src/lib/url.test.ts

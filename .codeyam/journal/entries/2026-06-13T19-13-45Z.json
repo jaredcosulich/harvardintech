@@ -1,0 +1,127 @@
+{
+  "timestamp": "2026-06-13T19:13:45Z",
+  "title": "GitHub Pages Deployment",
+  "type": "feature",
+  "userRequest": "## Summary\n\n> **Stack note (updated):** the project scaffolded on **Astro + GitHub Pages**,\n> which already ships `.github/workflows/deploy.yml` and `DEPLOY_SETUP.md`. This\n> plan is now mostly *configuration* — set `site`/`base` in `astro.config.mjs`,\n> enable Pages (Source: GitHub Actions), and verify the shipped workflow — rather\n> than authoring a deploy pipeline from scratch. The Next.js details below are\n> superseded.\n\nShip the statically-exported public site to GitHub Pages via a GitHub Actions\nworkflow. Covers the static-export configuration details (basePath/assetPrefix\nfor project pages, `.nojekyll`), the CI build, and the Pages deploy. The landing\npage already sets `output: 'export'`; this plan operationalizes publishing it.\n\n## Key Decisions\n\n- **GitHub Actions, not branch-based.** Use the official `actions/upload-pages-artifact`\n  + `actions/deploy-pages` flow building from `out/`.\n- **Handle project-page base path.** If served from\n  `username.github.io/<repo>`, set `basePath`/`assetPrefix` and ensure internal\n  links/images respect it; add `.nojekyll` so `_next/` assets are served.\n- **No server features.** Confirm the public pages are fully static (the CRM,\n  which needs server/runtime, is deployed separately in its own plan).\n\n## Implementation\n\n### 1. Next config for Pages\n\n**File**: `next.config.*`\n\nConfirm `output: 'export'`, `images.unoptimized: true`, and conditional\n`basePath`/`assetPrefix` driven by an env var so local dev stays at `/`.\n\n### 2. CI workflow\n\n**New file**: `.github/workflows/deploy-pages.yml`\n\nBuild (`npm ci && npm run build`), emit `.nojekyll` into `out/`, upload the\nPages artifact, and deploy on pushes to the default branch. Note: this is a\nCI/agent-config-adjacent file under `.github/` — call out the addition in the\neditor flow so it isn't a surprise.\n\n## Reused existing code\n\n- The static-export config from `landing-page-faithful-reproduction`.\n\n## Scenarios to Demonstrate\n\n- N/A interactive UI scenario; demonstrate via a successful build of `out/` and\n  a working static preview served from a sub-path (verifies basePath handling).",
+  "description": "Configured the Astro static site for GitHub Pages deployment under the project subpath jaredcosulich.github.io/harvardintech. astro.config.mjs now reads base/site from env vars (DEPLOY_BASE_PATH, PAGES_SITE) so local dev and the editor preview stay at / while the CI build publishes under the subpath; a future custom domain is a one-line change. A new withBase() helper (src/lib/url.ts, 8 unit tests) prefixes hand-written internal links so the header nav, logo, chapter back-link, 404, and blog links resolve under either base, and deploy.yml passes the subpath env vars to the build. Verified the production build emits the subpath prefix on every link, asset, sitemap URL, and island hydration script.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/.last-reconcile.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/github-pages-deployment.md\t.codeyam/plans/completed/github-pages-deployment.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/reconciliation-log.jsonl",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/runner-timing-history.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-run-marker.json",
+      "status": "modified"
+    },
+    {
+      "path": ".github/workflows/deploy.yml",
+      "status": "modified"
+    },
+    {
+      "path": "astro.config.mjs",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/layouts/BaseLayout.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/404.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/blog/[slug].astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/url.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/url.ts",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "ChapterPage - Full Chapter",
+      "screenshotPath": "chapterpage-full-chapter--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Sparse No Leads",
+      "screenshotPath": "chapterpage-sparse-no-leads--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 27,
+    "passed": 27,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 27,
+        "passed": 27
+      }
+    ]
+  }
+}

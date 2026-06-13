@@ -170,6 +170,78 @@
       "line": 6,
       "registeredAt": "2026-06-13T17:26:10Z",
       "runner": "tests"
+    },
+    {
+      "description": "The bare root path stays '/' at the domain root.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase › keeps the root path as a single slash when the base is root",
+      "line": 19,
+      "registeredAt": "2026-06-13T19:06:53Z",
+      "runner": "tests"
+    },
+    {
+      "description": "At the domain root the base is '/', so an internal path is returned unchanged.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase › leaves an internal path unchanged when the base is root",
+      "line": 13,
+      "registeredAt": "2026-06-13T19:06:53Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The root path becomes the base itself under a subpath, with no doubled slash.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase › maps the root path to the base under a subpath",
+      "line": 31,
+      "registeredAt": "2026-06-13T19:06:53Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A bare in-page anchor is not an absolute path, so it is left alone.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase › passes a bare hash anchor through untouched",
+      "line": 55,
+      "registeredAt": "2026-06-13T19:06:53Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Absolute external URLs are not internal paths and pass through untouched.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase › passes external http URLs through untouched",
+      "line": 43,
+      "registeredAt": "2026-06-13T19:06:53Z",
+      "runner": "tests"
+    },
+    {
+      "description": "mailto and other non-slash schemes are left alone.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase › passes mailto links through untouched",
+      "line": 49,
+      "registeredAt": "2026-06-13T19:06:53Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Under a project subpath the base is prefixed onto the internal path.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase › prefixes the subpath base onto an internal path",
+      "line": 25,
+      "registeredAt": "2026-06-13T19:06:53Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A hash fragment on an absolute path is preserved after the base prefix.",
+      "file": "src/lib/url.test.ts",
+      "format": "vitest",
+      "key": "withBase › preserves a hash fragment on an absolute path under a subpath",
+      "line": 37,
+      "registeredAt": "2026-06-13T19:06:53Z",
+      "runner": "tests"
     }
   ],
   "version": 2

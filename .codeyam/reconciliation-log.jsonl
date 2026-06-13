@@ -12,3 +12,11 @@
 {"timestamp":"2026-06-13T17:26:10Z","kind":"registry-add","message":"registry `splitEvents › handles an empty event list`: added from runner `tests` output"}
 {"timestamp":"2026-06-13T17:26:10Z","kind":"registry-add","message":"registry `formatEventDate › formats a Date instance the same as its ISO string`: added from runner `tests` output"}
 {"timestamp":"2026-06-13T17:26:10Z","kind":"registry-add","message":"registry `splitEvents › returns past events sorted most recent first`: added from runner `tests` output"}
+{"timestamp":"2026-06-13T19:06:53Z","kind":"registry-add","message":"registry `withBase › keeps the root path as a single slash when the base is root`: added from runner `tests` output"}
+{"timestamp":"2026-06-13T19:06:53Z","kind":"registry-add","message":"registry `withBase › passes external http URLs through untouched`: added from runner `tests` output"}
+{"timestamp":"2026-06-13T19:06:53Z","kind":"registry-add","message":"registry `withBase › passes a bare hash anchor through untouched`: added from runner `tests` output"}
+{"timestamp":"2026-06-13T19:06:53Z","kind":"registry-add","message":"registry `withBase › prefixes the subpath base onto an internal path`: added from runner `tests` output"}
+{"timestamp":"2026-06-13T19:06:53Z","kind":"registry-add","message":"registry `withBase › leaves an internal path unchanged when the base is root`: added from runner `tests` output"}
+{"timestamp":"2026-06-13T19:06:53Z","kind":"registry-add","message":"registry `withBase › maps the root path to the base under a subpath`: added from runner `tests` output"}
+{"timestamp":"2026-06-13T19:06:53Z","kind":"registry-add","message":"registry `withBase › preserves a hash fragment on an absolute path under a subpath`: added from runner `tests` output"}
+{"timestamp":"2026-06-13T19:06:53Z","kind":"registry-add","message":"registry `withBase › passes mailto links through untouched`: added from runner `tests` output"}

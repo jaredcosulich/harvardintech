@@ -1,16 +1,37 @@
 {
   "files": {
-    ".astro/content-assets.mjs": {
+    "astro.config.mjs": {
       "imports": [],
       "importedBy": []
     },
-    ".claude/skills/review-session/scripts/find-last-session.mjs": {
+    ".claude/skills/review-session/scripts/extract-session-helpers.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/url.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/url.test.ts"
+      ]
+    },
+    "src/lib/site.ts": {
       "imports": [
-        ".claude/skills/review-session/scripts/find-last-session-helpers.mjs"
+        "src/data/settings.json",
+        "src/data/nav.json"
       ],
       "importedBy": []
     },
-    "astro.config.mjs": {
+    "src/data/settings.json": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/site.ts"
+      ]
+    },
+    "src/content/config.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    "vitest.config.ts": {
       "imports": [],
       "importedBy": []
     },
@@ -20,7 +41,13 @@
       ],
       "importedBy": []
     },
-    ".claude/hooks/_step_metadata.py": {
+    "src/lib/url.test.ts": {
+      "imports": [
+        "src/lib/url.ts"
+      ],
+      "importedBy": []
+    },
+    ".astro/types.d.ts": {
       "imports": [],
       "importedBy": []
     },
@@ -30,36 +57,18 @@
         ".claude/skills/review-session/scripts/find-last-session.mjs"
       ]
     },
-    "src/lib/mailto.test.ts": {
-      "imports": [
-        "src/lib/mailto.ts"
-      ],
+    ".claude/hooks/editor-step-hook.py": {
+      "imports": [],
       "importedBy": []
     },
-    "src/lib/events.test.ts": {
-      "imports": [
-        "src/lib/events.ts"
-      ],
-      "importedBy": []
-    },
-    "src/content/config.js": {
+    "src/data/nav.json": {
       "imports": [],
       "importedBy": [
-        ".astro/content.d.ts"
+        "src/lib/site.ts"
       ]
-    },
-    "vitest.config.ts": {
-      "imports": [],
-      "importedBy": []
     },
     ".claude/hooks/editor-pretool-hook.py": {
       "imports": [],
-      "importedBy": []
-    },
-    "src/components/Greeting.test.tsx": {
-      "imports": [
-        "src/components/Greeting.tsx"
-      ],
       "importedBy": []
     },
     "src/components/Greeting.tsx": {
@@ -74,13 +83,23 @@
         "src/lib/events.test.ts"
       ]
     },
-    "src/data/nav.json": {
+    ".claude/skills/review-session/scripts/find-last-session.mjs": {
+      "imports": [
+        ".claude/skills/review-session/scripts/find-last-session-helpers.mjs"
+      ],
+      "importedBy": []
+    },
+    ".astro/content-assets.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/content/config.js": {
       "imports": [],
       "importedBy": [
-        "src/lib/site.ts"
+        ".astro/content.d.ts"
       ]
     },
-    ".claude/skills/review-session/scripts/extract-session-helpers.mjs": {
+    "ui/src/helpers/stepLabels.generated.ts": {
       "imports": [],
       "importedBy": []
     },
@@ -88,40 +107,7 @@
       "imports": [],
       "importedBy": []
     },
-    "src/lib/site.ts": {
-      "imports": [
-        "src/data/settings.json",
-        "src/data/nav.json"
-      ],
-      "importedBy": []
-    },
-    ".claude/skills/review-session/scripts/extract-session.mjs": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/content/config.ts": {
-      "imports": [],
-      "importedBy": []
-    },
     "cms-auth-worker/worker.js": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/data/settings.json": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/site.ts"
-      ]
-    },
-    ".claude/hooks/editor-step-hook.py": {
-      "imports": [],
-      "importedBy": []
-    },
-    ".astro/types.d.ts": {
-      "imports": [],
-      "importedBy": []
-    },
-    "ui/src/helpers/stepLabels.generated.ts": {
       "imports": [],
       "importedBy": []
     },
@@ -130,24 +116,42 @@
       "importedBy": [
         "src/lib/mailto.test.ts"
       ]
-    }
-  },
-  "entities": {
-    ".claude/skills/review-session/scripts/find-last-session.mjs::__file_root__": {
-      "filePath": ".claude/skills/review-session/scripts/find-last-session.mjs",
-      "name": "__file_root__",
+    },
+    ".claude/hooks/_step_metadata.py": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/mailto.test.ts": {
       "imports": [
-        ".claude/skills/review-session/scripts/find-last-session-helpers.mjs::claudeProjectHashFromPath"
+        "src/lib/mailto.ts"
       ],
       "importedBy": []
     },
-    "src/lib/mailto.test.ts::__file_root__": {
-      "filePath": "src/lib/mailto.test.ts",
-      "name": "__file_root__",
+    "src/components/Greeting.test.tsx": {
       "imports": [
-        "src/lib/mailto.ts::buildMailto"
+        "src/components/Greeting.tsx"
       ],
       "importedBy": []
+    },
+    "src/lib/events.test.ts": {
+      "imports": [
+        "src/lib/events.ts"
+      ],
+      "importedBy": []
+    },
+    ".claude/skills/review-session/scripts/extract-session.mjs": {
+      "imports": [],
+      "importedBy": []
+    }
+  },
+  "entities": {
+    "src/data/settings.json::__file_root__": {
+      "filePath": "src/data/settings.json",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/lib/site.ts::__file_root__"
+      ]
     },
     "src/lib/events.test.ts::__file_root__": {
       "filePath": "src/lib/events.test.ts",
@@ -159,6 +163,38 @@
       ],
       "importedBy": []
     },
+    "src/lib/url.test.ts::__file_root__": {
+      "filePath": "src/lib/url.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/url.ts::withBase"
+      ],
+      "importedBy": []
+    },
+    ".astro/content.d.ts::ContentConfig": {
+      "filePath": ".astro/content.d.ts",
+      "name": "ContentConfig",
+      "imports": [
+        "src/content/config.js::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/lib/mailto.test.ts::__file_root__": {
+      "filePath": "src/lib/mailto.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/mailto.ts::buildMailto"
+      ],
+      "importedBy": []
+    },
+    "src/lib/mailto.ts::buildMailto": {
+      "filePath": "src/lib/mailto.ts",
+      "name": "buildMailto",
+      "imports": [],
+      "importedBy": [
+        "src/lib/mailto.test.ts::__file_root__"
+      ]
+    },
     "src/content/config.js::__file_root__": {
       "filePath": "src/content/config.js",
       "name": "__file_root__",
@@ -167,8 +203,33 @@
         ".astro/content.d.ts::ContentConfig"
       ]
     },
-    "src/data/settings.json::__file_root__": {
-      "filePath": "src/data/settings.json",
+    ".claude/skills/review-session/scripts/find-last-session.mjs::__file_root__": {
+      "filePath": ".claude/skills/review-session/scripts/find-last-session.mjs",
+      "name": "__file_root__",
+      "imports": [
+        ".claude/skills/review-session/scripts/find-last-session-helpers.mjs::claudeProjectHashFromPath"
+      ],
+      "importedBy": []
+    },
+    "src/lib/site.ts::__file_root__": {
+      "filePath": "src/lib/site.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/data/settings.json::__file_root__",
+        "src/data/nav.json::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/lib/url.ts::withBase": {
+      "filePath": "src/lib/url.ts",
+      "name": "withBase",
+      "imports": [],
+      "importedBy": [
+        "src/lib/url.test.ts::__file_root__"
+      ]
+    },
+    "src/data/nav.json::__file_root__": {
+      "filePath": "src/data/nav.json",
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
@@ -182,40 +243,7 @@
         "src/components/Greeting.tsx::Greeting"
       ],
       "importedBy": []
-    },
-    "src/lib/mailto.ts::buildMailto": {
-      "filePath": "src/lib/mailto.ts",
-      "name": "buildMailto",
-      "imports": [],
-      "importedBy": [
-        "src/lib/mailto.test.ts::__file_root__"
-      ]
-    },
-    "src/lib/site.ts::__file_root__": {
-      "filePath": "src/lib/site.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/data/settings.json::__file_root__",
-        "src/data/nav.json::__file_root__"
-      ],
-      "importedBy": []
-    },
-    ".astro/content.d.ts::ContentConfig": {
-      "filePath": ".astro/content.d.ts",
-      "name": "ContentConfig",
-      "imports": [
-        "src/content/config.js::__file_root__"
-      ],
-      "importedBy": []
-    },
-    "src/data/nav.json::__file_root__": {
-      "filePath": "src/data/nav.json",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        "src/lib/site.ts::__file_root__"
-      ]
     }
   },
-  "lastUpdated": "2026-06-13T18:48:04Z"
+  "lastUpdated": "2026-06-13T19:14:52Z"
 }

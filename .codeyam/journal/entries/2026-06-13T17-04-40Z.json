@@ -1,0 +1,179 @@
+{
+  "timestamp": "2026-06-13T17:04:40Z",
+  "title": "Fix GitHub Pages Deploy — EmbedForm rel Type Error",
+  "type": "feature",
+  "userRequest": "## Summary\n\nThe GitHub Pages deploy fails at the `astro check` step of `npm run build`\nwith a TypeScript error in `src/components/EmbedForm.astro`: the `<form>`\nelement carries `rel=\"noopener\"`, but Astro's `FormHTMLAttributes` type does\nnot declare a `rel` property, so type-checking aborts the build with exit\ncode 1. The fix is to remove the unsupported `rel=\"noopener\"` attribute from\nthe form. This is safe because modern browsers already apply `noopener`\nbehavior to `target=\"_blank\"` form submissions by default, so no security\nregression is introduced.\n\n## Key Decisions\n\n- **Remove `rel=\"noopener\"` rather than suppress the type error** — modern\n  browsers implicitly apply `noopener` to navigations triggered by\n  `target=\"_blank\"` (this has been the default since the behavior was\n  standardized), so the attribute is redundant on a `<form target=\"_blank\">`.\n  Removing it keeps the markup clean and passes `astro check` without casts,\n  `@ts-ignore`, or type-shimming hacks.\n- **Considered and rejected: a type cast / attribute spread**\n  (`{...{ rel: 'noopener' }}`) to bypass `FormHTMLAttributes`. This would\n  silence the checker but adds noise for an attribute that has no functional\n  effect on a `target=\"_blank\"` form. Not worth it.\n\n## Implementation\n\n### 1. Drop the unsupported `rel` attribute from the embed form\n\n**File**: `src/components/EmbedForm.astro`\n\nOn the `<form>` element (currently around line 30):\n\n```astro\n<form action={action} method=\"post\" target=\"_blank\" rel=\"noopener\">\n```\n\nRemove the `rel=\"noopener\"` attribute so it reads:\n\n```astro\n<form action={action} method=\"post\" target=\"_blank\">\n```\n\nLeave `action`, `method`, and `target` unchanged — only `rel` is removed.\nNo other markup, props, or the iframe/unconfigured branches change.\n\n## Reused existing code\n\n- None — this is a one-attribute fix to an existing component. The component\n  has no glossary entry, no dependents in `deps-index.txt`, and no registered\n  tests in `test-registry.json`.\n\n## Scenarios to Demonstrate\n\n- **Configured MailChimp-style form** — `action` prop set, no `embedUrl`:\n  renders a real `<form method=\"post\" target=\"_blank\">` with an email input\n  and submit button, and now type-checks cleanly.\n- **Embedded provider iframe** — `embedUrl` prop set (e.g. a Google Form):\n  renders the lazy-loaded iframe (unaffected by this change, included to show\n  the fix doesn't regress the other branch).\n- **Unconfigured fallback** — neither `action` nor `embedUrl` set: renders the\n  \"No form configured\" guidance text.\n- **Build/type-check passes** — `astro check && astro build` completes with\n  0 errors (the regression that broke the GitHub Pages deploy is gone).",
+  "description": "Removed the invalid rel=\"noopener\" attribute from the <form> element in EmbedForm.astro. Astro's FormHTMLAttributes type does not declare rel, so astro check failed and broke the GitHub Pages deploy; the attribute is redundant since browsers already apply noopener to target=\"_blank\" form submissions. Also extended the /isolated-components/[name].astro harness to render static Astro components (state encoded in the route name, since prerendered pages cannot read query params) and registered three EmbedForm component scenarios — configured form, embedded iframe, and unconfigured fallback. astro check now passes with 0 errors.",
+  "modifiedFiles": [
+    {
+      "path": ".claude/hooks/_step_metadata.py",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/hooks/editor-pretool-hook.py",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/hooks/editor-step-hook.py",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-audit/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-design/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-editor/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-explore/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-new-app/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-onboard/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-plan/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-see-app/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-see-recent-change/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-slice/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/review-session/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/.last-reconcile.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/build-fix-embedform-rel-type-error.md\t.codeyam/plans/completed/build-fix-embedform-rel-type-error.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/provider-auth-verdict.json",
+      "status": "modified"
+    },
+    {
+      "path": "package-lock.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/EmbedForm.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dev-scaffolded",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/mocks/catalog.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/embedform-configured-form.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/embedform-embedded-iframe.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/embedform-unconfigured-fallback.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/embedform-configured-form--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/embedform-configured-form--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/embedform-embedded-iframe--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/embedform-embedded-iframe--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/embedform-unconfigured-fallback--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/embedform-unconfigured-fallback--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "EmbedForm - Configured Form",
+      "screenshotPath": "embedform-configured-form--desktop.png"
+    },
+    {
+      "name": "EmbedForm - Embedded Iframe",
+      "screenshotPath": "embedform-embedded-iframe--desktop.png"
+    },
+    {
+      "name": "EmbedForm - Unconfigured Fallback",
+      "screenshotPath": "embedform-unconfigured-fallback--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 8,
+        "passed": 8
+      }
+    ]
+  }
+}

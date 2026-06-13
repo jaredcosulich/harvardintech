@@ -1,0 +1,11 @@
+{
+  "name": "EmbedForm - Embedded Iframe",
+  "id": "7fe5247f-75a2-4bd6-87fb-61a8ce535d01",
+  "url": "/isolated-components/EmbedForm-Embedded",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "scenarioType": "application",
+  "pageFilePath": "src/components/EmbedForm.astro"
+}

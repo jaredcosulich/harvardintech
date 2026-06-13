@@ -1,27 +1,58 @@
 ---
 import Greeting from '../../components/Greeting.tsx';
+import EmbedForm from '../../components/EmbedForm.astro';
 import '../../styles/tokens.css';
 
-// Component-isolation harness. codeyam captures a single React island in
-// isolation by navigating to `/isolated-components/<Name>` and screenshotting
-// the `#codeyam-capture` wrapper. Each island gets a default-props render here;
-// add new islands to the `islands` map below to make them isolable.
+// Component-isolation harness. codeyam captures a single component in isolation
+// by navigating to `/isolated-components/<Name>` and screenshotting the
+// `#codeyam-capture` wrapper. Add new entries to make a component isolable.
 //
-// Static output enumerates routes at build time, so every island name is a
-// pre-rendered page via `getStaticPaths`.
+// Two flavors: React islands (hydrated via `client:load`) and static Astro
+// components (server-rendered, no hydration). Static output enumerates routes
+// at build time, so every name is a pre-rendered page via `getStaticPaths`.
 const islands = {
   Greeting: { Component: Greeting, props: { name: 'Preview', subtitle: 'Isolated island' } },
 } as const;
 
+// Static Astro components. A prerendered page can't read `?s=` query params at
+// render time, so each visual state is its own route name (`EmbedForm`,
+// `EmbedForm-Embedded`, `EmbedForm-Unconfigured`) enumerated in getStaticPaths.
+const embedFormStates = {
+  Configured: {
+    action: 'https://harvardintech.us1.list-manage.com/subscribe/post?u=abc123&id=def456',
+    title: 'Join the Harvard in Tech newsletter',
+    buttonLabel: 'Subscribe',
+  },
+  Embedded: {
+    embedUrl: 'https://docs.google.com/forms/d/e/EXAMPLE_FORM_ID/viewform?embedded=true',
+    title: 'RSVP — Harvard in Tech Summit 2026',
+  },
+  Unconfigured: {
+    title: 'Subscribe',
+  },
+} as const;
+
 export async function getStaticPaths() {
-  return Object.keys({
-    Greeting: true,
-  }).map((name) => ({ params: { name } }));
+  // getStaticPaths runs in an isolated scope and cannot reference the
+  // module-level consts — enumerate route names inline.
+  return [
+    { params: { name: 'Greeting' } },
+    { params: { name: 'EmbedForm' } },
+    { params: { name: 'EmbedForm-Embedded' } },
+    { params: { name: 'EmbedForm-Unconfigured' } },
+  ];
 }
 
 const { name } = Astro.params;
-const entry = islands[name as keyof typeof islands];
-const Island = entry?.Component;
+const island = islands[name as keyof typeof islands];
+const Island = island?.Component;
+
+// Resolve the EmbedForm visual state from the route name suffix.
+let embedFormProps: (typeof embedFormStates)[keyof typeof embedFormStates] | null = null;
+if (name && name.startsWith('EmbedForm')) {
+  const stateKey = (name === 'EmbedForm' ? 'Configured' : name.slice('EmbedForm-'.length)) as keyof typeof embedFormStates;
+  embedFormProps = embedFormStates[stateKey] ?? embedFormStates.Configured;
+}
 ---
 
 <html lang="en">
@@ -32,7 +63,15 @@ const Island = entry?.Component;
   </head>
   <body>
     <div id="codeyam-capture" style="padding: var(--space-lg);">
-      {Island ? <Island {...entry.props} client:load /> : <p>Unknown component: {name}</p>}
+      {
+        Island ? (
+          <Island {...island.props} client:load />
+        ) : embedFormProps ? (
+          <EmbedForm {...embedFormProps} />
+        ) : (
+          <p>Unknown component: {name}</p>
+        )
+      }
     </div>
   </body>
 </html>

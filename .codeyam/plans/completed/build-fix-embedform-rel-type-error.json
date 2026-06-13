@@ -1,0 +1,20 @@
+{
+  "claimStartedAt": "2026-06-13T16:42:48Z",
+  "completedAt": "2026-06-13T17:04:40Z",
+  "completedBy": {
+    "agentProvider": "claude",
+    "codeyamEditorVersion": "0.1.0",
+    "machine": "Jareds-Laptop.local",
+    "pid": 26754,
+    "priority": 0,
+    "selectedPlan": "build-fix-embedform-rel-type-error",
+    "sessionId": "",
+    "startedAt": "2026-06-13T16:42:48Z"
+  },
+  "createdAt": "2026-06-13T00:00:00Z",
+  "journalTimestamp": "2026-06-13T17:04:40Z",
+  "mode": "ui",
+  "planFile": "completed/build-fix-embedform-rel-type-error.md",
+  "slug": "build-fix-embedform-rel-type-error",
+  "title": "build: Fix GitHub Pages Deploy — EmbedForm rel Type Error"
+}

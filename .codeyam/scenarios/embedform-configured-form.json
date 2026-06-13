@@ -1,0 +1,11 @@
+{
+  "name": "EmbedForm - Configured Form",
+  "id": "3964d03d-1a94-4a04-bbe2-fc8bb34dde91",
+  "url": "/isolated-components/EmbedForm",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "scenarioType": "application",
+  "pageFilePath": "src/components/EmbedForm.astro"
+}

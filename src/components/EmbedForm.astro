@@ -27,7 +27,7 @@ const { action, embedUrl, title = 'Subscribe', buttonLabel = 'Sign up' } = Astro
         style="width: 100%; min-height: 320px; border: 0;"
       />
     ) : action ? (
-      <form action={action} method="post" target="_blank" rel="noopener">
+      <form action={action} method="post" target="_blank">
         <label style="display: block; margin-bottom: var(--space-sm);">
           Email address
           <input

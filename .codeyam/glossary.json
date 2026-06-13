@@ -1,5 +1,15 @@
 [
   {
+    "description": "External-form embed for the static site: renders one of three states — a MailChimp-style POST form (action prop), an embedded provider iframe (embedUrl prop), or an unconfigured fallback message. Delegates submission to a third-party service since a static build has no backend.",
+    "filePath": "src/components/EmbedForm.astro",
+    "name": "EmbedForm",
+    "scenarios": [
+      "embedform-configured-form",
+      "embedform-embedded-iframe",
+      "embedform-unconfigured-fallback"
+    ]
+  },
+  {
     "description": "Template React island: a name greeting with an interactive click counter. Not used on the Harvard in Tech landing page; retained from the scaffold.",
     "filePath": "src/components/Greeting.tsx",
     "name": "Greeting",

@@ -1,4 +1,5 @@
-# regenerated from glossary.json on 2026-06-13T15:33:02Z; do not hand-edit
+# regenerated from glossary.json on 2026-06-13T16:58:48Z; do not hand-edit
+EmbedForm :: src/components/EmbedForm.astro :: tags=
 Greeting :: src/components/Greeting.tsx :: tags= :: test=src/components/Greeting.test.tsx
 LandingPage :: src/pages/index.astro :: tags=
 buildMailto :: src/lib/mailto.ts :: tags= :: test=src/lib/mailto.test.ts

@@ -22,6 +22,11 @@ yarn-error.log*
 !.vscode/extensions.json
 .idea/
 
+# python (compiled bytecode caches for the .claude/hooks/*.py scripts —
+# regenerated automatically from source, version-specific, not source of truth)
+__pycache__/
+*.pyc
+
 # codeyam ephemeral artifacts. The test-cache under .codeyam/ is deliberately
 # NOT ignored — it is load-bearing and served to the UI on fresh clones.
 test-results/

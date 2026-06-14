@@ -1,0 +1,29 @@
+---
+// The "Signing in" panel: a short explainer of the three coexisting auth paths
+// (Local, GitHub OAuth, Password) that the editor at /admin/editor/ supports.
+// Static content — the authoritative setup steps live in CMS_SETUP.md.
+---
+
+<section
+  style="margin-top: var(--space-xl); background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius); padding: var(--space-lg);"
+>
+  <h2 style="font-size: 1.1rem; margin: 0 0 var(--space-md);">Signing in</h2>
+  <p style="margin: 0 0 var(--space-md); color: var(--color-muted); max-width: var(--text-width);">
+    The editor authenticates three ways — they can coexist. See
+    <code>CMS_SETUP.md</code> for the full setup of each.
+  </p>
+  <ul style="margin: 0; padding-left: 1.2rem; color: var(--color-muted); line-height: 2;">
+    <li>
+      <strong>Local</strong> — open this site from a local dev server and choose “Work with
+      Local Repository.” No account, no server.
+    </li>
+    <li>
+      <strong>GitHub OAuth</strong> — sign in with GitHub on the live site for per-user commit
+      attribution (needs an OAuth relay).
+    </li>
+    <li>
+      <strong>Password</strong> — a shared password backed by the Cloudflare Worker in
+      <code>cms-auth-worker/</code>.
+    </li>
+  </ul>
+</section>

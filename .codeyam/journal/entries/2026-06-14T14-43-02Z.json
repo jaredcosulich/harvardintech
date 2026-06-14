@@ -1,0 +1,379 @@
+{
+  "timestamp": "2026-06-14T14:43:02Z",
+  "title": "CRM Admin Shell & Auth",
+  "type": "feature",
+  "userRequest": "## Summary\n\n> **Stack note (updated):** the Astro stack already ships a **Sveltia CMS**\n> integration (`CMS_SETUP.md`) plus a `cms-auth-worker/` (GitHub OAuth for the\n> CMS). The \"CRM\" should very likely be built on these — Sveltia editing the\n> `events`/`team` collections and `settings`/`nav` singletons, authenticated via\n> the auth worker — rather than a hand-rolled Next.js `/admin` app. Investigate\n> `CMS_SETUP.md` and `cms-auth-worker/` first; the Next.js shell below is\n> superseded by that approach.\n\nStand up the CRM/admin tool's shell and access control. The CRM is a\nprotected area for editing the site's static content (events, board members,\netc.). This plan delivers the authenticated layout, navigation, and dashboard —\nthe actual content-editing forms come in a follow-on plan. Auth is via a\npassword and/or GitHub OAuth, and the CRM is designed to run both locally and,\nideally, hosted in the cloud.\n\n## Key Decisions\n\n- **Separate the CRM from the static public site.** The public site is a static\n  export; the CRM needs a runtime (to authenticate and to write content). House\n  it under an `/admin` route group that is excluded from the static export, or\n  as a small companion deployment. Decide the exact split during `explore`.\n- **Auth options:** password gate for the simplest local/self-host case; GitHub\n  OAuth for the cloud case (and to authorize commits when editing writes back to\n  the repo). Support at least the password path first; OAuth as a layered option.\n- **Static-content awareness.** The CRM reads the same `content/` modules the\n  public site renders, so the admin dashboard shows live counts (e.g. \"3\n  upcoming events, 6 board members\").\n\n## Implementation\n\n### 1. Admin route group + layout\n\n**New files**: `app/admin/layout.tsx`, `app/admin/page.tsx`,\n`app/admin/components/AdminNav.tsx`\n\nAuthenticated shell with nav (Dashboard, Events, Board) and a dashboard\nsummarizing current static content counts.\n\n### 2. Auth\n\n**New files**: auth route/handler + `app/admin/login/page.tsx`\n\nPassword gate (env-configured secret) protecting `/admin/*`; structure it so a\nGitHub OAuth provider can be added. Persist a session (cookie). Document the\nlocal vs cloud configuration.\n\n## Reused existing code\n\n- `content/events.ts`, `content/board.ts`, and their types from\n  `landing-page-faithful-reproduction` (read-only here; editing comes next).\n- Layout/styling primitives from the landing plan.\n\n## Scenarios to Demonstrate\n\n- Login page (unauthenticated).\n- Wrong password → error state.\n- Authenticated dashboard showing current content counts.\n- Dashboard empty state (no events / no board members).",
+  "description": "Stood up the CRM on the existing Sveltia CMS: a server-rendered dashboard at /admin showing live content counts across all five collections (events, team, chapters, blog, pages), fronting the Sveltia editor at /admin/editor/ wired to the repo with all three sign-in paths (Local, GitHub OAuth, shared-password Cloudflare Worker) documented as one-line config switches, plus a new chapters collection in the CMS config. The dashboard was extracted into an AdminLayout shell and section components (DashboardSummary, CollectionCountCard, CollectionCountGrid, SignInGuide, AdminHeader) over a unit-tested adminDashboard helper, covered by populated/empty component and application scenarios.",
+  "modifiedFiles": [
+    {
+      "path": ".claude/hooks/__pycache__/_step_metadata.cpython-310.pyc",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/hooks/__pycache__/editor-step-hook.cpython-310.pyc",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/hooks/_step_metadata.py",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/hooks/editor-pretool-hook.py",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/hooks/editor-step-hook.py",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-audit/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-design/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-editor/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-explore/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-new-app/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-onboard/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-plan/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-see-app/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-see-recent-change/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-slice/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/review-session/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/.last-reconcile.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/capture.js",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/crm-admin-shell-and-auth.md\t.codeyam/plans/completed/crm-admin-shell-and-auth.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/reconciliation-log.jsonl",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/runner-timing-history.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenario-handlers.js",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenario-playwright.js",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/provider-auth-verdict.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/scenario-taxonomy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-run-marker.json",
+      "status": "modified"
+    },
+    {
+      "path": "CMS_SETUP.md",
+      "status": "modified"
+    },
+    {
+      "path": "README.md",
+      "status": "modified"
+    },
+    {
+      "path": "docker-compose.cloud.yml",
+      "status": "modified"
+    },
+    {
+      "path": "public/admin/config.yml\tpublic/admin/editor/config.yml",
+      "status": "modified"
+    },
+    {
+      "path": "public/admin/index.html\tpublic/admin/editor/index.html",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/blog/welcome.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/chapters/japan.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/chapters/la.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/chapters/nyc.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/chapters/san-francisco.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/events/founders-investors-mixer-sf.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/events/harvard-in-tech-summit-2026.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/events/women-in-tech-panel.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/pages/about.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/team/ben-wei.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/team/jessica-li.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/team/krysia-lenzo.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/team/nadia-eldeib.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/team/peter-boyce.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/settings.local.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/admin-dashboard-empty.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/admin-dashboard-populated.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/collectioncountcard-empty.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/collectioncountcard-populated.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/dashboardsummary-empty.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/dashboardsummary-populated.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/admin-dashboard-empty--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/admin-dashboard-empty--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/admin-dashboard-populated--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/admin-dashboard-populated--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/collectioncountcard-empty--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/collectioncountcard-empty--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/collectioncountcard-populated--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/collectioncountcard-populated--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/dashboardsummary-empty--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/dashboardsummary-empty--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/dashboardsummary-populated--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/dashboardsummary-populated--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": "src/components/admin/AdminHeader.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/admin/CollectionCountCard.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/admin/CollectionCountGrid.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/admin/DashboardSummary.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/admin/SignInGuide.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/layouts/AdminLayout.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/adminDashboard.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/adminDashboard.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/pages/admin/index.astro",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Admin Dashboard - Empty",
+      "screenshotPath": "admin-dashboard-empty--desktop.png"
+    },
+    {
+      "name": "Admin Dashboard - Populated",
+      "screenshotPath": "admin-dashboard-populated--desktop.png"
+    },
+    {
+      "name": "CollectionCountCard - Empty",
+      "screenshotPath": "collectioncountcard-empty--desktop.png"
+    },
+    {
+      "name": "CollectionCountCard - Populated",
+      "screenshotPath": "collectioncountcard-populated--desktop.png"
+    },
+    {
+      "name": "DashboardSummary - Empty",
+      "screenshotPath": "dashboardsummary-empty--desktop.png"
+    },
+    {
+      "name": "DashboardSummary - Populated",
+      "screenshotPath": "dashboardsummary-populated--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 36,
+    "passed": 36,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 36,
+        "passed": 36
+      }
+    ]
+  }
+}

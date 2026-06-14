@@ -3,6 +3,8 @@ import Greeting from '../../components/Greeting.tsx';
 import EmbedForm from '../../components/EmbedForm.astro';
 import EventsPage from '../../components/EventsPage.astro';
 import ChapterPage from '../../components/ChapterPage.astro';
+import CollectionCountCard from '../../components/admin/CollectionCountCard.astro';
+import DashboardSummary from '../../components/admin/DashboardSummary.astro';
 import '../../styles/tokens.css';
 
 // Component-isolation harness. codeyam captures a single component in isolation
@@ -88,6 +90,22 @@ const chapterPageStates = {
   },
 };
 
+// CollectionCountCard states: a populated count (links into the editor) vs an
+// empty collection (count 0 → the "No entries yet" note). `editorHref` mirrors
+// the real dashboard link.
+const ADMIN_EDITOR_HREF = '/admin/editor/index.html';
+const collectionCountCardStates = {
+  Default: { collection: 'events' as const, label: 'Events', count: 3, editorHref: ADMIN_EDITOR_HREF },
+  Empty: { collection: 'blog' as const, label: 'Blog', count: 0, editorHref: ADMIN_EDITOR_HREF },
+};
+
+// DashboardSummary states: a populated summary (total + collection count) vs the
+// empty-state nudge shown when there is no content at all.
+const dashboardSummaryStates = {
+  Default: { total: 14, collectionCount: 5, editorHref: ADMIN_EDITOR_HREF },
+  Empty: { total: 0, collectionCount: 5, editorHref: ADMIN_EDITOR_HREF },
+};
+
 export async function getStaticPaths() {
   // getStaticPaths runs in an isolated scope and cannot reference the
   // module-level consts — enumerate route names inline.
@@ -100,6 +118,10 @@ export async function getStaticPaths() {
     { params: { name: 'EventsPage-Empty' } },
     { params: { name: 'ChapterPage' } },
     { params: { name: 'ChapterPage-Sparse' } },
+    { params: { name: 'CollectionCountCard' } },
+    { params: { name: 'CollectionCountCard-Empty' } },
+    { params: { name: 'DashboardSummary' } },
+    { params: { name: 'DashboardSummary-Empty' } },
   ];
 }
 
@@ -130,6 +152,18 @@ if (name && name.startsWith('ChapterPage')) {
   const stateKey = (name === 'ChapterPage' ? 'Default' : name.slice('ChapterPage-'.length)) as keyof typeof chapterPageStates;
   chapterPageProps = chapterPageStates[stateKey] ?? chapterPageStates.Default;
 }
+
+let collectionCountCardProps: (typeof collectionCountCardStates)[keyof typeof collectionCountCardStates] | null = null;
+if (name && name.startsWith('CollectionCountCard')) {
+  const stateKey = (name === 'CollectionCountCard' ? 'Default' : name.slice('CollectionCountCard-'.length)) as keyof typeof collectionCountCardStates;
+  collectionCountCardProps = collectionCountCardStates[stateKey] ?? collectionCountCardStates.Default;
+}
+
+let dashboardSummaryProps: (typeof dashboardSummaryStates)[keyof typeof dashboardSummaryStates] | null = null;
+if (name && name.startsWith('DashboardSummary')) {
+  const stateKey = (name === 'DashboardSummary' ? 'Default' : name.slice('DashboardSummary-'.length)) as keyof typeof dashboardSummaryStates;
+  dashboardSummaryProps = dashboardSummaryStates[stateKey] ?? dashboardSummaryStates.Default;
+}
 ---
 
 <html lang="en">
@@ -154,6 +188,14 @@ if (name && name.startsWith('ChapterPage')) {
               markdown body slot, so the isolated capture matches the real route.
             </p>
           </ChapterPage>
+        ) : collectionCountCardProps ? (
+          <div style="width: 240px; background: var(--color-bg-soft); padding: var(--space-md);">
+            <CollectionCountCard {...collectionCountCardProps} />
+          </div>
+        ) : dashboardSummaryProps ? (
+          <div style="width: 760px; max-width: 100%; background: var(--color-bg-soft); padding: var(--space-lg);">
+            <DashboardSummary {...dashboardSummaryProps} />
+          </div>
         ) : (
           <p>Unknown component: {name}</p>
         )

@@ -20,3 +20,12 @@
 {"timestamp":"2026-06-13T19:06:53Z","kind":"registry-add","message":"registry `withBase › maps the root path to the base under a subpath`: added from runner `tests` output"}
 {"timestamp":"2026-06-13T19:06:53Z","kind":"registry-add","message":"registry `withBase › preserves a hash fragment on an absolute path under a subpath`: added from runner `tests` output"}
 {"timestamp":"2026-06-13T19:06:53Z","kind":"registry-add","message":"registry `withBase › passes mailto links through untouched`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T10:43:08Z","kind":"registry-add","message":"registry `dashboardSummaryText › summarizes a populated dashboard`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T10:43:08Z","kind":"registry-add","message":"registry `dashboardSummaryText › uses the singular entry for a count of one`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T10:43:08Z","kind":"registry-add","message":"registry `dashboardTotals › sums counts and reports the collection count`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T10:43:08Z","kind":"registry-add","message":"registry `ADMIN_COLLECTIONS › lists the five editable folder collections in order`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T10:43:08Z","kind":"registry-add","message":"registry `ADMIN_COLLECTIONS › gives every collection a non-empty label`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T10:43:08Z","kind":"registry-add","message":"registry `dashboardTotals › returns zeros for an empty card list`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T10:43:08Z","kind":"registry-add","message":"registry `dashboardSummaryText › shows the empty-state nudge when there is no content`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T10:43:08Z","kind":"registry-add","message":"registry `dashboardSummaryText › treats a negative total as empty`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T10:43:08Z","kind":"registry-add","message":"registry `dashboardTotals › counts empty collections without adding to the total`: added from runner `tests` output"}

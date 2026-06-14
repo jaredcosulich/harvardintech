@@ -18,8 +18,25 @@
 #     dev server — no auth, no relay.
 backend:
   name: github
-  repo: OWNER/REPO # AGENT: set to "<github-user>/<repo-name>"
+  repo: jaredcosulich/harvardintech
   branch: main
+  # ── Hosted editing (activate ONE of the two blocks below) ────────────────
+  # `local_backend: true` (further down) always covers the Local path on
+  # localhost. The two HOSTED paths both drive this single `base_url`, so they
+  # are mutually exclusive on the live site — uncomment exactly one once you
+  # have deployed its relay. See CMS_SETUP.md for the full deploy steps.
+  #
+  # Path A — Hosted + GitHub OAuth (per-user commit attribution). Register a
+  # GitHub OAuth App and point at its relay (Sveltia's hosted helper or a
+  # self-hosted sveltia/sveltia-cms-auth Worker):
+  #   base_url: https://<your-oauth-relay>
+  #   auth_endpoint: oauth/authorize
+  #
+  # Path B — Hosted + password (shared identity via cms-auth-worker/). Deploy
+  # the Worker in cms-auth-worker/, set its CMS_PASSWORD + GITHUB_TOKEN
+  # secrets, then point at its workers.dev URL:
+  #   base_url: https://cms-auth-worker.<subdomain>.workers.dev
+  #   auth_endpoint: auth
 
 # Local-repository editing. When /admin is opened from a local dev server,
 # Sveltia offers "Work with Local Repository" and writes straight to disk — no
@@ -133,4 +150,32 @@ collections:
       - { name: location, label: Location, widget: string, required: false }
       - { name: description, label: Description, widget: string, required: false }
       - { name: link, label: Link, widget: string, required: false }
+      - { name: body, label: Body, widget: markdown }
+
+  - name: chapters
+    label: "Chapters"
+    # Chapters have no `title` field — the city names the entry in the CMS list.
+    identifier_field: city
+    folder: "src/content/chapters"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { name: city, label: City, widget: string }
+      - { name: region, label: Region, widget: string, required: false }
+      - { name: blurb, label: Blurb, widget: text, required: false }
+      - { name: order, label: Order, widget: number, required: false }
+      - name: leads
+        label: "Leads"
+        widget: list
+        required: false
+        fields:
+          - { name: name, label: Name, widget: string }
+          - { name: role, label: Role, widget: string, required: false }
+      - name: links
+        label: "Links"
+        widget: list
+        required: false
+        fields:
+          - { name: label, label: Label, widget: string }
+          - { name: url, label: URL, widget: string }
       - { name: body, label: Body, widget: markdown }

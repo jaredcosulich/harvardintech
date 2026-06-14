@@ -8,8 +8,11 @@ hostable for free on GitHub Pages.
 Page content lives in typed
 [content collections](https://docs.astro.build/en/guides/content-collections/)
 (markdown under `src/content/`) and editable JSON singletons (`src/data/`), not a
-runtime database — so there is no server to run. A future CMS edits those same
-files.
+runtime database — so there is no server to run. A built-in **CRM** edits those
+same files: a dashboard at **`/admin`** (live content counts) fronting the
+[Sveltia CMS](https://github.com/sveltia/sveltia-cms) editor at
+**`/admin/editor/`**. See [`CMS_SETUP.md`](./CMS_SETUP.md) for the three sign-in
+paths (local, GitHub OAuth, shared password).
 
 ## Setup
 
@@ -27,13 +30,18 @@ A fresh clone works with: `git clone` → `npm run setup` → `npm run dev`.
 ```
 src/
   pages/index.astro          # the landing page — composes the section components
+  pages/admin/index.astro     # the CRM dashboard (/admin) — content counts + editor link
   components/landing/         # one component per landing section (Hero, Board, …)
+  components/admin/           # CRM dashboard sections (count cards, summary, sign-in)
   layouts/BaseLayout.astro    # site shell: data-driven header/nav + footer + SEO
-  content/                    # typed content collections (events, team, pages, blog)
+  layouts/AdminLayout.astro   # CRM shell: header chrome + noindex + content column
+  content/                    # typed content collections (events, team, chapters, pages, blog)
   data/                       # editable settings.json + nav.json singletons
-  lib/                        # site.ts (settings/nav loaders), mailto.ts
+  lib/                        # site.ts, mailto.ts, adminDashboard.ts (count helpers)
   styles/tokens.css           # design tokens (brand blue, Roboto, spacing)
+public/admin/editor/          # Sveltia CMS app (index.html + config.yml) served at /admin/editor/
 public/images/                # hero/section backgrounds, board graphic, event gallery
+cms-auth-worker/              # optional Cloudflare Worker for the password sign-in path
 ```
 
 ## Deploy to GitHub Pages

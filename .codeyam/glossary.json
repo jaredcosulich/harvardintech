@@ -1,5 +1,14 @@
 [
   {
+    "description": "The /admin CRM dashboard page: loads entry counts for every content collection and composes the admin shell (summary, count grid, sign-in guide), linking into the Sveltia editor at /admin/editor/.",
+    "filePath": "src/pages/admin/index.astro",
+    "name": "AdminDashboard",
+    "scenarios": [
+      "admin-dashboard-populated",
+      "admin-dashboard-empty"
+    ]
+  },
+  {
     "description": "A single regional chapter page body composed from ChapterHeader, ChapterLeads, the markdown body slot, and ChapterLinks. Reused by the /chapters/[slug] route and isolated scenarios.",
     "filePath": "src/components/ChapterPage.astro",
     "name": "ChapterPage",
@@ -14,6 +23,24 @@
     "name": "ChapterRoute",
     "scenarios": [
       "chapter-route-new-york-city"
+    ]
+  },
+  {
+    "description": "A single /admin dashboard card: a content collection entry count, its label, a No-entries-yet note when empty, and a link into the Sveltia editor for that collection.",
+    "filePath": "src/components/admin/CollectionCountCard.astro",
+    "name": "CollectionCountCard",
+    "scenarios": [
+      "collectioncountcard-populated",
+      "collectioncountcard-empty"
+    ]
+  },
+  {
+    "description": "The /admin dashboard top row: the heading, a one-line content summary (populated counts or the empty-state nudge), and the primary Open content editor action.",
+    "filePath": "src/components/admin/DashboardSummary.astro",
+    "name": "DashboardSummary",
+    "scenarios": [
+      "dashboardsummary-populated",
+      "dashboardsummary-empty"
     ]
   },
   {
@@ -63,6 +90,18 @@
     "filePath": "src/lib/mailto.ts",
     "name": "buildMailto",
     "testFile": "src/lib/mailto.test.ts"
+  },
+  {
+    "description": "Builds the /admin dashboard summary sentence: an empty-state nudge at zero, otherwise the total entries and collection count with correct singular/plural grammar.",
+    "filePath": "src/lib/adminDashboard.ts",
+    "name": "dashboardSummaryText",
+    "testFile": "src/lib/adminDashboard.test.ts"
+  },
+  {
+    "description": "Sums entry counts across the dashboard collection cards and reports how many collections there are, for the /admin summary line.",
+    "filePath": "src/lib/adminDashboard.ts",
+    "name": "dashboardTotals",
+    "testFile": "src/lib/adminDashboard.test.ts"
   },
   {
     "description": "Escapes HTML special characters for safe interpolation into the CMS auth worker's HTML responses.",

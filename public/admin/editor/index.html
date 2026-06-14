@@ -11,11 +11,12 @@
     <!--
       Sveltia CMS — a modern, Decap-compatible, git-based content editor.
 
-      It auto-loads ./config.yml (served from this same public/admin/ folder)
-      and commits markdown straight into the site's content collections. There
-      is no build step and no server you run: Astro copies everything under
-      public/ verbatim, so this file lands at /admin/ on the live site and at
-      /admin/ on the local dev server unchanged.
+      It auto-loads ./config.yml (served from this same public/admin/editor/
+      folder) and commits markdown straight into the site's content collections.
+      There is no build step and no server you run: Astro copies everything under
+      public/ verbatim, so this file lands at /admin/editor/ on the live site and
+      at /admin/editor/ on the local dev server unchanged. The /admin route
+      itself is the CRM dashboard (src/pages/admin/index.astro), which links here.
 
       The script auto-initialises on load — the same convention Decap uses — so
       no inline init code is needed here. The auth backend (GitHub OAuth, a

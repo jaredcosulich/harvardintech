@@ -1,0 +1,18 @@
+{
+  "name": "Admin Dashboard - Empty",
+  "id": "da924087-8f78-46f7-9735-1f4c359024c3",
+  "url": "/admin",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "seed": {
+    "blog": [],
+    "chapters": [],
+    "events": [],
+    "pages": [],
+    "team": []
+  },
+  "scenarioType": "application",
+  "pageFilePath": "src/pages/admin/index.astro"
+}

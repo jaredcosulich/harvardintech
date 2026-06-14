@@ -32,6 +32,38 @@
         "reason": "Primary actions are outbound links (Subscribe, Volunteer, View Events, mailto); no in-page interactive state to capture."
       }
     },
+    "AdminDashboard": {
+      "empty": {
+        "status": "covered"
+      },
+      "single": {
+        "status": "n-a",
+        "reason": "Dashboard always shows all five collection cards; a single entry only changes a count, not the view structure."
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "n-a",
+        "reason": "Fixed five-card grid; large counts render as a larger number, never overflow or truncate."
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "Static build-time page; counts are read from content collections at render, no async loading state."
+      },
+      "edge": {
+        "status": "n-a",
+        "reason": "Counts are numeric and the summary singular/plural/empty grammar is covered by the empty and populated scenarios plus dashboardSummaryText unit tests."
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "No runtime fetch; content is read at build time, so there is no error state on this view."
+      },
+      "key-interaction": {
+        "status": "n-a",
+        "reason": "The primary action (Open content editor / card links) navigates to the Sveltia editor at /admin/editor/; no in-page interactive state to capture."
+      }
+    },
     "ChapterRoute": {
       "empty": {
         "status": "n-a",

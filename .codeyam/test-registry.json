@@ -1,6 +1,24 @@
 {
   "tests": [
     {
+      "description": "Every entry has a non-empty human label for its card.",
+      "file": "src/lib/adminDashboard.test.ts",
+      "format": "vitest",
+      "key": "ADMIN_COLLECTIONS › gives every collection a non-empty label",
+      "line": 28,
+      "registeredAt": "2026-06-14T10:43:08Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The dashboard covers the five folder collections, in display order.",
+      "file": "src/lib/adminDashboard.test.ts",
+      "format": "vitest",
+      "key": "ADMIN_COLLECTIONS › lists the five editable folder collections in order",
+      "line": 17,
+      "registeredAt": "2026-06-14T10:43:08Z",
+      "runner": "tests"
+    },
+    {
       "description": "Clicking the button increments the hydrated counter, proving the island is genuinely interactive and not a static render.",
       "file": "src/components/Greeting.test.tsx",
       "format": "vitest",
@@ -70,6 +88,69 @@
       "key": "buildMailto › includes both subject and body when supplied",
       "line": 23,
       "registeredAt": "2026-06-13T15:32:37.162204395+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Zero entries shows the empty-state nudge, not a \"0 entries\" sentence.",
+      "file": "src/lib/adminDashboard.test.ts",
+      "format": "vitest",
+      "key": "dashboardSummaryText › shows the empty-state nudge when there is no content",
+      "line": 74,
+      "registeredAt": "2026-06-14T10:43:08Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The populated summary reports total entries and collection count.",
+      "file": "src/lib/adminDashboard.test.ts",
+      "format": "vitest",
+      "key": "dashboardSummaryText › summarizes a populated dashboard",
+      "line": 60,
+      "registeredAt": "2026-06-14T10:43:08Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A negative total is treated as empty, guarding against bad input.",
+      "file": "src/lib/adminDashboard.test.ts",
+      "format": "vitest",
+      "key": "dashboardSummaryText › treats a negative total as empty",
+      "line": 81,
+      "registeredAt": "2026-06-14T10:43:08Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A single entry uses the singular \"entry\".",
+      "file": "src/lib/adminDashboard.test.ts",
+      "format": "vitest",
+      "key": "dashboardSummaryText › uses the singular entry for a count of one",
+      "line": 67,
+      "registeredAt": "2026-06-14T10:43:08Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Collections with a zero count still count toward collectionCount but add nothing.",
+      "file": "src/lib/adminDashboard.test.ts",
+      "format": "vitest",
+      "key": "dashboardTotals › counts empty collections without adding to the total",
+      "line": 52,
+      "registeredAt": "2026-06-14T10:43:08Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An empty card list totals zero across zero collections.",
+      "file": "src/lib/adminDashboard.test.ts",
+      "format": "vitest",
+      "key": "dashboardTotals › returns zeros for an empty card list",
+      "line": 47,
+      "registeredAt": "2026-06-14T10:43:08Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Sums every card's count and reports how many collections there are.",
+      "file": "src/lib/adminDashboard.test.ts",
+      "format": "vitest",
+      "key": "dashboardTotals › sums counts and reports the collection count",
+      "line": 37,
+      "registeredAt": "2026-06-14T10:43:08Z",
       "runner": "tests"
     },
     {

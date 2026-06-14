@@ -2,10 +2,12 @@
 
 This site stores content as typed markdown in `src/content/`. A friendly,
 browser-based editing UI — **Sveltia CMS**, a modern Decap-compatible editor —
-is wired in at **`/admin`**. It commits markdown straight to your content
-collections, so editors never touch code and the static-hosting model is
-unchanged: GitHub Pages still serves plain HTML, and codeyam can still seed the
-same files per scenario through the `content-collection` seed adapter.
+is wired in at **`/admin/editor/`**, fronted by a lightweight CRM dashboard at
+**`/admin`** (live content counts + sign-in guidance). The editor commits
+markdown straight to your content collections, so editors never touch code and
+the static-hosting model is unchanged: GitHub Pages still serves plain HTML, and
+codeyam can still seed the same files per scenario through the
+`content-collection` seed adapter.
 
 > **Build agent: ask first.** Before wiring auth, ask the user **which editing
 > path(s) they want** — the three below can coexist (e.g. local for yourself +
@@ -14,9 +16,12 @@ same files per scenario through the `content-collection` seed adapter.
 
 ## The admin app
 
-- `public/admin/index.html` loads Sveltia from its CDN and auto-mounts at
-  `/admin` (Astro serves `public/` verbatim — works live and locally).
-- `public/admin/config.yml` is the Decap/Sveltia config. Its `collections`
+- `src/pages/admin/index.astro` renders the CRM **dashboard** at `/admin` — a
+  build-time summary of every editable collection (counts read from the same
+  `src/content/*` the public site uses) with an "Open content editor" button.
+- `public/admin/editor/index.html` loads Sveltia from its CDN and auto-mounts at
+  `/admin/editor/` (Astro serves `public/` verbatim — works live and locally).
+- `public/admin/editor/config.yml` is the Decap/Sveltia config. Its `collections`
   block mirrors `src/content/config.ts`; see **Keeping the schema honest** below.
 
 ## Choosing an editing path
@@ -29,15 +34,16 @@ same files per scenario through the `content-collection` seed adapter.
 
 ### 1. Hosted + GitHub OAuth
 
-Editors visit `/admin` on the live site and click "Sign in with GitHub". GitHub
-Pages can't run the OAuth callback itself, so point the CMS at an OAuth relay.
+Editors open the editor at `/admin/editor/` (linked from the `/admin` dashboard)
+on the live site and click "Sign in with GitHub". GitHub Pages can't run the
+OAuth callback itself, so point the CMS at an OAuth relay.
 
 **Pre-flight:** a GitHub account with write access to this repo.
 
 1. Register a GitHub OAuth App (Settings → Developer settings → OAuth Apps).
    Set the callback URL to your relay's callback (Sveltia's hosted helper, or a
    self-hosted relay such as `sveltia/sveltia-cms-auth` on Cloudflare Workers).
-2. In `public/admin/config.yml`, under `backend:` add:
+2. In `public/admin/editor/config.yml`, under `backend:` add:
    ```yaml
    base_url: https://<your-oauth-relay>
    auth_endpoint: oauth/authorize   # match your relay's route
@@ -61,12 +67,12 @@ non-GitHub free service.
    npx wrangler secret put CMS_PASSWORD   # the shared editor password
    npx wrangler secret put GITHUB_TOKEN   # the fine-grained PAT
    ```
-2. In `public/admin/config.yml`, under `backend:` add:
+2. In `public/admin/editor/config.yml`, under `backend:` add:
    ```yaml
    base_url: https://<name>.<subdomain>.workers.dev
    auth_endpoint: auth
    ```
-3. Editors visit `/admin`, get a password prompt, and commit as the PAT's
+3. Editors open `/admin/editor/`, get a password prompt, and commit as the PAT's
    identity. See the security trade-off documented at the top of
    `cms-auth-worker/worker.js` (one shared identity, no per-user attribution).
 
@@ -76,14 +82,15 @@ Always available, no auth, no server.
 
 **Pre-flight:** the repo cloned locally.
 
-1. `local_backend: true` is already set in `public/admin/config.yml`.
-2. Run `npm run dev`, open `/admin`, and choose **"Work with Local Repository"**.
+1. `local_backend: true` is already set in `public/admin/editor/config.yml`.
+2. Run `npm run dev`, open `/admin/editor/` (or click "Open content editor" from
+   the `/admin` dashboard), and choose **"Work with Local Repository"**.
 3. Edit posts; Sveltia writes straight to `src/content/`. Commit and push
    yourself — the change goes live on the next GitHub Pages deploy.
 
 ## Keeping the schema honest
 
-`public/admin/config.yml` and `src/content/config.ts` describe the **same**
+`public/admin/editor/config.yml` and `src/content/config.ts` describe the **same**
 markdown files and must stay in sync: every field `name` in a collection must
 exist in the matching Astro schema (the reserved `body` field is the markdown
 body, not frontmatter, so it has no schema counterpart). codeyam's template test

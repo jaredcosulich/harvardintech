@@ -1,6 +1,7 @@
 ---
 // WhatsApp community announcement — reproduces the live site's launch copy and
 // the two-step apply flow (verify alumni status, then request to join).
+import { withBase } from '../../lib/url';
 interface Props {
   criteriaUrl?: string;
   verifyUrl?: string;
@@ -44,7 +45,7 @@ const {
     {
       image ? (
         <img
-          src={image}
+          src={withBase(image)}
           alt="Harvard in Tech WhatsApp community"
           style="display: block; width: 100%; max-width: 760px; height: auto; margin: var(--space-lg) auto 0; border-radius: var(--radius);"
         />

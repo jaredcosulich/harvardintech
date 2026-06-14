@@ -181,6 +181,33 @@
       "runner": "tests"
     },
     {
+      "description": "Guards the wrap-once contract: authored data stays base-agnostic and `withBase` is applied a single time at the render site, never re-fed.",
+      "file": "src/components/landing/landing-images.test.ts",
+      "format": "vitest",
+      "key": "landing image base paths › does not double-prefix a path that already carries the base",
+      "line": 53,
+      "registeredAt": "2026-06-14T15:03:38Z",
+      "runner": "tests"
+    },
+    {
+      "description": "At the domain root (base `/`) the same paths must pass through untouched, so a future custom-domain deploy doesn't get a doubled or broken prefix.",
+      "file": "src/components/landing/landing-images.test.ts",
+      "format": "vitest",
+      "key": "landing image base paths › leaves every internal landing image unchanged at the domain root",
+      "line": 44,
+      "registeredAt": "2026-06-14T15:03:38Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Under the Pages base `/harvardintech/`, every landing asset must come back prefixed with the base — this is the exact bug (root-absolute src 404ing).",
+      "file": "src/components/landing/landing-images.test.ts",
+      "format": "vitest",
+      "key": "landing image base paths › prefixes every internal landing image with the project base on a subpath deploy",
+      "line": 33,
+      "registeredAt": "2026-06-14T15:03:38Z",
+      "runner": "tests"
+    },
+    {
       "description": "The original input array is not mutated by sorting.",
       "file": "src/lib/events.test.ts",
       "format": "vitest",

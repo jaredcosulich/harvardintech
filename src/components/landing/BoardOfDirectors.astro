@@ -3,6 +3,7 @@
 // board as a single composite graphic (logo + five members with titles). When
 // `members` are supplied instead, renders them as individual cards (the path a
 // future CMS edit / scenario uses). `image` defaults to the real board graphic.
+import { withBase } from '../../lib/url';
 interface MemberData {
   slug?: string;
   name: string;
@@ -29,7 +30,7 @@ const useImage = members.length === 0 && image;
     {
       useImage ? (
         <img
-          src={image}
+          src={withBase(image)}
           alt="Harvard in Tech Board of Directors"
           style="display: block; width: 100%; max-width: 1000px; height: auto; margin: 0 auto;"
         />
@@ -40,7 +41,7 @@ const useImage = members.length === 0 && image;
           {members.map((member) => (
             <div style="text-align: center;">
               {member.photo ? (
-                <img src={member.photo} alt={member.name} style="width: 130px; height: 130px; object-fit: cover; border-radius: 50%; filter: grayscale(1); margin: 0 auto var(--space-md);" />
+                <img src={withBase(member.photo)} alt={member.name} style="width: 130px; height: 130px; object-fit: cover; border-radius: 50%; filter: grayscale(1); margin: 0 auto var(--space-md);" />
               ) : (
                 <div style="width: 130px; height: 130px; border-radius: 50%; margin: 0 auto var(--space-md); background: var(--color-bg-soft); color: var(--color-fg); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 500; font-family: var(--font-title);">
                   {initials(member.name)}

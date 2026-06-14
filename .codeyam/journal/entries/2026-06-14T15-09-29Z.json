@@ -1,0 +1,101 @@
+{
+  "timestamp": "2026-06-14T15:09:29Z",
+  "title": "github-pages: Fix Missing Images on Pages Subpath",
+  "type": "feature",
+  "userRequest": "## Summary\n\nEvery image on the deployed site (https://jaredcosulich.github.io/harvardintech/)\nis broken. The site publishes under a project subpath (base `/harvardintech/`),\nbut the landing components render `<img src=\"/images/...\">` with **root-absolute**\npaths that never pass through the project's `withBase()` helper. The browser\ntherefore requests `https://jaredcosulich.github.io/images/...` (404) instead of\n`https://jaredcosulich.github.io/harvardintech/images/...`. It works in local dev\nand the codeyam preview only because base is `/` there. The fix is to route every\ninternal image `src` through the existing, already-tested `withBase()` helper —\nthe same pattern the header nav, logo, chapter back-link, 404, and blog links\nalready use — so images resolve under either base mode (custom domain `/` or\nproject subpath `/<repo>/`).\n\n## Key Decisions\n\n- **Reuse `withBase()`, don't hand-roll path logic.** `src/lib/url.ts` already\n  exports `withBase()`, covered by `src/lib/url.test.ts`, and is the established\n  convention for internal absolute paths in this repo. Apply it at each `<img>`\n  site rather than introducing any new mechanism. External URLs / non-absolute\n  strings pass through it untouched, so wrapping is always safe.\n- **Wrap at the render site, keep the props as plain `/images/...` defaults.**\n  The component defaults and any scenario/CMS-supplied values stay written as\n  clean root-absolute paths (`/images/...`); `withBase()` is applied only where\n  the value is placed into `src`. This keeps authored data base-agnostic and\n  centralizes the base concern at render, matching how blog/nav links work.\n- **Cover the data-driven image fields too.** `BoardOfDirectors` member `photo`\n  values (from the `team` content collection / scenarios) flow into `<img src>`\n  the same way, so they get the same `withBase()` treatment — even though no\n  team entry currently sets `photo`, this prevents the bug recurring the moment\n  one does.\n- **Lock it with a regression test.** Add component-level coverage asserting the\n  rendered `src` is base-prefixed under a subpath base, so this class of bug\n  can't silently return. This mirrors the existing `withBase` unit test approach\n  (`vi.stubEnv('BASE_URL', '/harvardintech/')`).\n\n## Implementation\n\n### 1. Base-prefix the Hero background image\n\n**File**: `src/components/landing/Hero.astro`\n\nImport `withBase` from `../../lib/url` and change `src={image}` to\n`src={withBase(image)}` on the background `<img>`.\n\n### 2. Base-prefix the event gallery images\n\n**File**: `src/components/landing/EventGallery.astro`\n\nImport `withBase` and wrap the mapped `src` — `src={withBase(src)}` — so all 12\ndefault `/images/gallery/event-*.jpg` (and any `images` override) resolve under\nthe subpath.\n\n### 3. Base-prefix the Get Involved background image\n\n**File**: `src/components/landing/GetInvolved.astro`\n\nImport `withBase` and change `src={image}` to `src={withBase(image)}`.\n\n### 4. Base-prefix the Board of Directors images\n\n**File**: `src/components/landing/BoardOfDirectors.astro`\n\nImport `withBase` and wrap both image sites: the composite board graphic\n(`src={image}` in the `useImage` branch) and the per-member photo\n(`src={member.photo}`) — `src={withBase(image)}` and `src={withBase(member.photo)}`.\n\n### 5. Base-prefix the WhatsApp community image\n\n**File**: `src/components/landing/WhatsappCommunity.astro`\n\nImport `withBase` and change `src={image}` to `src={withBase(image)}`.\n\n### 6. Add a base-path regression test for images\n\n**New file**: `src/components/landing/landing-images.test.ts` (or extend the\nnearest existing component test)\n\nRender the affected components (or assert on the resolved `src` strings) with\n`vi.stubEnv('BASE_URL', '/harvardintech/')` and verify each image `src` begins\nwith `/harvardintech/images/...`; with base `/` it stays `/images/...`. This is\nthe same env-stubbing pattern used in `src/lib/url.test.ts`.\n\n### 7. Sweep for any other un-based internal `<img>` / asset references\n\n**Files**: `src/**` (verification pass, not a blanket edit)\n\nConfirm no other internal absolute asset paths bypass `withBase` — e.g. og:image\n/ favicon in `src/components/SEO.astro` and `src/layouts/BaseLayout.astro`\n(BaseLayout already imports `withBase`; verify the favicon/og tags actually use\nit), and any future content-collection `image`/`photo` fields. Apply `withBase`\nto any stragglers found. (Current grep shows the five landing components above\nare the only offenders, but this guards the edges.)\n\n## Reused existing code\n\n- `withBase` from `src/lib/url.ts` (glossary entry: `withBase`) — the canonical\n  base-path prefixer; already used by nav/logo, chapter back-link, 404, and blog\n  links. Tested by `src/lib/url.test.ts`.\n- `import.meta.env.BASE_URL` — Astro-derived base from `astro.config.mjs`\n  (`DEPLOY_BASE_PATH` → base `/harvardintech/` on the Pages build, `/` locally).\n- The env-stubbing test pattern in `src/lib/url.test.ts`\n  (`vi.stubEnv('BASE_URL', ...)`) — reused for the new component regression test.\n\n## Scenarios to Demonstrate\n\n- **Subpath deploy (the bug):** with base `/harvardintech/`, the Hero, gallery,\n  Get Involved, Board, and WhatsApp images all load (src prefixed with\n  `/harvardintech/images/...`).\n- **Domain root:** with base `/`, the same components render `/images/...`\n  unchanged — no doubled prefix, no regression for a future custom-domain deploy.\n- **Member photos supplied:** a `BoardOfDirectors` scenario with `members[].photo`\n  set renders each photo correctly under the subpath (data-driven path covered).\n- **Override images:** an `EventGallery` with a custom `images` array still\n  base-prefixes each entry.\n- **Empty/initials fallback:** `BoardOfDirectors` with no members and no image,\n  and members without photos, still render the initials fallback (no broken\n  `<img>`).",
+  "description": "Fixed every broken image on the deployed GitHub Pages site (served under the /harvardintech/ project subpath) by routing each landing-component <img src> through the existing withBase() helper. The Hero and Get Involved backgrounds, the 12-photo event gallery, the Board of Directors graphic and per-member photos, and the WhatsApp community image were all rendered with root-absolute /images/... paths that bypassed the base prefix, so they 404ed on the subpath while working locally. Added a landing-images regression test pinning the base-path contract (prefixed on a subpath deploy, unchanged at the domain root, never double-prefixed) so the bug cannot silently return.",
+  "modifiedFiles": [
+    {
+      "path": ".claude/hooks/__pycache__/_step_metadata.cpython-310.pyc",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/hooks/__pycache__/editor-step-hook.cpython-310.pyc",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/github-pages-base-path-images.md\t.codeyam/plans/completed/github-pages-base-path-images.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/reconciliation-log.jsonl",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/runner-timing-history.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/provider-auth-verdict.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "deleted"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-run-marker.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/BoardOfDirectors.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/EventGallery.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/GetInvolved.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/Hero.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/WhatsappCommunity.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/landing-images.test.ts",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 39,
+    "passed": 0,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 39,
+        "passed": 0
+      }
+    ]
+  }
+}

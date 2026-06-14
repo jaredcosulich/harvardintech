@@ -2,6 +2,7 @@
 // "PHOTOS FROM LATEST HARVARD IN TECH EVENTS" — a grid of real event photos.
 // Defaults to the locally-hosted set under /public/images/gallery (downloaded
 // from the original site); accepts an `images` override for scenarios.
+import { withBase } from '../../lib/url';
 interface Props {
   images?: string[];
 }
@@ -20,7 +21,7 @@ const { images = defaults } = Astro.props;
         images.map((src, i) => (
           <figure style="margin: 0; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; background: var(--color-bg-soft);">
             <img
-              src={src}
+              src={withBase(src)}
               alt={`Harvard in Tech event photo ${i + 1}`}
               loading="lazy"
               style="width: 100%; height: 100%; object-fit: cover; display: block;"

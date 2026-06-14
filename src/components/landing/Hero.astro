@@ -3,6 +3,7 @@
 // full-bleed background photo with a dark overlay and light text, the mission
 // paragraph, and a SUBSCRIBE button to the MailChimp signup. The background is
 // rendered as an <img> (survives the preview reverse-proxy / base-path rewrite).
+import { withBase } from '../../lib/url';
 interface Props {
   description?: string;
   subscribeUrl?: string;
@@ -17,7 +18,7 @@ const {
 
 <section style="position: relative; overflow: hidden;" id="about">
   <img
-    src={image}
+    src={withBase(image)}
     alt=""
     style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"
   />

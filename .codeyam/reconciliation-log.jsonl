@@ -29,3 +29,6 @@
 {"timestamp":"2026-06-14T10:43:08Z","kind":"registry-add","message":"registry `dashboardSummaryText › shows the empty-state nudge when there is no content`: added from runner `tests` output"}
 {"timestamp":"2026-06-14T10:43:08Z","kind":"registry-add","message":"registry `dashboardSummaryText › treats a negative total as empty`: added from runner `tests` output"}
 {"timestamp":"2026-06-14T10:43:08Z","kind":"registry-add","message":"registry `dashboardTotals › counts empty collections without adding to the total`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:03:38Z","kind":"registry-add","message":"registry `landing image base paths › does not double-prefix a path that already carries the base`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:03:38Z","kind":"registry-add","message":"registry `landing image base paths › prefixes every internal landing image with the project base on a subpath deploy`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:03:38Z","kind":"registry-add","message":"registry `landing image base paths › leaves every internal landing image unchanged at the domain root`: added from runner `tests` output"}

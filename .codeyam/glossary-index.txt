@@ -1,5 +1,6 @@
-# regenerated from glossary.json on 2026-06-14T14:40:23Z; do not hand-edit
+# regenerated from glossary.json on 2026-06-14T15:47:30Z; do not hand-edit
 AdminDashboard :: src/pages/admin/index.astro :: tags=
+BoardMemberCard :: src/components/BoardMemberCard.astro :: tags=
 ChapterPage :: src/components/ChapterPage.astro :: tags=
 ChapterRoute :: src/pages/chapters/[slug].astro :: tags=
 CollectionCountCard :: src/components/admin/CollectionCountCard.astro :: tags=
@@ -17,7 +18,9 @@ formatEventDate :: src/lib/events.ts :: tags= :: test=src/lib/events.test.ts
 handlePasswordSubmit :: cms-auth-worker/worker.js :: tags=
 handshakePage :: cms-auth-worker/worker.js :: tags=
 htmlResponse :: cms-auth-worker/worker.js :: tags=
+initials :: src/lib/team.ts :: tags= :: test=src/lib/team.test.ts
 passwordFormPage :: cms-auth-worker/worker.js :: tags=
+sortBoardMembers :: src/lib/team.ts :: tags= :: test=src/lib/team.test.ts
 splitEvents :: src/lib/events.ts :: tags= :: test=src/lib/events.test.ts
 toEventDate :: src/lib/events.ts :: tags= :: test=src/lib/events.test.ts
 withBase :: src/lib/url.ts :: tags= :: test=src/lib/url.test.ts

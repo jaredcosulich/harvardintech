@@ -1,0 +1,31 @@
+---
+// A single Board of Directors member card: a circular B&W headshot (or an
+// initials fallback when the member has no `photo`), the member's name, and
+// their role. Shared by the landing-page BoardOfDirectors section and isolated
+// component scenarios so every board card stays identical. Mirrors EventCard.
+import { withBase } from '../lib/url';
+import { initials, type BoardMemberLike } from '../lib/team';
+
+interface Props {
+  member: BoardMemberLike;
+}
+const { member } = Astro.props;
+---
+
+<div style="text-align: center;">
+  {
+    member.photo ? (
+      <img
+        src={withBase(member.photo)}
+        alt={member.name}
+        style="width: 130px; height: 130px; object-fit: cover; border-radius: 50%; filter: grayscale(1); margin: 0 auto var(--space-md);"
+      />
+    ) : (
+      <div style="width: 130px; height: 130px; border-radius: 50%; margin: 0 auto var(--space-md); background: var(--color-bg-soft); color: var(--color-fg); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 500; font-family: var(--font-title);">
+        {initials(member.name)}
+      </div>
+    )
+  }
+  <h3 style="margin: 0 0 0.2rem; font-size: 1rem;">{member.name}</h3>
+  <p style="color: var(--color-muted); margin: 0; font-size: 0.88rem; white-space: pre-line;">{member.role}</p>
+</div>

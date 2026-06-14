@@ -1,7 +1,7 @@
 {
   "name": "Harvard in Tech - No Upcoming Events",
-  "id": "7eda38ba-a438-4a4a-a07f-c42332a1638d",
-  "url": "/",
+  "id": "044718c3-61dd-4f81-8f19-0cce9715121b",
+  "url": "/#events",
   "dimensions": [
     "Desktop"
   ],
@@ -12,30 +12,35 @@
       {
         "name": "Ben Wei",
         "order": 1,
+        "photo": "/images/team/ben-wei.png",
         "role": "Founder · Harvard C'08",
         "slug": "ben-wei"
       },
       {
         "name": "Peter Boyce",
         "order": 2,
+        "photo": "/images/team/peter-boyce.png",
         "role": "Founder · Harvard C'13",
         "slug": "peter-boyce"
       },
       {
         "name": "Krysia Lenzo",
         "order": 3,
+        "photo": "/images/team/krysia-lenzo.png",
         "role": "Executive Director · Harvard C'12",
         "slug": "krysia-lenzo"
       },
       {
         "name": "Jessica Li",
         "order": 4,
+        "photo": "/images/team/jessica-li.png",
         "role": "Director of Operations · Harvard C'19",
         "slug": "jessica-li"
       },
       {
         "name": "Nadia Eldeib",
         "order": 5,
+        "photo": "/images/team/nadia-eldeib.png",
         "role": "Director of Growth · Harvard C'13",
         "slug": "nadia-eldeib"
       }

@@ -1,0 +1,235 @@
+{
+  "timestamp": "2026-06-14T15:57:36Z",
+  "title": "CRM Content Editing — Editable Board of Directors",
+  "type": "feature",
+  "userRequest": "## Summary\n\n> **Stack note (updated):** on the Astro stack, \"editing static content\" maps to\n> **Sveltia CMS editing content-collection markdown** under `src/content/` and\n> the `src/data/*.json` singletons, committing via the GitHub OAuth flow in\n> `cms-auth-worker/`. Much of the hand-rolled form/persistence work below is\n> likely replaced by configuring Sveltia collections. Confirm against\n> `CMS_SETUP.md` when this plan is picked up.\n\nGive the CRM real editing power: authenticated admins can add, edit, and remove\n**Events** and **Board of Directors** entries, and those changes flow back into\nthe static `content/` modules that the public site renders. This is the payoff\nof the \"statically based CRM\" — no live database, yet content is editable.\n\n## Key Decisions\n\n- **Writes target the static content files.** Editing produces updated\n  `content/events.ts` / `content/board.ts` (or sibling JSON). Two write paths to\n  support: (a) **local** — write to the working tree on disk; (b) **cloud** —\n  commit via the GitHub API using the OAuth token from the auth plan, which also\n  re-triggers the Pages deploy. Pick/confirm the mechanism during `explore`.\n- **Shared types as the contract.** Forms validate against the `Event` /\n  `BoardMember` types from the landing plan, so the public site and CRM never\n  drift.\n- **Optimistic, simple UX.** List → add/edit form → save. No bulk import in this\n  plan.\n\n## Implementation\n\n### 1. Events editor\n\n**New files**: `app/admin/events/page.tsx`, `app/admin/events/EventForm.tsx`,\nwrite helper (local fs + GitHub-API commit strategies).\n\nList existing events with edit/delete; add-event form; persist to\n`content/events.ts`.\n\n### 2. Board editor\n\n**New files**: `app/admin/board/page.tsx`, `app/admin/board/BoardForm.tsx`\n\nSame pattern for board members (name, role, photo, link), persisting to\n`content/board.ts`.\n\n### 3. Persistence helper\n\n**New file**: `lib/content-store.ts`\n\nAbstraction with `read`/`write` over the content modules and two backends\n(local file write vs GitHub commit), selected by environment/config.\n\n## Reused existing code\n\n- Admin shell, auth/session, and dashboard from `crm-admin-shell-and-auth`.\n- `content/events.ts`, `content/board.ts`, and the `Event` / `BoardMember`\n  types from `landing-page-faithful-reproduction`.\n\n## Scenarios to Demonstrate\n\n- Add an event → it appears in the admin list (and would render on the public\n  Upcoming Events section).\n- Edit an existing board member.\n- Delete an event with a confirm step.\n- Validation error (missing required field) in the add form.",
+  "description": "The homepage Board of Directors section now renders from the CMS-editable team content collection instead of a static composite graphic, so editing a member in Sveltia CMS (/admin/editor/ -> Team) flows straight to the public site. Seeded the five real board members with B&W headshots extracted into public/images/team/, extracted a reusable BoardMemberCard component and a pure-logic src/lib/team.ts (initials, sortBoardMembers, unit-tested), and added component scenarios (with-photo + initials fallback) plus a board-focused homepage app scenario. The faithful board graphic remains the empty-state fallback.",
+  "modifiedFiles": [
+    {
+      "path": ".claude/hooks/__pycache__/_step_metadata.cpython-310.pyc",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/hooks/__pycache__/editor-step-hook.cpython-310.pyc",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/.last-reconcile.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/crm-content-editing.md\t.codeyam/plans/completed/crm-content-editing.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/reconciliation-log.jsonl",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/runner-timing-history.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-landing-page.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-no-upcoming-events.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/provider-auth-verdict.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/scenario-taxonomy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-run-marker.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/BoardOfDirectors.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/ben-wei.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/jessica-li.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/krysia-lenzo.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/nadia-eldeib.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/peter-boyce.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/index.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/boardmembercard-initials-fallback.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/boardmembercard-with-photo.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-board-of-directors.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/boardmembercard-initials-fallback--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/boardmembercard-initials-fallback--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/boardmembercard-with-photo--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/boardmembercard-with-photo--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "added"
+    },
+    {
+      "path": "public/images/team/ben-wei.png",
+      "status": "added"
+    },
+    {
+      "path": "public/images/team/jessica-li.png",
+      "status": "added"
+    },
+    {
+      "path": "public/images/team/krysia-lenzo.png",
+      "status": "added"
+    },
+    {
+      "path": "public/images/team/nadia-eldeib.png",
+      "status": "added"
+    },
+    {
+      "path": "public/images/team/peter-boyce.png",
+      "status": "added"
+    },
+    {
+      "path": "src/components/BoardMemberCard.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/team.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/team.ts",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "BoardMemberCard - Initials Fallback",
+      "screenshotPath": "boardmembercard-initials-fallback--desktop.png"
+    },
+    {
+      "name": "BoardMemberCard - With Photo",
+      "screenshotPath": "boardmembercard-with-photo--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors",
+      "screenshotPath": "harvard-in-tech-board-of-directors--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page",
+      "screenshotPath": "harvard-in-tech-landing-page--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 49,
+    "passed": 49,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 49,
+        "passed": 49
+      }
+    ]
+  }
+}

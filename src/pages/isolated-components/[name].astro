@@ -5,6 +5,7 @@ import EventsPage from '../../components/EventsPage.astro';
 import ChapterPage from '../../components/ChapterPage.astro';
 import CollectionCountCard from '../../components/admin/CollectionCountCard.astro';
 import DashboardSummary from '../../components/admin/DashboardSummary.astro';
+import BoardMemberCard from '../../components/BoardMemberCard.astro';
 import '../../styles/tokens.css';
 
 // Component-isolation harness. codeyam captures a single component in isolation
@@ -106,6 +107,17 @@ const dashboardSummaryStates = {
   Empty: { total: 0, collectionCount: 5, editorHref: ADMIN_EDITOR_HREF },
 };
 
+// BoardMemberCard states: a member WITH a photo (the real board headshot) vs a
+// member with NO photo, proving the initials-avatar fallback branch.
+const boardMemberCardStates = {
+  Default: {
+    member: { name: 'Krysia Lenzo', role: "Executive Director · Harvard C'12", photo: '/images/team/krysia-lenzo.png', order: 3 },
+  },
+  Initials: {
+    member: { name: 'Ada Lovelace', role: "Advisor · Harvard C'15", order: 6 },
+  },
+} as const;
+
 export async function getStaticPaths() {
   // getStaticPaths runs in an isolated scope and cannot reference the
   // module-level consts — enumerate route names inline.
@@ -122,6 +134,8 @@ export async function getStaticPaths() {
     { params: { name: 'CollectionCountCard-Empty' } },
     { params: { name: 'DashboardSummary' } },
     { params: { name: 'DashboardSummary-Empty' } },
+    { params: { name: 'BoardMemberCard' } },
+    { params: { name: 'BoardMemberCard-Initials' } },
   ];
 }
 
@@ -164,6 +178,12 @@ if (name && name.startsWith('DashboardSummary')) {
   const stateKey = (name === 'DashboardSummary' ? 'Default' : name.slice('DashboardSummary-'.length)) as keyof typeof dashboardSummaryStates;
   dashboardSummaryProps = dashboardSummaryStates[stateKey] ?? dashboardSummaryStates.Default;
 }
+
+let boardMemberCardProps: (typeof boardMemberCardStates)[keyof typeof boardMemberCardStates] | null = null;
+if (name && name.startsWith('BoardMemberCard')) {
+  const stateKey = (name === 'BoardMemberCard' ? 'Default' : name.slice('BoardMemberCard-'.length)) as keyof typeof boardMemberCardStates;
+  boardMemberCardProps = boardMemberCardStates[stateKey] ?? boardMemberCardStates.Default;
+}
 ---
 
 <html lang="en">
@@ -195,6 +215,10 @@ if (name && name.startsWith('DashboardSummary')) {
         ) : dashboardSummaryProps ? (
           <div style="width: 760px; max-width: 100%; background: var(--color-bg-soft); padding: var(--space-lg);">
             <DashboardSummary {...dashboardSummaryProps} />
+          </div>
+        ) : boardMemberCardProps ? (
+          <div style="width: 200px;">
+            <BoardMemberCard {...boardMemberCardProps} />
           </div>
         ) : (
           <p>Unknown component: {name}</p>

@@ -181,6 +181,60 @@
       "runner": "tests"
     },
     {
+      "description": "Surrounding and repeated whitespace is collapsed rather than producing blank initials.",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "initials › ignores surrounding and repeated whitespace",
+      "line": 26,
+      "registeredAt": "2026-06-14T15:43:56Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An empty name yields an empty initials string.",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "initials › returns an empty string for an empty name",
+      "line": 31,
+      "registeredAt": "2026-06-14T15:43:56Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A single-word name yields a single initial.",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "initials › returns one letter for a single-word name",
+      "line": 11,
+      "registeredAt": "2026-06-14T15:43:56Z",
+      "runner": "tests"
+    },
+    {
+      "description": "initials takes the first letter of the first two words and upper-cases them.",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "initials › returns two-letter initials for a two-word name",
+      "line": 6,
+      "registeredAt": "2026-06-14T15:43:56Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Lowercase names are upper-cased in the initials.",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "initials › upper-cases lowercase names",
+      "line": 21,
+      "registeredAt": "2026-06-14T15:43:56Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Only the first two words contribute to the initials.",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "initials › uses only the first two words for a three-word name",
+      "line": 16,
+      "registeredAt": "2026-06-14T15:43:56Z",
+      "runner": "tests"
+    },
+    {
       "description": "Guards the wrap-once contract: authored data stays base-agnostic and `withBase` is applied a single time at the render site, never re-fed.",
       "file": "src/components/landing/landing-images.test.ts",
       "format": "vitest",
@@ -205,6 +259,42 @@
       "key": "landing image base paths › prefixes every internal landing image with the project base on a subpath deploy",
       "line": 33,
       "registeredAt": "2026-06-14T15:03:38Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Members are ordered by ascending order field.",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "sortBoardMembers › orders members by ascending order value",
+      "line": 40,
+      "registeredAt": "2026-06-14T15:43:56Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Sorting returns a new array and does not mutate the caller's input.",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "sortBoardMembers › returns a new array without mutating the input",
+      "line": 52,
+      "registeredAt": "2026-06-14T15:43:56Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An empty member list returns an empty array.",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "sortBoardMembers › returns an empty array for no members",
+      "line": 60,
+      "registeredAt": "2026-06-14T15:43:56Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A member with no order is treated as order 0 and sorts first.",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "sortBoardMembers › treats a missing order as zero",
+      "line": 46,
+      "registeredAt": "2026-06-14T15:43:56Z",
       "runner": "tests"
     },
     {

@@ -9,6 +9,15 @@
     ]
   },
   {
+    "description": "A single Board of Directors member card: a circular B&W headshot, or an initials-avatar fallback when the member has no photo, plus name and role. Shared by the landing BoardOfDirectors section and isolated scenarios.",
+    "filePath": "src/components/BoardMemberCard.astro",
+    "name": "BoardMemberCard",
+    "scenarios": [
+      "boardmembercard-with-photo",
+      "boardmembercard-initials-fallback"
+    ]
+  },
+  {
     "description": "A single regional chapter page body composed from ChapterHeader, ChapterLeads, the markdown body slot, and ChapterLinks. Reused by the /chapters/[slug] route and isolated scenarios.",
     "filePath": "src/components/ChapterPage.astro",
     "name": "ChapterPage",
@@ -146,6 +155,12 @@
     }
   },
   {
+    "description": "Derives up-to-two-letter uppercase initials from a board member name, used as the BoardMemberCard avatar fallback when a member has no photo.",
+    "filePath": "src/lib/team.ts",
+    "name": "initials",
+    "testFile": "src/lib/team.test.ts"
+  },
+  {
     "description": "Renders the CMS auth worker's password-gate form page.",
     "filePath": "cms-auth-worker/worker.js",
     "name": "passwordFormPage",
@@ -153,6 +168,12 @@
       "justification": "Template CMS auth worker shipped by the astro-github-pages scaffold; not part of the landing-page feature.",
       "kind": "scaffold"
     }
+  },
+  {
+    "description": "Returns a new array of board members ordered by ascending order field (missing order treated as 0), so the public Board of Directors matches the curated sequence regardless of on-disk file order.",
+    "filePath": "src/lib/team.ts",
+    "name": "sortBoardMembers",
+    "testFile": "src/lib/team.test.ts"
   },
   {
     "description": "Splits a flat event list into upcoming (date >= now, soonest first) and past (date < now, most recent first) relative to a reference time; events at now count as upcoming.",

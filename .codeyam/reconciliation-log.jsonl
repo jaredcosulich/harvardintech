@@ -32,3 +32,13 @@
 {"timestamp":"2026-06-14T15:03:38Z","kind":"registry-add","message":"registry `landing image base paths › does not double-prefix a path that already carries the base`: added from runner `tests` output"}
 {"timestamp":"2026-06-14T15:03:38Z","kind":"registry-add","message":"registry `landing image base paths › prefixes every internal landing image with the project base on a subpath deploy`: added from runner `tests` output"}
 {"timestamp":"2026-06-14T15:03:38Z","kind":"registry-add","message":"registry `landing image base paths › leaves every internal landing image unchanged at the domain root`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `initials › upper-cases lowercase names`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `initials › uses only the first two words for a three-word name`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `sortBoardMembers › treats a missing order as zero`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `initials › ignores surrounding and repeated whitespace`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `initials › returns one letter for a single-word name`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `sortBoardMembers › orders members by ascending order value`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `initials › returns an empty string for an empty name`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `initials › returns two-letter initials for a two-word name`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `sortBoardMembers › returns a new array without mutating the input`: added from runner `tests` output"}
+{"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `sortBoardMembers › returns an empty array for no members`: added from runner `tests` output"}

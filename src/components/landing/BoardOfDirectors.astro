@@ -1,26 +1,19 @@
 ---
 // "BOARD OF DIRECTORS" — faithful to harvardintech.com, which presents the
 // board as a single composite graphic (logo + five members with titles). When
-// `members` are supplied instead, renders them as individual cards (the path a
-// future CMS edit / scenario uses). `image` defaults to the real board graphic.
+// `members` are supplied (from the editable `team` content collection) it
+// renders them as individual BoardMemberCards instead — the path a CMS edit /
+// scenario drives. `image` defaults to the real board graphic, used as the
+// empty-state fallback when there are no members yet.
+import BoardMemberCard from '../BoardMemberCard.astro';
+import type { BoardMemberLike } from '../../lib/team';
 import { withBase } from '../../lib/url';
-interface MemberData {
-  slug?: string;
-  name: string;
-  role: string;
-  photo?: string;
-  bio?: string;
-  order?: number;
-}
+
 interface Props {
-  members?: MemberData[];
+  members?: BoardMemberLike[];
   image?: string;
 }
 const { members = [], image = '/images/sections/board.png' } = Astro.props;
-
-function initials(name: string): string {
-  return name.split(/\s+/).map((p) => p[0]).slice(0, 2).join('').toUpperCase();
-}
 const useImage = members.length === 0 && image;
 ---
 
@@ -39,17 +32,7 @@ const useImage = members.length === 0 && image;
       ) : (
         <div style="display: grid; gap: var(--space-lg); grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); max-width: 960px; margin: 0 auto;">
           {members.map((member) => (
-            <div style="text-align: center;">
-              {member.photo ? (
-                <img src={withBase(member.photo)} alt={member.name} style="width: 130px; height: 130px; object-fit: cover; border-radius: 50%; filter: grayscale(1); margin: 0 auto var(--space-md);" />
-              ) : (
-                <div style="width: 130px; height: 130px; border-radius: 50%; margin: 0 auto var(--space-md); background: var(--color-bg-soft); color: var(--color-fg); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 500; font-family: var(--font-title);">
-                  {initials(member.name)}
-                </div>
-              )}
-              <h3 style="margin: 0 0 0.2rem; font-size: 1rem;">{member.name}</h3>
-              <p style="color: var(--color-muted); margin: 0; font-size: 0.88rem; white-space: pre-line;">{member.role}</p>
-            </div>
+            <BoardMemberCard member={member} />
           ))}
         </div>
       )

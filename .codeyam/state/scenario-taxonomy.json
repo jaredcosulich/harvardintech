@@ -128,6 +128,38 @@
         "status": "n-a",
         "reason": "Presentational page; the only actions are external links to event registration"
       }
+    },
+    "LandingPage": {
+      "empty": {
+        "status": "covered"
+      },
+      "single": {
+        "status": "n-a",
+        "reason": "The homepage composes whole collections; a single event or board member is a data count, not a distinct layout, and the auto-fill grids are exercised by the typical scenario"
+      },
+      "typical": {
+        "status": "covered"
+      },
+      "many": {
+        "status": "n-a",
+        "reason": "Auto-fill grids; the typical scenario already wraps five board cards and three event cards. More items would not produce a distinct overflow layout"
+      },
+      "loading": {
+        "status": "n-a",
+        "reason": "Static SSG route rendered at build time; no async loading state"
+      },
+      "edge": {
+        "status": "n-a",
+        "reason": "Board member missing a photo (initials fallback) is demonstrated by the BoardMemberCard initials-fallback component scenario; missing-optional event fields by the EventsPage scenarios"
+      },
+      "error": {
+        "status": "n-a",
+        "reason": "Static SSG route; content collections validated at build, no runtime error state"
+      },
+      "key-interaction": {
+        "status": "n-a",
+        "reason": "Presentational page; the only actions are external links (Subscribe, WhatsApp, Volunteer, mailto)"
+      }
     }
   }
 }

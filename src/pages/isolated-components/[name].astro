@@ -3,6 +3,9 @@ import Greeting from '../../components/Greeting.tsx';
 import EmbedForm from '../../components/EmbedForm.astro';
 import EventsPage from '../../components/EventsPage.astro';
 import ChapterPage from '../../components/ChapterPage.astro';
+import ChapterHero from '../../components/ChapterHero.astro';
+import ChapterSignUp from '../../components/ChapterSignUp.astro';
+import ChapterConnect from '../../components/ChapterConnect.astro';
 import CollectionCountCard from '../../components/admin/CollectionCountCard.astro';
 import DashboardSummary from '../../components/admin/DashboardSummary.astro';
 import AdminGatePrompt from '../../components/admin/AdminGatePrompt.astro';
@@ -71,13 +74,18 @@ const eventsPageStates = {
   Empty: { events: [] as typeof SAMPLE_EVENTS, now: '2026-06-13' },
 };
 
-// ChapterPage states: a full NYC-style chapter vs a sparse one (city + region
-// only, no blurb / leads / links) proving the missing-optional layout.
+// ChapterPage states: a full NYC-style chapter — full-bleed city hero, Sign Up
+// band, leads/body/links, gallery, and Connect With Us — vs a sparse one
+// (city + region only, NO heroImage) proving the centered-header fallback and
+// the missing-optional layout.
 const chapterPageStates = {
   Default: {
     city: 'New York City',
     region: 'New York, NY',
     blurb: 'Our founding chapter and largest community, hosting monthly mixers, founder dinners, and the annual Harvard in Tech Summit.',
+    heroImage: '/images/chapters/nyc.jpg',
+    tagline: 'We are the New York Chapter of Harvard in Tech.',
+    showGallery: true,
     leads: [
       { name: 'Jessica Li', role: 'Chapter Lead' },
       { name: 'Ben Wei', role: 'Events' },
@@ -90,6 +98,22 @@ const chapterPageStates = {
   Sparse: {
     city: 'Japan',
     region: 'Tokyo',
+  },
+};
+
+// ChapterHero states: the full-bleed city header WITH a hero image + tagline
+// vs the no-image Fallback that degrades to the centered ChapterHeader.
+const chapterHeroStates = {
+  Default: {
+    city: 'New York City',
+    region: 'New York, NY',
+    heroImage: '/images/chapters/nyc.jpg',
+    tagline: 'We are the New York Chapter of Harvard in Tech.',
+  },
+  Fallback: {
+    city: 'Japan',
+    region: 'Tokyo',
+    blurb: 'Our first international chapter.',
   },
 };
 
@@ -147,6 +171,10 @@ export async function getStaticPaths() {
     { params: { name: 'EventsPage-Empty' } },
     { params: { name: 'ChapterPage' } },
     { params: { name: 'ChapterPage-Sparse' } },
+    { params: { name: 'ChapterHero' } },
+    { params: { name: 'ChapterHero-Fallback' } },
+    { params: { name: 'ChapterSignUp' } },
+    { params: { name: 'ChapterConnect' } },
     { params: { name: 'CollectionCountCard' } },
     { params: { name: 'CollectionCountCard-Empty' } },
     { params: { name: 'DashboardSummary' } },
@@ -186,6 +214,17 @@ if (name && name.startsWith('ChapterPage')) {
   const stateKey = (name === 'ChapterPage' ? 'Default' : name.slice('ChapterPage-'.length)) as keyof typeof chapterPageStates;
   chapterPageProps = chapterPageStates[stateKey] ?? chapterPageStates.Default;
 }
+
+// ChapterHero resolves its state from the route suffix; ChapterSignUp /
+// ChapterConnect are single-state (the latter reads the settings singleton).
+let chapterHeroProps: (typeof chapterHeroStates)[keyof typeof chapterHeroStates] | null = null;
+if (name && name.startsWith('ChapterHero')) {
+  const stateKey = (name === 'ChapterHero' ? 'Default' : name.slice('ChapterHero-'.length)) as keyof typeof chapterHeroStates;
+  chapterHeroProps = chapterHeroStates[stateKey] ?? chapterHeroStates.Default;
+}
+
+const isChapterSignUp = name === 'ChapterSignUp';
+const isChapterConnect = name === 'ChapterConnect';
 
 let collectionCountCardProps: (typeof collectionCountCardStates)[keyof typeof collectionCountCardStates] | null = null;
 if (name && name.startsWith('CollectionCountCard')) {
@@ -243,6 +282,12 @@ if (name && name.startsWith('ContactUs')) {
               markdown body slot, so the isolated capture matches the real route.
             </p>
           </ChapterPage>
+        ) : chapterHeroProps ? (
+          <ChapterHero {...chapterHeroProps} />
+        ) : isChapterSignUp ? (
+          <ChapterSignUp />
+        ) : isChapterConnect ? (
+          <ChapterConnect />
         ) : collectionCountCardProps ? (
           <div style="width: 240px; background: var(--color-bg-soft); padding: var(--space-md);">
             <CollectionCountCard {...collectionCountCardProps} />

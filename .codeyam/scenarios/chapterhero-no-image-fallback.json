@@ -1,0 +1,11 @@
+{
+  "name": "ChapterHero - No Image Fallback",
+  "id": "d567cd80-3908-48c2-9298-a1edb334b53c",
+  "url": "/isolated-components/ChapterHero-Fallback",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ChapterHero",
+  "scenarioType": "component"
+}

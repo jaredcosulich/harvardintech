@@ -1,0 +1,11 @@
+{
+  "name": "ChapterConnect - Default",
+  "id": "d3806f4e-d505-4cdd-a8ff-5bad8d7c4df2",
+  "url": "/isolated-components/ChapterConnect",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ChapterConnect",
+  "scenarioType": "component"
+}

@@ -173,6 +173,20 @@ collections:
       - { name: city, label: City, widget: string }
       - { name: region, label: Region, widget: string, required: false }
       - { name: blurb, label: Blurb, widget: text, required: false }
+      # The committed city header photos live under public/images/chapters —
+      # OUTSIDE the global media_folder — and are stored base-less (e.g.
+      # `/images/chapters/nyc.jpg`) because the site adds the Pages base at
+      # render via withBase(). A field-level media_folder/public_folder maps that
+      # value back to its repo file so Sveltia previews the image via the GitHub
+      # backend (same pattern as the team `photo` field above).
+      - name: heroImage
+        label: "Hero image"
+        widget: image
+        required: false
+        media_folder: "/public/images/chapters"
+        public_folder: "/images/chapters"
+      - { name: tagline, label: Tagline, widget: string, required: false }
+      - { name: showGallery, label: "Show photo gallery", widget: boolean, default: false, required: false }
       - { name: order, label: Order, widget: number, required: false }
       - name: leads
         label: "Leads"

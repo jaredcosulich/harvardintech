@@ -17,11 +17,20 @@ export async function getStaticPaths() {
 type Props = { chapter: CollectionEntry<'chapters'> };
 const { chapter } = Astro.props as Props;
 const { Content } = await chapter.render();
-const { city, region, blurb, leads, links } = chapter.data;
+const { city, region, blurb, heroImage, tagline, showGallery, leads, links } = chapter.data;
 ---
 
 <BaseLayout title={city} description={blurb ?? `Harvard in Tech ${city} chapter.`}>
-  <ChapterPage city={city} region={region} blurb={blurb} leads={leads} links={links}>
+  <ChapterPage
+    city={city}
+    region={region}
+    blurb={blurb}
+    heroImage={heroImage}
+    tagline={tagline}
+    showGallery={showGallery}
+    leads={leads}
+    links={links}
+  >
     <Content />
   </ChapterPage>
 </BaseLayout>

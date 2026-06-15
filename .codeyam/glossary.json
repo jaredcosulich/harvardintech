@@ -35,7 +35,24 @@
     ]
   },
   {
-    "description": "A single regional chapter page body composed from ChapterHeader, ChapterLeads, the markdown body slot, and ChapterLinks. Reused by the /chapters/[slug] route and isolated scenarios.",
+    "description": "The 'Connect With Us' social footer from the live chapter pages: a centered heading, the contact email, and the social links rendered as dark circular icon badges. Reads the editable socials + contact email from the settings singleton and reuses socialIconSrc + buildMailto.",
+    "filePath": "src/components/ChapterConnect.astro",
+    "name": "ChapterConnect",
+    "scenarios": [
+      "chapterconnect-default"
+    ]
+  },
+  {
+    "description": "Full-bleed city header for a chapter page (mirrors the live harvardintech.com pages): a background photo with a dark overlay and centered light 'HARVARD IN TECH <CITY>' title plus tagline. Falls back to the centered ChapterHeader when heroImage is absent.",
+    "filePath": "src/components/ChapterHero.astro",
+    "name": "ChapterHero",
+    "scenarios": [
+      "chapterhero-with-image",
+      "chapterhero-no-image-fallback"
+    ]
+  },
+  {
+    "description": "A single regional chapter page recomposed to match the live harvardintech.com chapter pages: a full-bleed ChapterHero, a ChapterSignUp band, the narrow content block (back link + ChapterLeads + markdown body slot + ChapterLinks), an optional EventGallery (showGallery), and a ChapterConnect social footer. Reused by the /chapters/[slug] route and isolated scenarios.",
     "filePath": "src/components/ChapterPage.astro",
     "name": "ChapterPage",
     "scenarios": [
@@ -49,6 +66,14 @@
     "name": "ChapterRoute",
     "scenarios": [
       "chapter-route-new-york-city"
+    ]
+  },
+  {
+    "description": "The teal 'Sign Up' band from the live chapter pages: a flanking-rule 'Sign Up' heading, a 'Join the Harvard in Tech Community' line, and a Subscribe pill defaulting to the shared MailChimp signup.",
+    "filePath": "src/components/ChapterSignUp.astro",
+    "name": "ChapterSignUp",
+    "scenarios": [
+      "chaptersignup-default"
     ]
   },
   {

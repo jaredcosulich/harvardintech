@@ -1,0 +1,11 @@
+{
+  "name": "ChapterSignUp - Default",
+  "id": "ceb9c076-c8a1-48f0-abaa-75727d4f1071",
+  "url": "/isolated-components/ChapterSignUp",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ChapterSignUp",
+  "scenarioType": "component"
+}

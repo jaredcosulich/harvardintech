@@ -1,10 +1,13 @@
-# regenerated from glossary.json on 2026-06-15T16:33:48Z; do not hand-edit
+# regenerated from glossary.json on 2026-06-15T19:51:54Z; do not hand-edit
 AdminDashboard :: src/pages/admin/index.astro :: tags=
 AdminGate :: src/components/admin/AdminGate.astro :: tags=
 AdminGatePrompt :: src/components/admin/AdminGatePrompt.astro :: tags=
 BoardMemberCard :: src/components/BoardMemberCard.astro :: tags=
+ChapterConnect :: src/components/ChapterConnect.astro :: tags=
+ChapterHero :: src/components/ChapterHero.astro :: tags=
 ChapterPage :: src/components/ChapterPage.astro :: tags=
 ChapterRoute :: src/pages/chapters/[slug].astro :: tags=
+ChapterSignUp :: src/components/ChapterSignUp.astro :: tags=
 CollectionCountCard :: src/components/admin/CollectionCountCard.astro :: tags=
 DashboardSummary :: src/components/admin/DashboardSummary.astro :: tags=
 EmbedForm :: src/components/EmbedForm.astro :: tags=

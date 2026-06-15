@@ -69,6 +69,14 @@ const chapters = defineCollection({
     city: z.string(),
     region: z.string().optional(),
     blurb: z.string().optional(),
+    // Full-bleed city header (mirrors the live harvardintech.com chapter pages):
+    // `heroImage` is the background photo, `tagline` the subtitle beneath the
+    // "HARVARD IN TECH <CITY>" title. `showGallery` toggles the shared event
+    // photo gallery (true for Japan). All optional → a chapter without them
+    // falls back to the centered header.
+    heroImage: z.string().optional(),
+    tagline: z.string().optional(),
+    showGallery: z.boolean().optional(),
     leads: z
       .array(z.object({ name: z.string(), role: z.string().optional() }))
       .optional(),

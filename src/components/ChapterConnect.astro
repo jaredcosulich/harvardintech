@@ -1,0 +1,72 @@
+---
+// "Connect With Us" social footer from the live chapter pages: a centered
+// heading, the contact email, and the social links rendered as dark circular
+// icon badges (distinct from the landing ContactUs icon-over-label treatment).
+// Reads the editable socials + contact email from the settings singleton so it
+// stays CMS-editable, and reuses the shared icon + mailto helpers.
+import { buildMailto } from '../lib/mailto';
+import { socialIconSrc } from '../lib/socialIcon';
+import { settings } from '../lib/site';
+
+const email = settings.contactEmail;
+const contactHref = buildMailto({ to: email, subject: 'Hello from the website' });
+
+// Twitter, E-mail, Facebook in the live site's order. The e-mail entry is
+// synthesized from the contact email so it always renders.
+const links = [
+  ...settings.socials.filter((s) => /twitter/i.test(s.label)),
+  { label: 'E-mail', url: contactHref, icon: 'email' },
+  ...settings.socials.filter((s) => /facebook/i.test(s.label)),
+];
+---
+
+<section class="s-section" id="connect" style="text-align: center;">
+  <div class="s-narrow">
+    <h2 class="s-title">Connect With Us</h2>
+    <p style="font-size: 1.1rem; color: var(--color-muted); margin: 0 0 var(--space-lg);">
+      <a href={contactHref} style="color: var(--color-link);">{email}</a>
+    </p>
+    <div style="display: flex; gap: var(--space-lg); justify-content: center; align-items: center;">
+      {
+        links.map((link) =>
+          socialIconSrc(link.icon) ? (
+            <a
+              href={link.url}
+              rel="noopener"
+              class="connect-badge"
+              aria-label={link.label}
+            >
+              <img src={socialIconSrc(link.icon)} alt="" width="24" height="24" loading="lazy" />
+            </a>
+          ) : null,
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .connect-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.15s ease;
+  }
+  .connect-badge:hover {
+    transform: scale(1.08);
+  }
+  .connect-badge img {
+    /* Render the brand glyphs in their natural colors — the email icon is an
+       opaque JPEG, so a brightness/invert filter would flatten it to a solid
+       block; a light circular badge keeps all three icons legible. */
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+</style>

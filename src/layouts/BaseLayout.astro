@@ -47,7 +47,7 @@ const { title, description, image } = Astro.props;
                       <summary style="cursor: pointer; list-style: none; color: var(--color-nav);">
                         {item.label} ▾
                       </summary>
-                      <ul style="list-style: none; position: absolute; right: 0; margin: var(--space-sm) 0 0; padding: var(--space-sm) 0; background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius); min-width: 180px; box-shadow: 0 8px 24px rgba(0,0,0,0.08);">
+                      <ul style="list-style: none; position: absolute; right: 0; z-index: 70; margin: var(--space-sm) 0 0; padding: var(--space-sm) 0; background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius); min-width: 180px; box-shadow: 0 8px 24px rgba(0,0,0,0.08);">
                         {item.children.map((child) => (
                           <li style="padding: 0;">
                             <a

@@ -1,0 +1,255 @@
+{
+  "timestamp": "2026-06-15T20:06:00Z",
+  "title": "Chapter Pages Match Live Site (city heroes + dropdown fix)",
+  "type": "feature",
+  "userRequest": "## Summary\n\nThe `/chapters/<slug>` pages (NYC, San Francisco, L.A., Japan) currently render\nas a bare centered title + region + one-line blurb + a short markdown sentence —\nnothing like the live harvardintech.com chapter pages, which each open with a\nfull-bleed city hero photo (\"HARVARD IN TECH <CITY>\" over a skyline), then a\nteal \"Sign Up\" band, optional content, and a \"Connect With Us\" social footer.\nSeparately, the header **Chapters** dropdown opens *behind* the Harvard shield\nbadge (the badge's `z-index: 60` paints over the menu, which has no `z-index`),\nso the first item is partially hidden.\n\nThis plan (1) fixes the dropdown stacking so the menu sits above the shield, and\n(2) rebuilds the chapter page into a CMS-driven template that matches the live\npages: a per-city hero image + tagline, a Sign Up band, the existing\nleads/body/links content, an optional photo gallery (Japan), and a Connect With\nUs footer. The new per-chapter inputs (`heroImage`, `tagline`, `showGallery`)\nare added to the `chapters` content schema **and** the Sveltia CMS config so\neditors set them in the CMS — the contract test\n`astro_cms_config_fields_subset_of_content_schema` stays satisfied.\n\n## Key Decisions\n\n- **Dropdown fix = raise the menu's z-index**, not lower the badge's. The badge\n  intentionally sits at `z-index: 60` (it dips from the navbar into the hero).\n  Giving the open dropdown `<ul>` a higher z-index (e.g. `70`) is the minimal,\n  targeted fix and keeps the badge above the hero image as designed.\n- **One shared template for all four chapters**, with per-city variance driven\n  by CMS fields rather than per-page markup. `heroImage` + `tagline` differ per\n  city; `showGallery` toggles the Japan gallery. This keeps every chapter\n  editable in the CMS and avoids four bespoke pages.\n- **Reuse existing landing building blocks** instead of new bespoke styling:\n  the hero mirrors `Hero.astro` (full-bleed `<img>` + dark overlay + light\n  title), the gallery reuses `EventGallery.astro` (which already accepts an\n  `images` override), and the social footer reuses `socialIconSrc` +\n  `buildMailto` + the editable `settings.socials`/`contactEmail`.\n- **Hero images are committed assets under `public/images/chapters/`** (not CMS\n  uploads), matching how the landing hero/gallery images already ship under\n  `public/images/`. Defaults are referenced from each chapter's `heroImage`\n  frontmatter so editors can still swap them via the CMS image widget later.\n- **Sign Up + Connect With Us are global** (reuse `settings`), so no new global\n  fields are needed; only the three per-chapter fields are added.\n\n## Implementation\n\n### 1. Fix the Chapters dropdown stacking\n\n**File**: `src/layouts/BaseLayout.astro`\n\nThe open dropdown `<ul>` (the `position: absolute` menu inside `.nav-dd`) has no\n`z-index`, so the shield badge (`z-index: 60`, rendered later in the DOM) paints\nover its top edge. Add `z-index: 70` (and keep it a positioned element) to that\ninline-styled `<ul>` so the menu sits above the badge. Verify the badge still\nrenders above the hero image on the home page (its `z-index: 60` is unchanged).\n\n### 2. Add per-chapter fields to the content schema\n\n**File**: `src/content/config.ts`\n\nExtend the `chapters` collection `z.object({...})` with three optional fields:\n\n- `heroImage: z.string().optional()` — path to the full-bleed city header image.\n- `tagline: z.string().optional()` — hero subtitle, e.g. \"We are the New York\n  Chapter of Harvard in Tech.\"\n- `showGallery: z.boolean().optional()` — render the shared event photo gallery\n  on this chapter (true for Japan).\n\nKeep them optional so a chapter without them still renders (preserves the\nexisting \"sparse Japan / missing optional frontmatter\" scenarios).\n\n### 3. Mirror the new fields in the CMS config\n\n**File**: `public/admin/editor/config.yml`\n\nUnder the `chapters` collection `fields:`, add (all `required: false`):\n\n- `{ name: heroImage, label: \"Hero image\", widget: image, required: false }`\n  with a field-level `media_folder: \"/public/images/chapters\"` and\n  `public_folder: \"/images/chapters\"` so the committed city images preview in\n  the hosted CMS (same pattern as the team `photo` field).\n- `{ name: tagline, label: Tagline, widget: string, required: false }`\n- `{ name: showGallery, label: \"Show photo gallery\", widget: boolean, default: false, required: false }`\n\nThis must stay a superset-match with the schema so\n`astro_cms_config_fields_subset_of_content_schema` passes.\n\n### 4. New ChapterHero component\n\n**New file**: `src/components/ChapterHero.astro`\n\nFull-bleed city header modeled on `src/components/landing/Hero.astro`: an\nabsolutely-positioned `<img src={withBase(heroImage)}>` with `object-fit: cover`,\na dark overlay (`rgba(0,0,0,0.39)`), and centered light text — an uppercase\n`HARVARD IN TECH {city}` title (reuse the Hero's flanking-rule title treatment)\nand the `tagline` subtitle beneath it. Props: `city`, `heroImage`, `tagline`.\nSized to fill the screen below the header like the live pages\n(`min-height: calc(100vh - var(--header-height))`, with the `svh` fallback as in\nHero). When `heroImage` is absent, fall back to the current centered\n`ChapterHeader` look so a chapter with no image still renders.\n\n### 5. New ChapterSignUp band\n\n**New file**: `src/components/ChapterSignUp.astro`\n\nThe teal \"Sign Up\" band from the live pages: a light `var(--color-bg-blue)`\nsection, centered, with a \"Sign Up\" heading (the shared `.s-title` flanking-rule\nstyle), a \"Join the Harvard in Tech Community\" line, and a Subscribe `.s-btn`\npill. Default the subscribe URL to the same MailChimp link the landing `Hero`\nuses (`https://mailchi.mp/0222623e1169/fbrj32e9wb`); accept an optional\n`subscribeUrl` prop for future per-chapter overrides.\n\n### 6. New ChapterConnect footer\n\n**New file**: `src/components/ChapterConnect.astro`\n\nThe \"Connect With Us\" social section from the live pages: centered heading\n\"Connect With Us\", the contact email, and the social icons rendered as dark\ncircular badges. Reuse `socialIconSrc` (`src/lib/socialIcon.ts`), `buildMailto`\n(`src/lib/mailto.ts`), and read `settings.socials` + `settings.contactEmail`\nfrom `src/lib/site.ts` so it stays CMS-editable. This is a chapter-specific\ntreatment (black circles) distinct from the landing `ContactUs` (icon-over-label)\n— factor the shared icon list logic if convenient, but a small dedicated\ncomponent is fine.\n\n### 7. Recompose ChapterPage to the new template\n\n**File**: `src/components/ChapterPage.astro`\n\nReorder the page to match the live layout, accepting the new props\n(`heroImage`, `tagline`, `showGallery`) in addition to the existing ones:\n\n1. `<ChapterHero city tagline heroImage />` (full-bleed) — replaces the inline\n   `ChapterHeader` as the page opener. Keep the \"← All chapters\" back link\n   (move it into the narrow content section below the hero, or keep it small at\n   the top — it should not sit over the hero image).\n2. `<ChapterSignUp />` band.\n3. The existing narrow content block — `ChapterLeads`, the markdown `<slot />`\n   body, and `ChapterLinks` — shown only when there is leads/body/links content\n   (the live NYC/SF pages put their copy here).\n4. `{showGallery && <EventGallery />}` — reuse `src/components/landing/EventGallery.astro`\n   (defaults to the 40 committed `/images/gallery/event-*.jpg`).\n5. `<ChapterConnect />` footer.\n\n`ChapterHeader.astro` stays as the no-image fallback used inside `ChapterHero`.\n\n### 8. Pass the new props through the route\n\n**File**: `src/pages/chapters/[slug].astro`\n\nDestructure `heroImage`, `tagline`, `showGallery` from `chapter.data` and pass\nthem into `<ChapterPage>` alongside the existing `city/region/blurb/leads/links`.\n\n### 9. Add hero images and populate chapter frontmatter\n\n**New files**: `public/images/chapters/{nyc,san-francisco,la,japan}.jpg`\n\nDownload the four live city header photos (pattern: `scripts/download-assets.mjs`)\ninto `public/images/chapters/`:\n\n- NYC — `https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_1500,w_2000,f_auto,q_auto/798883/899643_113781.jpeg`\n- SF — `https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_1500,w_2000,f_auto,q_auto/798883/958646_632113.jpeg`\n- L.A. — `https://custom-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_1500,w_2000,f_auto,q_auto/798883/946230_700523.jpeg`\n- Japan — `https://user-images.strikinglycdn.com/res/hrscywv4p/image/upload/c_limit,fl_lossy,h_1500,w_2000,f_auto,q_auto/117929/149801_604523.jpeg`\n\n**Files**: `src/content/chapters/{nyc,san-francisco,la,japan}.md`\n\nAdd frontmatter to each:\n\n- `heroImage: /images/chapters/<city>.jpg`\n- `tagline:` the live subtitle — NYC \"We are the New York Chapter of Harvard in\n  Tech.\", SF \"We are the San Francisco Chapter of Harvard in Tech.\", L.A. \"We\n  are the Los Angeles Chapter of Harvard in Tech.\", Japan \"We are the Japan\n  Chapter of Harvard in Tech.\"\n- `japan.md` only: `showGallery: true`\n\nKeep the existing `blurb`/`region`/`order` and the short markdown body as the\nnarrow-section copy.\n\n### 10. Update tests / scenarios for the new fields\n\n**Files**: existing scenario data for `ChapterPage` (scenarios\n`chapterpage-full-chapter`, `chapterpage-sparse-no-leads`) and any seed under\n`.codeyam/` that constructs chapter props.\n\nAdd the new props to the \"full\" scenario (image + tagline + gallery) and leave\nthe \"sparse\" scenario without them to prove the no-image fallback still renders.\nUpdate or add an assertion that `ChapterHero` falls back to the centered header\nwhen `heroImage` is absent. Re-run `npm test` and `npm run check` (the editor\nworkflow runs these — do not run them in planning).\n\n## Reused existing code\n\n- `Hero` from `src/components/landing/Hero.astro` — full-bleed image + overlay +\n  flanking-rule title pattern that `ChapterHero` mirrors.\n- `EventGallery` from `src/components/landing/EventGallery.astro` (accepts an\n  `images?` override; defaults to the 40 committed gallery photos) — reused for\n  the Japan gallery.\n- `socialIconSrc` from `src/lib/socialIcon.ts` and `buildMailto` from\n  `src/lib/mailto.ts` — for `ChapterConnect`'s social badges.\n- `settings` (socials, contactEmail) from `src/lib/site.ts` — keeps the Sign Up\n  / Connect sections CMS-editable.\n- `withBase` from `src/lib/url.ts` — base-aware asset/link URLs.\n- `ChapterHeader` (`src/components/ChapterHeader.astro`), `ChapterLeads`,\n  `ChapterLinks` — kept as the no-image fallback and the narrow-section content.\n- Glossary entries: `ChapterPage`, `ChapterRoute`.\n- Asset-download pattern: `scripts/download-assets.mjs`.\n- CMS field-level `media_folder`/`public_folder` mapping precedent: the team\n  `photo` field in `public/admin/editor/config.yml`.\n\n## Scenarios to Demonstrate\n\n- **NYC (rich)** — city skyline hero with \"HARVARD IN TECH NEW YORK CITY\" +\n  tagline, Sign Up band, leads/body/links, Connect With Us.\n- **San Francisco** — Golden Gate hero, Sign Up, body copy, Connect With Us.\n- **Japan (gallery)** — Shibuya hero, Sign Up, the event photo gallery\n  (`showGallery: true`), Connect With Us.\n- **L.A. (minimal body)** — palms/skyline hero, Sign Up, Connect With Us, little\n  middle content (proves the narrow section collapses gracefully).\n- **No-image fallback** — a chapter with no `heroImage` renders the original\n  centered `ChapterHeader` instead of a broken/empty hero.\n- **Chapters dropdown** — opening the header dropdown shows all four items fully\n  above the Harvard shield badge (no item hidden behind the logo).",
+  "description": "Rebuilt /chapters/<slug> to match the live harvardintech.com chapter pages: a full-bleed per-city hero photo (HARVARD IN TECH <CITY> + tagline), a teal Sign Up band, the narrow leads/body/links content, an optional event photo gallery (Japan), and a Connect With Us social footer — all driven by new CMS fields (heroImage, tagline, showGallery) added to both the content schema and the Sveltia config. Also fixed the header Chapters dropdown to render above the Harvard shield badge (z-index 70), which previously clipped the first menu item. New components: ChapterHero (with centered-header fallback when no image), ChapterSignUp, and ChapterConnect.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/.last-reconcile.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/pages-chapter-pages-match-live-site.md\t.codeyam/plans/completed/pages-chapter-pages-match-live-site.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": "public/admin/editor/config.yml",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/japan.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/la.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/nyc.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/san-francisco.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/config.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/ben-wei.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/jessica-li.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/krysia-lenzo.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/nadia-eldeib.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/peter-boyce.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/layouts/BaseLayout.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/chapters/[slug].astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-japan-with-gallery.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterconnect-default.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterhero-no-image-fallback.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterhero-with-image.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/chaptersignup-default.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-japan-with-gallery--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-japan-with-gallery--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterconnect-default--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterconnect-default--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-no-image-fallback--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-no-image-fallback--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-with-image--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterhero-with-image--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chaptersignup-default--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chaptersignup-default--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": "public/images/chapters/japan.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/chapters/la.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/chapters/nyc.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/chapters/san-francisco.jpg",
+      "status": "added"
+    },
+    {
+      "path": "src/components/ChapterConnect.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/ChapterHero.astro",
+      "status": "added"
+    },
+    {
+      "path": "src/components/ChapterSignUp.astro",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Chapter Route - Japan With Gallery",
+      "screenshotPath": "chapter-route-japan-with-gallery--desktop.png"
+    },
+    {
+      "name": "Chapter Route - New York City",
+      "screenshotPath": "chapter-route-new-york-city--desktop.png"
+    },
+    {
+      "name": "ChapterConnect - Default",
+      "screenshotPath": "chapterconnect-default--desktop.png"
+    },
+    {
+      "name": "ChapterHero - No Image Fallback",
+      "screenshotPath": "chapterhero-no-image-fallback--desktop.png"
+    },
+    {
+      "name": "ChapterHero - With Image",
+      "screenshotPath": "chapterhero-with-image--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Full Chapter",
+      "screenshotPath": "chapterpage-full-chapter--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Sparse No Leads",
+      "screenshotPath": "chapterpage-sparse-no-leads--desktop.png"
+    },
+    {
+      "name": "ChapterSignUp - Default",
+      "screenshotPath": "chaptersignup-default--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 107,
+    "passed": 107,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 107,
+        "passed": 107
+      }
+    ]
+  }
+}

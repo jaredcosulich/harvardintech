@@ -1,12 +1,17 @@
 ---
-// A single regional chapter page body, composed from sub-components: a back
-// link, the chapter header, optional leads, the markdown "about" body (default
-// slot), and optional city links. Accepts plain props so it renders from the
-// /chapters/<slug> route (with rendered <Content /> in the slot) and from
-// isolated scenarios (full NYC vs sparse Japan with no leads/links).
-import ChapterHeader from './ChapterHeader.astro';
+// A single regional chapter page, recomposed to match the live harvardintech.com
+// chapter pages: a full-bleed city hero, a teal "Sign Up" band, the narrow
+// content block (back link + leads + markdown body + links), an optional event
+// photo gallery, and a "Connect With Us" social footer. Accepts plain props so
+// it renders from the /chapters/<slug> route (with rendered <Content /> in the
+// slot) and from isolated scenarios (NYC with hero/gallery, sparse Japan with no
+// hero → centered-header fallback).
+import ChapterHero from './ChapterHero.astro';
+import ChapterSignUp from './ChapterSignUp.astro';
+import ChapterConnect from './ChapterConnect.astro';
 import ChapterLeads from './ChapterLeads.astro';
 import ChapterLinks from './ChapterLinks.astro';
+import EventGallery from './landing/EventGallery.astro';
 import { withBase } from '../lib/url';
 
 interface Lead {
@@ -21,26 +26,53 @@ interface Props {
   city: string;
   region?: string;
   blurb?: string;
+  heroImage?: string;
+  tagline?: string;
+  showGallery?: boolean;
   leads?: Lead[];
   links?: ChapterLink[];
 }
-const { city, region, blurb, leads = [], links = [] } = Astro.props;
+const {
+  city,
+  region,
+  blurb,
+  heroImage,
+  tagline,
+  showGallery = false,
+  leads = [],
+  links = [],
+} = Astro.props;
+
+// The narrow content block (leads + markdown body + links) only renders when
+// there is something to show. `hasBody` is detected from the default slot.
+const hasBody = Astro.slots.has('default');
+const hasContent = leads.length > 0 || links.length > 0 || hasBody;
 ---
 
-<section class="s-section">
-  <div class="s-narrow">
-    <a href={withBase('/#events')} style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em;">
-      ← All chapters
-    </a>
+<ChapterHero city={city} region={region} blurb={blurb} heroImage={heroImage} tagline={tagline} />
 
-    <ChapterHeader city={city} region={region} blurb={blurb} />
+<ChapterSignUp />
 
-    <ChapterLeads leads={leads} />
+{
+  hasContent ? (
+    <section class="s-section">
+      <div class="s-narrow">
+        <a href={withBase('/#events')} style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em;">
+          ← All chapters
+        </a>
 
-    <div style="line-height: 1.8;">
-      <slot />
-    </div>
+        <ChapterLeads leads={leads} />
 
-    <ChapterLinks links={links} />
-  </div>
-</section>
+        <div style="line-height: 1.8;">
+          <slot />
+        </div>
+
+        <ChapterLinks links={links} />
+      </div>
+    </section>
+  ) : null
+}
+
+{showGallery ? <EventGallery /> : null}
+
+<ChapterConnect />

@@ -532,6 +532,105 @@
       "runner": "tests"
     },
     {
+      "description": "every seeded member must declare a non-empty photo — this is the exact contract that was silently broken on the live site",
+      "file": "src/lib/team.photos.test.ts",
+      "format": "vitest",
+      "key": "seeded team headshots › ben-wei.md › declares a non-empty photo",
+      "line": 37,
+      "registeredAt": "2026-06-15T12:22:55Z",
+      "runner": "tests"
+    },
+    {
+      "description": "the referenced image must actually exist under public/, catching a typo'd or deleted headshot before it 404s in production",
+      "file": "src/lib/team.photos.test.ts",
+      "format": "vitest",
+      "key": "seeded team headshots › ben-wei.md › points at an image that exists under public/",
+      "line": 43,
+      "registeredAt": "2026-06-15T12:22:55Z",
+      "runner": "tests"
+    },
+    {
+      "description": "sanity: the curated board exists, so an empty glob can't vacuously pass",
+      "file": "src/lib/team.photos.test.ts",
+      "format": "vitest",
+      "key": "seeded team headshots › finds the seeded team content files",
+      "line": 27,
+      "registeredAt": "2026-06-15T12:22:55Z",
+      "runner": "tests"
+    },
+    {
+      "description": "every seeded member must declare a non-empty photo — this is the exact contract that was silently broken on the live site",
+      "file": "src/lib/team.photos.test.ts",
+      "format": "vitest",
+      "key": "seeded team headshots › jessica-li.md › declares a non-empty photo",
+      "line": 37,
+      "registeredAt": "2026-06-15T12:22:55Z",
+      "runner": "tests"
+    },
+    {
+      "description": "the referenced image must actually exist under public/, catching a typo'd or deleted headshot before it 404s in production",
+      "file": "src/lib/team.photos.test.ts",
+      "format": "vitest",
+      "key": "seeded team headshots › jessica-li.md › points at an image that exists under public/",
+      "line": 43,
+      "registeredAt": "2026-06-15T12:22:55Z",
+      "runner": "tests"
+    },
+    {
+      "description": "every seeded member must declare a non-empty photo — this is the exact contract that was silently broken on the live site",
+      "file": "src/lib/team.photos.test.ts",
+      "format": "vitest",
+      "key": "seeded team headshots › krysia-lenzo.md › declares a non-empty photo",
+      "line": 37,
+      "registeredAt": "2026-06-15T12:22:55Z",
+      "runner": "tests"
+    },
+    {
+      "description": "the referenced image must actually exist under public/, catching a typo'd or deleted headshot before it 404s in production",
+      "file": "src/lib/team.photos.test.ts",
+      "format": "vitest",
+      "key": "seeded team headshots › krysia-lenzo.md › points at an image that exists under public/",
+      "line": 43,
+      "registeredAt": "2026-06-15T12:22:55Z",
+      "runner": "tests"
+    },
+    {
+      "description": "every seeded member must declare a non-empty photo — this is the exact contract that was silently broken on the live site",
+      "file": "src/lib/team.photos.test.ts",
+      "format": "vitest",
+      "key": "seeded team headshots › nadia-eldeib.md › declares a non-empty photo",
+      "line": 37,
+      "registeredAt": "2026-06-15T12:22:55Z",
+      "runner": "tests"
+    },
+    {
+      "description": "the referenced image must actually exist under public/, catching a typo'd or deleted headshot before it 404s in production",
+      "file": "src/lib/team.photos.test.ts",
+      "format": "vitest",
+      "key": "seeded team headshots › nadia-eldeib.md › points at an image that exists under public/",
+      "line": 43,
+      "registeredAt": "2026-06-15T12:22:55Z",
+      "runner": "tests"
+    },
+    {
+      "description": "every seeded member must declare a non-empty photo — this is the exact contract that was silently broken on the live site",
+      "file": "src/lib/team.photos.test.ts",
+      "format": "vitest",
+      "key": "seeded team headshots › peter-boyce.md › declares a non-empty photo",
+      "line": 37,
+      "registeredAt": "2026-06-15T12:22:55Z",
+      "runner": "tests"
+    },
+    {
+      "description": "the referenced image must actually exist under public/, catching a typo'd or deleted headshot before it 404s in production",
+      "file": "src/lib/team.photos.test.ts",
+      "format": "vitest",
+      "key": "seeded team headshots › peter-boyce.md › points at an image that exists under public/",
+      "line": 43,
+      "registeredAt": "2026-06-15T12:22:55Z",
+      "runner": "tests"
+    },
+    {
       "description": "Members are ordered by ascending order field.",
       "file": "src/lib/team.test.ts",
       "format": "vitest",

@@ -93,3 +93,14 @@
 {"timestamp":"2026-06-15T11:47:05Z","kind":"registry-delete","message":"registry `splitRole › splits a role on the middot into two lines` deleted: no runner emits this key and no rename candidate exists"}
 {"timestamp":"2026-06-15T11:47:05Z","kind":"registry-delete","message":"registry `splitRole › splits every occurrence of the separator` deleted: no runner emits this key and no rename candidate exists"}
 {"timestamp":"2026-06-15T11:47:05Z","kind":"registry-delete","message":"registry `splitRole › trims whitespace around the separator` deleted: no runner emits this key and no rename candidate exists"}
+{"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › krysia-lenzo.md › points at an image that exists under public/`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › peter-boyce.md › points at an image that exists under public/`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › jessica-li.md › points at an image that exists under public/`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › finds the seeded team content files`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › nadia-eldeib.md › declares a non-empty photo`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › jessica-li.md › declares a non-empty photo`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › peter-boyce.md › declares a non-empty photo`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › krysia-lenzo.md › declares a non-empty photo`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › ben-wei.md › points at an image that exists under public/`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › ben-wei.md › declares a non-empty photo`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › nadia-eldeib.md › points at an image that exists under public/`: added from runner `tests` output"}

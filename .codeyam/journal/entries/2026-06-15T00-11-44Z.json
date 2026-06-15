@@ -1,0 +1,89 @@
+{
+  "timestamp": "2026-06-15T00:11:44Z",
+  "title": "Landing Hero & Header Redesign",
+  "type": "feature",
+  "userRequest": "# Landing Hero & Header Redesign — match harvardintech.com \"fresh\" theme\n\n## Goal\nTake the existing uncommitted prototype and refine it to faithfully match the\nlive site at https://www.harvardintech.com/ (captured as reference screenshots\nat Desktop 1440px and Mobile 390px). This is a site-wide visual refresh — the\nbrand tokens and header live in shared files, so the new look applies to every\npage; the hero change is landing-specific.\n\n## What changes\n\n### 1. Brand tokens — `src/styles/tokens.css` (site-wide)\n- Rebrand from the old blue (#048ddc) to the \"fresh\" theme teal:\n  `--color-accent: #0ca5a5`, `--color-accent-dark: #098f8f`, and a new\n  `--color-nav: #10d7d7` (brighter cyan) for nav links.\n- Buttons (`.s-btn`) become pill-shaped (border-radius: 999px), sans-serif,\n  16px / 700 weight, 12px×18px padding.\n\n### 2. Header — `src/layouts/BaseLayout.astro` (site-wide)\n- Replace the sticky/blurred bar + left wordmark with a clean white header:\n  centered nav, teal links, 15px / 500 weight, no uppercase.\n- Add the Harvard shield in a white circular badge that dips from the navbar\n  down into the hero image (the real site's circular logo badge).\n\n### 3. Hero — `src/components/landing/Hero.astro` (landing)\n- White uppercase title \"HARVARD ALUMNI IN TECH\" at 58px with the two short\n  white rules flanking the text; darker image overlay (rgba(0,0,0,0.39));\n  restyled body paragraph and pill Subscribe button; 200px vertical padding.\n- MOBILE: scale the title down AND let it wrap to two lines (left-aligned with\n  a single underline rule), matching the real site's mobile rendering rather\n  than forcing one clipped line.\n\n### 4. Asset — `public/images/harvard-shield.png`\n- New shield image used in the header badge.\n\n## Scenarios to demonstrate\n- **Landing — Desktop**: the full landing page at 1440px (reuse/recapture the\n  existing \"Harvard in Tech - Landing Page\" scenario).\n- **Landing — Mobile**: the landing page at 390px, confirming the responsive\n  hero title and header behave like the real site.\n\nProduction data stays empty per CodeYam's model; the landing copy is static\ncontent, so no seed data is required for these scenarios.\n\n## Out of scope\n- No changes to the other landing sections (events, board, gallery, etc.)\n  beyond what the shared token/button restyle naturally cascades.\n- No CRM/admin changes.",
+  "description": "Refined the uncommitted landing-page prototype to faithfully match harvardintech.com's \"fresh\" theme, verified against live-site reference screenshots at Desktop and Mobile. Rebranded tokens.css to the teal palette with pill-shaped buttons (site-wide), rebuilt the BaseLayout header as a centered teal nav with the Harvard shield in a white circular badge dipping into the hero (site-wide), and restyled the Hero with a white uppercase flanking-rules title over a darker overlay. Added a mobile breakpoint so the hero title scales down, wraps left-aligned with a single underline rule, and the Subscribe button goes full-width — matching the real site instead of clipping. The Harvard in Tech - Landing Page scenario now captures both Desktop and Mobile.",
+  "modifiedFiles": [
+    {
+      "path": ".claude/settings.local.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-board-of-directors.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-landing-page.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-no-upcoming-events.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": "public/images/bg/hero-bg.jpg",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/Hero.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/layouts/BaseLayout.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/styles/tokens.css",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png",
+      "status": "added"
+    },
+    {
+      "path": "core",
+      "status": "added"
+    },
+    {
+      "path": "public/images/harvard-shield.png",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 49,
+    "passed": 49,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 49,
+        "passed": 49
+      }
+    ]
+  }
+}

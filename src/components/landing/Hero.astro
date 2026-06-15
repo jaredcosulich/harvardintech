@@ -16,20 +16,106 @@ const {
 } = Astro.props;
 ---
 
-<section style="position: relative; overflow: hidden;" id="about">
-  <img
-    src={withBase(image)}
-    alt=""
-    style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;"
-  />
-  <div style="position: absolute; inset: 0; background: rgba(20,24,33,0.6); z-index: 1;"></div>
-  <div class="s-section" style="position: relative; z-index: 2;">
-    <div class="s-narrow" style="text-align: center; color: #fff;">
-      <h2 class="s-title" style="color: #fff;">Harvard Alumni in Tech</h2>
-      <p style="font-size: 1.15rem; color: rgba(255,255,255,0.92); margin: 0 0 var(--space-lg);">
-        {description}
-      </p>
+<section class="hero" id="about">
+  <div style="position: absolute; inset: 0; overflow: hidden; z-index: 0;">
+    <img
+      src={withBase(image)}
+      alt=""
+      style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;"
+    />
+    <div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.39);"></div>
+  </div>
+
+  <div class="hero-inner">
+    <h2 class="hero-title">Harvard Alumni in Tech</h2>
+    <p class="hero-text">{description}</p>
+    <div class="hero-cta">
       <a class="s-btn" href={subscribeUrl} rel="noopener">Subscribe</a>
     </div>
   </div>
 </section>
+
+<style>
+  .hero {
+    position: relative;
+    box-sizing: border-box;
+    padding: 200px 20px;
+    display: block;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 918px;
+    margin: 0 auto;
+    color: #fff;
+  }
+  .hero-title {
+    text-transform: uppercase;
+    font-family: var(--font-title);
+    font-weight: 400;
+    color: #fff;
+    font-size: 58px;
+    line-height: 1.2;
+    letter-spacing: normal;
+    white-space: nowrap;
+    margin: 0 0 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* "fresh" theme title decoration: 80x2px white rules flanking the text */
+  .hero-title::before,
+  .hero-title::after {
+    content: '';
+    flex: none;
+    width: 80px;
+    height: 2px;
+    margin: 0 10px;
+    background: #fff;
+  }
+  .hero-text {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 29px;
+    color: #fff;
+    text-align: left;
+    margin: 0 0 1.5rem;
+  }
+  .hero-cta {
+    text-align: center;
+  }
+
+  /* Mobile: match the real site — the title scales down, wraps to multiple
+     lines left-aligned, and the flanking rules collapse to a single underline
+     beneath it; the Subscribe button goes full-width. */
+  @media (max-width: 640px) {
+    .hero {
+      padding: 110px 24px 90px;
+    }
+    .hero-title {
+      display: block;
+      text-align: left;
+      white-space: normal;
+      font-size: 36px;
+      line-height: 1.15;
+      margin: 0 0 1.5rem;
+    }
+    .hero-title::before {
+      display: none;
+    }
+    .hero-title::after {
+      display: block;
+      width: 80px;
+      margin: 1rem 0 0;
+    }
+    .hero-text {
+      font-size: 17px;
+      line-height: 26px;
+    }
+    .hero-cta :global(.s-btn) {
+      display: block;
+      width: 100%;
+    }
+  }
+</style>

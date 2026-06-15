@@ -1,9 +1,10 @@
 {
   "name": "Harvard in Tech - Landing Page",
-  "id": "aae6294e-acc1-4783-b2bc-3c91a815d5f8",
+  "id": "daac9c69-f1cf-4cc0-a3c8-d55ddcfa7bcd",
   "url": "/",
   "dimensions": [
-    "Desktop"
+    "Desktop",
+    "Mobile"
   ],
   "mocks": {},
   "seed": {

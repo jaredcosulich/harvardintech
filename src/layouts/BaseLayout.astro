@@ -36,27 +36,20 @@ const contactHref = buildMailto({
     <SEO title={title} description={description} image={image} />
   </head>
   <body>
-    <header
-      style="position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.97); border-bottom: 1px solid var(--color-border); backdrop-filter: saturate(180%) blur(6px);"
-    >
+    <header style="position: relative; z-index: 50; background: #fff;">
       <div
-        style="max-width: var(--content-width); margin: 0 auto; padding: var(--space-md) var(--space-lg); display: flex; align-items: center; justify-content: space-between; gap: var(--space-md);"
+        style="max-width: var(--content-width); margin: 0 auto; height: 89px; box-sizing: border-box; padding: 34px var(--space-lg) 0; display: flex; align-items: flex-start; justify-content: center; gap: 36px;"
       >
-        <a
-          href={withBase('/')}
-          style="font-family: var(--font-title); font-weight: 500; font-size: 1.15rem; color: var(--color-fg);"
-          >{settings.siteTitle}</a
-        >
         <nav>
           <ul
-            style="list-style: none; display: flex; align-items: center; gap: var(--space-lg); margin: 0; padding: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.06em;"
+            style="list-style: none; display: flex; align-items: flex-start; gap: 36px; margin: 0; padding: 0; font-size: 15px; font-weight: 500; line-height: 15px; text-transform: none;"
           >
             {
               nav.items.map((item) =>
                 item.children && item.children.length > 0 ? (
                   <li style="position: relative;">
                     <details class="nav-dd">
-                      <summary style="cursor: pointer; list-style: none; color: var(--color-fg);">
+                      <summary style="cursor: pointer; list-style: none; color: var(--color-nav);">
                         {item.label} ▾
                       </summary>
                       <ul style="list-style: none; position: absolute; right: 0; margin: var(--space-sm) 0 0; padding: var(--space-sm) 0; background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius); min-width: 180px; box-shadow: 0 8px 24px rgba(0,0,0,0.08);">
@@ -75,7 +68,7 @@ const contactHref = buildMailto({
                   </li>
                 ) : (
                   <li>
-                    <a href={withBase(item.url ?? '/')} style="color: var(--color-fg);">
+                    <a href={withBase(item.url ?? '/')} style="color: var(--color-nav);">
                       {item.label}
                     </a>
                   </li>
@@ -84,6 +77,19 @@ const contactHref = buildMailto({
             }
           </ul>
         </nav>
+      </div>
+      <!-- Harvard shield in a white circle, dipping from the navbar into the
+           hero image (the "fresh" theme's circular logo badge). -->
+      <div
+        style="position: absolute; left: 50%; top: 60px; transform: translateX(-50%); width: 50px; height: 50px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 60;"
+      >
+        <img
+          src={withBase('/images/harvard-shield.png')}
+          alt="Harvard shield"
+          width="32"
+          height="32"
+          style="width: 32px; height: 32px;"
+        />
       </div>
     </header>
 

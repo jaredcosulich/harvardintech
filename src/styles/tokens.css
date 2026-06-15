@@ -9,9 +9,11 @@
   --color-fg: #2e2e2f;
   --color-muted: #555555;
   --color-faint: #999999;
-  /* Harvard in Tech brand blue (Strikingly highlight color). */
-  --color-accent: #048ddc;
-  --color-accent-dark: #0372b0;
+  /* Harvard in Tech brand teal (Strikingly "fresh" theme highlight color).
+     Links/nav use the brighter cyan; buttons use the slightly darker teal. */
+  --color-accent: #0ca5a5;
+  --color-accent-dark: #098f8f;
+  --color-nav: #10d7d7;
   --color-border: #e3e7ea;
 
   --font-sans: 'Roboto', Helvetica, Arial, sans-serif;
@@ -89,12 +91,14 @@ h3 {
   display: inline-block;
   background: var(--color-accent);
   color: #fff;
-  font-family: var(--font-title);
+  font-family: var(--font-sans);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.85rem;
-  padding: 0.85rem 2rem;
-  border-radius: var(--radius);
+  letter-spacing: normal;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 12px 18px;
+  border-radius: 999px;
 }
 .s-btn:hover {
   background: var(--color-accent-dark);

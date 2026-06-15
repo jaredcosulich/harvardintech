@@ -221,6 +221,21 @@
         "**/*.tsx"
       ],
       "name": "tsc"
+    },
+    {
+      "command": "npx astro check",
+      "description": "Astro type-check (covers .astro files that tsc cannot)",
+      "excludePatterns": [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**"
+      ],
+      "filePatterns": [
+        "**/*.astro",
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "name": "astro-check"
     }
   ],
   "testParallelism": {

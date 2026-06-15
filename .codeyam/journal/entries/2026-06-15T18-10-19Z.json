@@ -1,0 +1,49 @@
+{
+  "timestamp": "2026-06-15T18:10:19Z",
+  "title": "cms: Fix ContactUs readonly type error + local astro check gate",
+  "type": "feature",
+  "userRequest": "## Summary\n\nCI failed during `astro check && astro build` with a TypeScript error in the\nisolated-components preview page: the `contactUsStates` object is declared\n`as const`, which makes its `socials` array a `readonly` tuple, and that is not\nassignable to `ContactUs`'s `socials: SocialLink[]` (mutable) prop. Fix the type\nerror by widening the component's contract to `readonly SocialLink[]` (it only\nreads/filters the array, never mutates it), which is the most durable fix and\nprevents recurrence for any future `as const` caller. Separately, close the gap\nthat let this reach CI: the local pre-commit static check runs `npx tsc --noEmit`\nscoped to `**/*.ts`/`**/*.tsx`, but `tsc` does not type-check `.astro` files at\nall — only `astro check` does. Add an `astro check` entry to\n`.codeyam/editor.json`'s `staticChecks` so the existing pre-commit hook runs the\nsame check CI runs whenever an `.astro` file is staged.\n\n## Key Decisions\n\n- **Widen `ContactUs` Props to `readonly SocialLink[]`** rather than dropping\n  `as const` on `contactUsStates` or casting at the render site. The component\n  only reads (`socials.filter(...)`), so accepting a readonly array is correct\n  and intention-revealing. It keeps the preview file consistent with its sibling\n  state blocks (which all use `as const`) and immunizes the component against the\n  same error from any future readonly/literal caller. Verified safe for the real\n  caller: `src/pages/index.astro` passes `settings.socials` (a mutable\n  `SocialLink[]`), which is assignable to `readonly SocialLink[]`.\n- **Add `astro check` as a configured static check** (not a new PR CI workflow).\n  The pre-commit hook already runs `editor.json` `staticChecks` matched by file\n  pattern and is single-sourced with the audit gate's `verify-build` engine, so\n  wiring `astro check` there catches `.astro` type errors at commit time — the\n  earliest possible point — using the exact check CI runs. The existing `tsc`\n  entry stays (fast feedback on pure-TS edits); the new entry covers what `tsc`\n  structurally cannot see.\n\n## Implementation\n\n### 1. Widen the `ContactUs` socials prop to readonly\n\n**File**: `src/components/landing/ContactUs.astro`\n\nChange the `Props` interface field from `socials: SocialLink[];` to\n`socials: readonly SocialLink[];`. No other change is needed — the component body\nonly does `socials.filter(...)`, which is valid on a readonly array. This makes\nthe `as const` `contactUsStates.Default.socials` tuple assignable at the render\nsite in `src/pages/isolated-components/[name].astro:264`, resolving the\n`ts(2322)` error. Leave `contactUsStates` `as const` as-is so it stays uniform\nwith the other preview state blocks.\n\n(Optional consistency note for the editor: `SiteSettings.socials` in\n`src/lib/site.ts` may also be widened to `readonly SocialLink[]`, but it is not\nrequired to fix the build and the real caller already passes a mutable array.\nPrefer the minimal component-level change unless a uniform readonly convention\nis desired.)\n\n### 2. Add an `astro check` static check so the pre-commit hook catches .astro errors\n\n**File**: `.codeyam/editor.json`\n\nAppend a second entry to the `staticChecks` array (keep the existing `tsc` entry):\n\n```json\n{\n  \"name\": \"astro-check\",\n  \"command\": \"npx astro check\",\n  \"description\": \"Astro type-check (covers .astro files that tsc cannot)\",\n  \"filePatterns\": [\"**/*.astro\", \"**/*.ts\", \"**/*.tsx\"],\n  \"excludePatterns\": [\"**/node_modules/**\", \"**/dist/**\", \"**/build/**\"]\n}\n```\n\nThis mirrors the command CI runs (`npm run build` → `astro check && astro build`).\nThe pre-commit hook in `.git/hooks/pre-commit` reads `staticChecks`, matches\nstaged files against `filePatterns`, and blocks the commit if the command exits\nnon-zero — so staging this same `[name].astro` change would now fail locally with\nthe identical `ts(2322)` instead of slipping through to CI. `.codeyam/editor.json`\nis not a constrained file (confirmed via `classify-constrained-files`), so this\nedit is safe.\n\n## Reused existing code\n\n- `SocialLink` interface from `src/lib/site.ts` — the type being widened to\n  readonly at the prop boundary.\n- `socialIconSrc` from `src/lib/socialIcon.ts` (glossary entry: `socialIconSrc`,\n  tested by `src/lib/socialIcon.test.ts`) — used by `ContactUs.astro` to resolve\n  each link's icon; unchanged, noted as the reused rendering helper.\n- Existing `staticChecks` mechanism in `.codeyam/editor.json` + the\n  `.git/hooks/pre-commit` runner — the new `astro check` entry plugs into this\n  existing pattern rather than adding new tooling.\n\n## Scenarios to Demonstrate\n\n- **Happy path**: `npm run build` (or `npx astro check`) passes with the widened\n  prop — zero errors, the `ContactUs` isolated-component preview renders the\n  three social icons (Twitter / E-mail / Facebook).\n- **Regression guard (the bug)**: staging a change to\n  `src/pages/isolated-components/[name].astro` while the type error is present\n  now trips the new `astro-check` static check in pre-commit and blocks the\n  commit locally — proving the gap is closed.\n- **Pure-TS edit**: staging only a `.ts` file still runs the fast `tsc` check\n  (and `astro check`), confirming the existing fast path is preserved.\n- **Real landing page unaffected**: `src/pages/index.astro` still passes\n  `settings.socials` to `ContactUs` and type-checks, confirming the widened prop\n  is backward-compatible with the mutable-array caller.",
+  "description": "Fixed the CI build failure (ts(2322)) by widening the ContactUs component socials prop from SocialLink[] to readonly SocialLink[], making the as const preview state in the isolated-components page assignable while remaining backward-compatible with the real landing-page caller. Separately closed the gap that let the error reach CI: added an astro-check static check (npx astro check) to .codeyam/editor.json so the pre-commit hook now type-checks .astro files locally — which tsc structurally cannot do. astro check passes with 0 errors.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/editor.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/cms-fix-contactus-readonly-and-astro-check-gate.md\t.codeyam/plans/completed/cms-fix-contactus-readonly-and-astro-check-gate.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/provider-auth-verdict.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/ContactUs.astro",
+      "status": "modified"
+    }
+  ],
+  "testResults": {
+    "total": 107,
+    "passed": 107,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 107,
+        "passed": 107
+      }
+    ]
+  }
+}

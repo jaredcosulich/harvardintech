@@ -10,7 +10,7 @@ import { socialIconSrc } from '../../lib/socialIcon';
 import type { SocialLink } from '../../lib/site';
 
 interface Props {
-  socials: SocialLink[];
+  socials: readonly SocialLink[];
   email: string;
 }
 const { socials, email } = Astro.props;

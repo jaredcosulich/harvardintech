@@ -17,6 +17,10 @@ yarn-error.log*
 # macOS
 .DS_Store
 
+# process crash dumps
+core
+core.*
+
 # editor
 .vscode/*
 !.vscode/extensions.json

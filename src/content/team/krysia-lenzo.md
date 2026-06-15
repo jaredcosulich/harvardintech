@@ -1,4 +1,5 @@
 ---
+active: false
 name: Krysia Lenzo
 order: 3
 photo: /images/team/krysia-lenzo.png

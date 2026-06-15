@@ -128,6 +128,7 @@ collections:
     folder: "src/content/team"
     create: true
     slug: "{{slug}}"
+    summary: "{{name}} — {{role}} · {{active | default(true) | ternary('On Board of Directors','Hidden from board')}}"
     fields:
       - { name: name, label: Name, widget: string }
       - { name: role, label: Role, widget: string }

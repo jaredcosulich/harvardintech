@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-06-15T19:06:19Z",
+  "title": "cms: Team list summary shows role + board status",
+  "type": "feature",
+  "userRequest": "## Summary\n\nIn the Sveltia CMS admin, the Team collection's entry-list (\"summary\") view\ncurrently shows only each member's name, so an editor can't tell a person's role\nor whether they appear in the public \"Board of Directors\" section without opening\nthe entry. Add a `summary` template to the `team` collection so each row reads\n`Name — Role · On Board of Directors / Hidden from board`. Because the site\ntreats a member as shown unless `active` is explicitly `false`\n(`filterActiveBoardMembers`, `src/lib/team.ts:47`), and none of the five existing\nteam files set `active` at all, also backfill `active: true` into those files so\nthe toggle is explicit everywhere: every current member is selected (shown), and\n*unchecking* the \"Show on Board of Directors\" toggle is what removes someone from\nthe public board. No schema change is needed — `role` and `active` already exist\nin the content schema, and `summary` is collection display metadata, not a field.\n\n## Key Decisions\n\n- **Add a `summary` template (single line) rather than custom columns.** A\n  `summary` string is a core Sveltia/Decap feature and answers the request\n  directly: role + board status on one line per row. It needs no schema change\n  and doesn't touch the `astro_cms_config_fields_subset_of_content_schema`\n  contract (summary is metadata, not a field).\n- **Backfill `active: true` into all five existing team files** so \"selected =\n  shown, unselected = hidden\" is true and explicit for the current roster. The\n  CMS boolean widget already has `default: true` (config.yml:148), so anything\n  created/saved through the CMS already writes `active: true`; the backfill brings\n  the five legacy files (which omit the key) into the same explicit state. This\n  matches the user's intent: the current members are all active, and unselecting\n  the toggle removes a member from the board.\n- **Keep the existing `filterActiveBoardMembers` semantics (`active !== false`)\n  unchanged.** It already means \"shown unless explicitly false,\" which is exactly\n  the desired toggle behavior once entries carry an explicit `active`. Use\n  `default(true)` in the summary template so the CMS label stays correct even for\n  any future entry that omits `active`, keeping the label single-sourced with the\n  site's filter logic rather than drifting from it.\n\n## Implementation\n\n### 1. Add a summary line to the Team collection\n\n**File**: `public/admin/editor/config.yml`\n\nOn the `team` collection (the block starting at `- name: team`, config.yml:126),\nadd a `summary` key alongside `slug`:\n\n```yaml\n  - name: team\n    label: \"Team\"\n    folder: \"src/content/team\"\n    create: true\n    slug: \"{{slug}}\"\n    summary: \"{{name}} — {{role}} · {{active | default(true) | ternary('On Board of Directors','Hidden from board')}}\"\n    fields:\n      ...\n```\n\nThe `default(true)` step mirrors `filterActiveBoardMembers` (`active !== false`),\nso a member whose `active` is absent or `true` reads \"On Board of Directors\" and\nonly an explicit `active: false` reads \"Hidden from board.\" Leave all existing\n`fields` untouched.\n\n### 2. Backfill `active: true` into the existing team entries\n\n**Files**:\n- `src/content/team/ben-wei.md`\n- `src/content/team/jessica-li.md`\n- `src/content/team/krysia-lenzo.md`\n- `src/content/team/nadia-eldeib.md`\n- `src/content/team/peter-boyce.md`\n\nAdd `active: true` to each file's frontmatter (none currently set it). This is a\ndata edit only — it makes the current \"shown\" state explicit and gives each row a\ntruthful board-status label without changing what renders on the public site\n(all five already render today via the absent-means-shown default).\n\n## Reused existing code\n\n- `filterActiveBoardMembers` from `src/lib/team.ts` (glossary entry:\n  `filterActiveBoardMembers`, tested by `src/lib/team.test.ts`) — the\n  `active !== false` filter whose semantics the summary's `default(true) |\n  ternary(...)` label is kept consistent with. Unchanged by this plan.\n- The `team` collection's existing `active` boolean field with `default: true`\n  in `public/admin/editor/config.yml` (the \"Show on Board of Directors\" toggle) —\n  reused as-is; this plan only adds the list-view label and backfills the legacy\n  entries.\n\n## Scenarios to Demonstrate\n\n- **All current members active**: the CMS Team list shows all five entries as\n  `Name — Role · On Board of Directors` after backfill.\n- **A hidden member**: an entry with `active: false` shows `Name — Role · Hidden\n  from board` in the list and does not appear in the public Board of Directors\n  section on the rendered site.\n- **Absent-active safety**: an entry created before the backfill (no `active`\n  key) still reads \"On Board of Directors\", matching `filterActiveBoardMembers`'s\n  shown-unless-false rule — proving the label can't disagree with the site.\n- **Newly created member**: creating a team entry in the CMS writes\n  `active: true` via the widget default and immediately reads \"On Board of\n  Directors\" in the list.",
+  "description": "Added a summary template to the Sveltia CMS Team collection so each entry-list row reads \"Name — Role · On Board of Directors / Hidden from board\" using active | default(true) | ternary(...), mirroring the site filterActiveBoardMembers (active !== false) rule — no schema change. Backfilled active: true into all five team content files so the board-status state is explicit, and updated the two board scenario seeds (board-of-directors all-active; board-with-members-hidden 3 active + 2 active:false) to faithfully exercise both label states. No public-render change: all five already rendered via the absent-means-shown default.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/cms-team-summary-role-and-board-status.md\t.codeyam/plans/completed/cms-team-summary-role-and-board-status.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-board-of-directors.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-board-with-members-hidden.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/provider-auth-verdict.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": "public/admin/editor/config.yml",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/ben-wei.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/jessica-li.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/krysia-lenzo.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/nadia-eldeib.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/peter-boyce.md",
+      "status": "modified"
+    }
+  ],
+  "testResults": {
+    "total": 107,
+    "passed": 107,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 107,
+        "passed": 107
+      }
+    ]
+  }
+}

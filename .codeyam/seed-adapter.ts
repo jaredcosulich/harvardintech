@@ -48,7 +48,16 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
-// codeyam-adapter-version: 4
+// codeyam-adapter-version: 5
+//
+// v5: scenario seeds write into a *sandbox* copy of the content/data under
+// `.codeyam/tmp/content-sandbox/` instead of the committed production source.
+// Before each seed the sandbox is re-initialised from production (so unseeded
+// collections show real content and no scenario leaks into the next), then the
+// seeded collections are cleared + rewritten inside the sandbox. `src/content`
+// and `src/data` are never modified. The Astro app reads the sandbox in dev via
+// `CODEYAM_CONTENT_ROOT`/`CODEYAM_DATA_ROOT` (see `astro.config.mjs`); both
+// sides agree on the `.codeyam/tmp/content-sandbox` convention.
 
 /**
  * Load `.env*` files into `process.env` in canonical precedence order:
@@ -134,6 +143,48 @@ export function resolveDataDir(projectRoot: string): string {
     // No stack.json (or unreadable) — fall back to the convention.
   }
   return 'src/data';
+}
+
+/** Sandbox convention shared with `astro.config.mjs`: scenario seeds land here,
+ * never in the committed `src/content`/`src/data`. Relative to the project root. */
+const SANDBOX_REL = path.join('.codeyam', 'tmp', 'content-sandbox');
+
+/** Absolute sandbox content/data roots for a project. */
+export function resolveSandboxDirs(projectRoot: string): {
+  sandboxContent: string;
+  sandboxData: string;
+} {
+  return {
+    sandboxContent: path.join(projectRoot, SANDBOX_REL, 'content'),
+    sandboxData: path.join(projectRoot, SANDBOX_REL, 'data'),
+  };
+}
+
+/**
+ * Re-initialise the sandbox from the committed production content/data: wipe the
+ * sandbox dirs and copy `prodContent`→sandbox/content, `prodData`→sandbox/data.
+ * Run before every seed so each scenario starts from real production state
+ * (collections it doesn't seed render production; nothing leaks scenario→scenario)
+ * and so the seed only ever writes inside `.codeyam/tmp/`.
+ */
+export function resetSandboxFromProduction(
+  projectRoot: string,
+  prodContent: string,
+  prodData: string,
+): { sandboxContent: string; sandboxData: string } {
+  const { sandboxContent, sandboxData } = resolveSandboxDirs(projectRoot);
+  for (const [src, dest] of [
+    [prodContent, sandboxContent],
+    [prodData, sandboxData],
+  ]) {
+    fs.rmSync(dest, { recursive: true, force: true });
+    if (fs.existsSync(src)) {
+      fs.cpSync(src, dest, { recursive: true });
+    } else {
+      fs.mkdirSync(dest, { recursive: true });
+    }
+  }
+  return { sandboxContent, sandboxData };
 }
 
 /** Serialize a scalar/array frontmatter value as YAML. */
@@ -256,8 +307,15 @@ export function main() {
   } catch {
     // import.meta.url unavailable — keep cwd.
   }
-  const contentRoot = path.join(projectRoot, resolveContentDir(projectRoot));
-  const dataRoot = path.join(projectRoot, resolveDataDir(projectRoot));
+  // Production source (committed) — read-only here, used as the copy source.
+  const prodContent = path.join(projectRoot, resolveContentDir(projectRoot));
+  const prodData = path.join(projectRoot, resolveDataDir(projectRoot));
+
+  // Seed writes go to a sandbox copy, never to the committed source. Reset the
+  // sandbox from production first so unseeded collections render real content
+  // and scenarios don't leak into one another.
+  const { sandboxContent: contentRoot, sandboxData: dataRoot } =
+    resetSandboxFromProduction(projectRoot, prodContent, prodData);
 
   const expectedKeys = Object.keys(seed).filter((k) => k !== '_auth');
   const expectedRows = expectedKeys.reduce((sum, k) => {

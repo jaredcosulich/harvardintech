@@ -1,21 +1,22 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import '../../styles/tokens.css';
 import { withBase } from '../../lib/url';
 
 // Static output needs every dynamic route enumerated at build time.
-// `getStaticPaths` turns each blog entry into a pre-rendered `/blog/<slug>` page.
+// `getStaticPaths` turns each blog entry into a pre-rendered `/blog/<id>` page.
+// Content Layer entries key on `id` (the file stem) — the old `slug`.
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: { post },
   }));
 }
 
 type Props = { post: CollectionEntry<'blog'> };
 const { post } = Astro.props as Props;
-const { Content } = await post.render();
+const { Content } = await render(post);
 ---
 
 <html lang="en">

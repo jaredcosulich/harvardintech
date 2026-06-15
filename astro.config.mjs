@@ -1,7 +1,58 @@
 // @ts-check
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
+
+// --- codeyam content sandbox ---------------------------------------------
+// The site's "database" is the committed markdown under `src/content/` and the
+// JSON singletons under `src/data/`. codeyam's seed adapter rewrites those per
+// scenario, so without isolation a capture/preview would overwrite the
+// committed production content. To prevent that, during `astro dev` (the dev
+// server codeyam previews and captures against) we point the app at a *sandbox*
+// copy under `.codeyam/tmp/content-sandbox/` and seed THAT, never `src/content`.
+//
+// A production `astro build` (and `astro check`) leaves the env vars unset, so
+// it reads `src/content`/`src/data` unchanged — GitHub Pages deploys are
+// unaffected. The seed adapter (`.codeyam/seed-adapter.ts`) re-initialises the
+// same sandbox from production before each seed, so per-scenario state never
+// leaks and production is never touched.
+const SANDBOX_REL = '.codeyam/tmp/content-sandbox';
+
+/** @param {string} projectRoot @returns {{ sandboxContent: string, sandboxData: string }} */
+function initContentSandbox(projectRoot) {
+  const prodContent = path.join(projectRoot, 'src/content');
+  const prodData = path.join(projectRoot, 'src/data');
+  const sandboxContent = path.join(projectRoot, SANDBOX_REL, 'content');
+  const sandboxData = path.join(projectRoot, SANDBOX_REL, 'data');
+
+  // Fresh copy of production → sandbox so the default (un-seeded) view renders
+  // the committed content. `force` keeps the markdown config (`config.ts` lives
+  // in src/content, but the loaders read `<root>/<collection>/`, so copying it
+  // along is harmless).
+  for (const [src, dest] of [
+    [prodContent, sandboxContent],
+    [prodData, sandboxData],
+  ]) {
+    fs.rmSync(dest, { recursive: true, force: true });
+    if (fs.existsSync(src)) fs.cpSync(src, dest, { recursive: true });
+    else fs.mkdirSync(dest, { recursive: true });
+  }
+
+  return { sandboxContent, sandboxData };
+}
+
+// Only redirect when actually running the dev server — `astro build`/`check`
+// (production + CI) must read the committed source.
+if (process.argv.includes('dev')) {
+  const root = process.cwd();
+  const { sandboxContent, sandboxData } = initContentSandbox(root);
+  // `??=` so an explicit override (e.g. a future codeyam engine that sets these)
+  // always wins over our default convention.
+  process.env.CODEYAM_CONTENT_ROOT ??= sandboxContent;
+  process.env.CODEYAM_DATA_ROOT ??= sandboxData;
+}
 
 // Astro static-site config for free GitHub Pages hosting.
 //

@@ -18,7 +18,7 @@ import ContactUs from '../components/landing/ContactUs.astro';
 
 const events = (await getCollection('events'))
   .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())
-  .map((e) => ({ slug: e.slug, ...e.data }));
+  .map((e) => ({ slug: e.id, ...e.data }));
 
 // Board of Directors — editable via the CMS `team` collection. Members toggled
 // off (`active: false`) are filtered out, then sorted by the `order` field so
@@ -26,7 +26,7 @@ const events = (await getCollection('events'))
 // empty the section falls back to the faithful board graphic.
 const board = sortBoardMembers(
   filterActiveBoardMembers(
-    (await getCollection('team')).map((m) => ({ slug: m.slug, ...m.data })),
+    (await getCollection('team')).map((m) => ({ slug: m.id, ...m.data })),
   ),
 );
 ---

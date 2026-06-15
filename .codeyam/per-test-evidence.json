@@ -117,10 +117,15 @@
   },
   "ADMIN_GATE_STORAGE_KEY › is the stable admin-unlocked key": {
     "file": "src/lib/adminGate.test.ts",
-    "lastRunAt": "2026-06-15T12:28:29.484163918+00:00",
+    "lastRunAt": "2026-06-15T13:05:08.178022624+00:00",
     "lastStatus": "pass",
-    "lastRunKind": "full",
+    "lastRunKind": "changed",
     "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-15T13:05:08.178022624+00:00",
+        "kind": "changed"
+      },
       {
         "status": "pass",
         "at": "2026-06-15T12:28:29.484163918+00:00",
@@ -2115,10 +2120,15 @@
   },
   "isPasscodeCorrect › accepts an exact match": {
     "file": "src/lib/adminGate.test.ts",
-    "lastRunAt": "2026-06-15T12:28:29.484163918+00:00",
+    "lastRunAt": "2026-06-15T13:05:08.178022624+00:00",
     "lastStatus": "pass",
-    "lastRunKind": "full",
+    "lastRunKind": "changed",
     "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-15T13:05:08.178022624+00:00",
+        "kind": "changed"
+      },
       {
         "status": "pass",
         "at": "2026-06-15T12:28:29.484163918+00:00",
@@ -2153,10 +2163,15 @@
   },
   "isPasscodeCorrect › is case-sensitive": {
     "file": "src/lib/adminGate.test.ts",
-    "lastRunAt": "2026-06-15T12:28:29.484163918+00:00",
+    "lastRunAt": "2026-06-15T13:05:08.178022624+00:00",
     "lastStatus": "pass",
-    "lastRunKind": "full",
+    "lastRunKind": "changed",
     "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-15T13:05:08.178022624+00:00",
+        "kind": "changed"
+      },
       {
         "status": "pass",
         "at": "2026-06-15T12:28:29.484163918+00:00",
@@ -2191,10 +2206,15 @@
   },
   "isPasscodeCorrect › never matches an empty expected passcode": {
     "file": "src/lib/adminGate.test.ts",
-    "lastRunAt": "2026-06-15T12:28:29.484163918+00:00",
+    "lastRunAt": "2026-06-15T13:05:08.178022624+00:00",
     "lastStatus": "pass",
-    "lastRunKind": "full",
+    "lastRunKind": "changed",
     "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-15T13:05:08.178022624+00:00",
+        "kind": "changed"
+      },
       {
         "status": "pass",
         "at": "2026-06-15T12:28:29.484163918+00:00",
@@ -2229,10 +2249,15 @@
   },
   "isPasscodeCorrect › rejects a wrong value": {
     "file": "src/lib/adminGate.test.ts",
-    "lastRunAt": "2026-06-15T12:28:29.484163918+00:00",
+    "lastRunAt": "2026-06-15T13:05:08.178022624+00:00",
     "lastStatus": "pass",
-    "lastRunKind": "full",
+    "lastRunKind": "changed",
     "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-15T13:05:08.178022624+00:00",
+        "kind": "changed"
+      },
       {
         "status": "pass",
         "at": "2026-06-15T12:28:29.484163918+00:00",
@@ -2267,10 +2292,15 @@
   },
   "isPasscodeCorrect › trims surrounding whitespace on the expected value": {
     "file": "src/lib/adminGate.test.ts",
-    "lastRunAt": "2026-06-15T12:28:29.484163918+00:00",
+    "lastRunAt": "2026-06-15T13:05:08.178022624+00:00",
     "lastStatus": "pass",
-    "lastRunKind": "full",
+    "lastRunKind": "changed",
     "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-15T13:05:08.178022624+00:00",
+        "kind": "changed"
+      },
       {
         "status": "pass",
         "at": "2026-06-15T12:28:29.484163918+00:00",
@@ -2305,10 +2335,15 @@
   },
   "isPasscodeCorrect › trims surrounding whitespace on the input": {
     "file": "src/lib/adminGate.test.ts",
-    "lastRunAt": "2026-06-15T12:28:29.484163918+00:00",
+    "lastRunAt": "2026-06-15T13:05:08.178022624+00:00",
     "lastStatus": "pass",
-    "lastRunKind": "full",
+    "lastRunKind": "changed",
     "recentStatuses": [
+      {
+        "status": "pass",
+        "at": "2026-06-15T13:05:08.178022624+00:00",
+        "kind": "changed"
+      },
       {
         "status": "pass",
         "at": "2026-06-15T12:28:29.484163918+00:00",

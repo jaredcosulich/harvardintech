@@ -11,8 +11,8 @@ Page content lives in typed
 runtime database — so there is no server to run. A built-in **CRM** edits those
 same files: a dashboard at **`/admin`** (live content counts) fronting the
 [Sveltia CMS](https://github.com/sveltia/sveltia-cms) editor at
-**`/admin/editor/`**. See [`CMS_SETUP.md`](./CMS_SETUP.md) for the three sign-in
-paths (local, GitHub OAuth, shared password).
+**`/admin/editor/`**. See [`CMS_SETUP.md`](./CMS_SETUP.md) for the two sign-in
+paths: **Local** and **Token** (paste a fine-grained GitHub PAT).
 
 ## Setup
 
@@ -41,7 +41,6 @@ src/
   styles/tokens.css           # design tokens (brand blue, Roboto, spacing)
 public/admin/editor/          # Sveltia CMS app (index.html + config.yml) served at /admin/editor/
 public/images/                # hero/section backgrounds, board graphic, event gallery
-cms-auth-worker/              # optional Cloudflare Worker for the password sign-in path
 ```
 
 ## Deploy to GitHub Pages

@@ -7,9 +7,10 @@
 // GitHub Pages site: the expected passcode is injected at build time and ships
 // inside the public HTML, so anyone who reads source can see it. Its only job is
 // to keep the dashboard from being stumbled into by casual visitors. The real
-// write-access boundary is the Cloudflare Worker in cms-auth-worker/, which
-// holds the GitHub token server-side and is the thing that actually gates
-// commits. Treat unlocking here as "don't show this to a stranger," nothing more.
+// write-access boundary is each editor's GitHub token (Contents: Read & Write),
+// pasted into Sveltia's "Sign in with Token" at /admin/editor/ — without a valid
+// token no commit can land. Treat unlocking here as "don't show this to a
+// stranger," nothing more.
 
 /** sessionStorage key set to '1' once a visitor has entered the correct passcode. */
 export const ADMIN_GATE_STORAGE_KEY = 'admin-unlocked';

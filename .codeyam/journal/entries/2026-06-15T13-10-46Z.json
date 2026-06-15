@@ -1,0 +1,173 @@
+{
+  "timestamp": "2026-06-15T13:10:46Z",
+  "title": "cms: Token-only self-serve sign-in (remove password Worker)",
+  "type": "feature",
+  "userRequest": "## Summary\n\nMake Sveltia's **\"Sign in with Token\"** the single, well-documented hosted\nediting path so a non-technical editor can set themselves up with nothing but a\nGitHub account — no Cloudflare account, no Worker, no service to run. The editor\ncreates a fine-grained GitHub Personal Access Token (Contents: Read & Write on\nthis repo), clicks **Sign in with Token** at the live `/admin/editor/` URL, and\npastes it; the token is stored locally in their browser and used to commit\ndirectly to the repo. We point `config.yml` at the plain GitHub backend (drop\nthe `base_url`/`auth_endpoint` placeholder that pointed at the never-deployed\nWorker) and set `auth_methods: [token]` so the login screen shows **only** the\n\"Sign in with Token\" button — no dead OAuth button to confuse anyone. We delete\nthe `cms-auth-worker/` directory and the password path entirely,\nrewrite the in-product **Signing in** guide on `/admin` to a clear step-by-step\nfor the Token path (plus Local for the repo owner), and bring `README.md` and\n`CMS_SETUP.md` down to just those two paths.\n\n## Key Decisions\n\n- **Token auth over OAuth/password Worker** — Sveltia (unlike Decap) ships a\n  built-in \"Sign in with Token\" flow that needs no relay and no external\n  service, which is exactly the \"set up myself, nothing to run\" goal. The\n  password Worker required a Cloudflare account + deploy + secret rotation and\n  was never actually deployed (the `base_url` still held a `<your-subdomain>`\n  placeholder), so removing it deletes dead, confusing config rather than a\n  working feature.\n- **Hide the OAuth button with `auth_methods: [token]`** — rather than document\n  around the dead \"Sign in with GitHub\" button (which, with no relay, would fail\n  if clicked), Sveltia's `auth_methods` backend option lets us restrict the login\n  screen to token sign-in only. Setting `auth_methods: [token]` removes the OAuth\n  button entirely, so the editor sees a single, unambiguous **\"Sign in with\n  Token\"** action. The array must contain at least one method, so `[token]` is\n  the minimal valid value.\n- **Fine-grained PAT, least privilege** — the documented token is a fine-grained\n  PAT scoped to **only this repo** with **Contents: Read & Write** (the single\n  permission the CMS needs). Editors set their own expiry. No classic\n  broad-scope tokens.\n- **Keep the `/admin` dashboard passcode gate (`AdminGate.astro`) as-is** — it's\n  a separate \"don't stumble into the dashboard\" deterrent, unrelated to CMS auth.\n  Only its code comment, which currently calls the Worker \"the real write-access\n  boundary,\" needs updating: with the Worker gone, the real write boundary is\n  each editor's GitHub token.\n- **Leave `local_backend: true`** — the Local path (repo owner runs a dev server,\n  \"Work with Local Repository\") stays as the zero-auth path for the owner. Only\n  the hosted **password** path is removed; Local and Token remain.\n- **Do not touch `.codeyam/plans/completed/*`** — those are historical records\n  that legitimately describe the old password Worker; they stay as-is.\n\n## Implementation\n\n### 1. Point the CMS backend at token auth\n\n**File**: `public/admin/editor/config.yml`\n\nIn the `backend:` block, remove the `base_url` and `auth_endpoint` lines (the\nones pointing at `https://cms-auth-worker.<your-subdomain>.workers.dev` /\n`auth`) and all the \"Hosted + password\" / \"Path A / Path B\" comment scaffolding\naround them. Leave the backend as:\n\n```yaml\nbackend:\n  name: github\n  repo: jaredcosulich/harvardintech\n  branch: main\n  # Login screen shows only \"Sign in with Token\" (no unwired OAuth button).\n  auth_methods: [token]\n```\n\nRewrite the explanatory comment above `backend:` so it documents the two\nremaining paths only:\n- **Token (hosted)** — editors click \"Sign in with Token\" at `/admin/editor/`\n  and paste a fine-grained GitHub PAT (Contents: Read & Write on this repo);\n  Sveltia stores it locally and commits with it. No relay, no service.\n- **Local** — `local_backend: true` (kept, further down) covers the owner's\n  \"Work with Local Repository\" flow on a dev server.\n\nKeep `local_backend: true`, `media_folder`, `public_folder`, and the entire\n`collections:` block unchanged (the\n`astro_cms_config_fields_subset_of_content_schema` contract still applies — do\nnot alter field names).\n\n### 2. Update the editor host page comment\n\n**File**: `public/admin/editor/index.html`\n\nIn the HTML comment, change the line that lists the auth backends (\"GitHub\nOAuth, a password-gated Cloudflare Worker, or local-repository mode\") to\ndescribe the two real options: **token sign-in** (paste a GitHub PAT) or\n**local-repository mode**. Remove the Cloudflare Worker mention. No markup or\nscript changes — only the comment.\n\n### 3. Rewrite the in-product \"Signing in\" guide\n\n**File**: `src/components/admin/SignInGuide.astro`\n\nReplace the current Password/Local/OAuth bullets with a clear, editor-friendly\nwalkthrough of the **Token** path as the primary one, plus **Local** for the\nowner. Keep the existing section styling/tokens. Content to convey:\n\n- **Sign in with a GitHub token (live site)** — numbered steps a non-technical\n  editor can follow:\n  1. Have a GitHub account with write access to `jaredcosulich/harvardintech`.\n  2. On GitHub: **Settings → Developer settings → Fine-grained tokens →\n     Generate new token**. Repository access: **Only select repositories →\n     jaredcosulich/harvardintech**. Permissions: **Repository permissions →\n     Contents → Read and write**. Choose an expiry. Generate and copy the token.\n  3. At `/admin/editor/`, click **\"Sign in with Token\"** (the only button shown,\n     because `auth_methods: [token]` is set), paste the token. It's stored in\n     your browser only; edits commit straight to the repo and the site\n     redeploys.\n- **Local (repo owner)** — run a dev server and choose \"Work with Local\n  Repository\"; no account, no token.\n- Update the header comment block at the top of the file (which currently says\n  the wired path is Password backed by `cms-auth-worker/`) to reflect Token +\n  Local. Point to `CMS_SETUP.md` for the authoritative steps.\n\nRemove every reference to Password / `cms-auth-worker/` from this component.\n\n### 4. Refresh the AdminGate comment\n\n**File**: `src/components/admin/AdminGate.astro`\n\nLeave the passcode-gate behavior unchanged. Update only the doc comment near the\ntop that reads \"the Cloudflare Worker in cms-auth-worker/ is the real\nwrite-access boundary\" — replace it with: the real write-access boundary is now\neach editor's GitHub token (Contents: Read & Write), entered via Sveltia's \"Sign\nin with Token\"; this passcode is only a deterrent against stumbling into the\ndashboard.\n\n### 5. Delete the password Worker\n\n**Remove directory**: `cms-auth-worker/` (both `worker.js` and `wrangler.toml`).\n\nThe password sign-in path is gone, so the Worker, its `CMS_PASSWORD`/\n`GITHUB_TOKEN` secrets, and its `wrangler` config are no longer referenced by\nanything. Confirm no remaining source/doc file references `cms-auth-worker`\nafter the edits in this plan (the only legitimate leftovers are under\n`.codeyam/plans/completed/`, which we intentionally don't touch).\n\n### 6. Trim README to Local + Token\n\n**File**: `README.md`\n\n- In the intro paragraph, change the auth description from \"the three sign-in\n  paths (local, GitHub OAuth, shared password)\" to the two real paths: **Local**\n  and **Token (paste a GitHub PAT)**.\n- In the \"Project shape\" tree, remove the `cms-auth-worker/` line.\n- Keep the rest (CRM dashboard at `/admin`, editor at `/admin/editor/`) intact.\n\n### 7. Rewrite CMS_SETUP.md to two paths\n\n**File**: `CMS_SETUP.md`\n\n- Remove the \"Build agent: ask first\" three-path callout and the GitHub-OAuth /\n  Password sections (`### 1. Hosted + GitHub OAuth`, `### 2. Hosted + password`)\n  and all `wrangler` / `CMS_PASSWORD` / `cms-auth-worker/` instructions.\n- Replace the \"Choosing an editing path\" table with a two-row table: **Token\n  (hosted)** and **Local**.\n- Write a primary **\"Hosted editing with a GitHub token\"** section: the\n  fine-grained PAT steps (repo-scoped, Contents: Read & Write), the \"Sign in with\n  Token\" button, the local-storage / per-editor note, and token expiry/rotation\n  guidance. Note that `auth_methods: [token]` in `config.yml` is what keeps the\n  login screen token-only (no OAuth button), and mention how to re-enable OAuth\n  later (add a relay + `oauth` to `auth_methods`) for anyone who wants it.\n- Keep the **Local** section (already accurate: `local_backend: true`, dev\n  server, \"Work with Local Repository\").\n- Keep \"Keeping the schema honest\" and \"Editing without the CMS\" unchanged.\n\n## Reused existing code\n\n- `SignInGuide.astro` from `src/components/admin/SignInGuide.astro` — rewritten\n  in place; already composed into `/admin` via `src/pages/admin/index.astro`.\n- `AdminGate.astro` from `src/components/admin/AdminGate.astro` — comment-only\n  update; passcode-gate logic (`src/lib/adminGate.ts`, `ADMIN_GATE_STORAGE_KEY`)\n  reused unchanged.\n- `DashboardSummary.astro` / `CollectionCountGrid.astro` / `adminDashboard.ts` —\n  unchanged; the dashboard layout and `editorHref` wiring stay as-is.\n- `config.yml` `collections:` block + `astro_cms_config_fields_subset_of_content_schema`\n  contract — preserved; only the `backend:` block changes.\n\n## Scenarios to Demonstrate\n\n- **`/admin` dashboard, \"Signing in\" guide** — shows the Token-path numbered\n  steps and the Local fallback, with no Password/Worker mentions.\n- **Editor login screen** — editor reaches `/admin/editor/` and sees a single\n  \"Sign in with Token\" button (OAuth hidden via `auth_methods: [token]`).\n- **Token guide, empty/first-time editor** — a brand-new editor with only a\n  GitHub account can follow the steps end-to-end (PAT creation → paste → commit).\n- **Owner Local path** — dev server + \"Work with Local Repository\" still works\n  with no token.\n- **Docs consistency** — `README.md` and `CMS_SETUP.md` describe exactly two\n  paths (Token, Local); a repo-wide search for `cms-auth-worker` / `CMS_PASSWORD`\n  finds nothing outside `.codeyam/plans/completed/`.",
+  "description": "Replaced the never-deployed password-Worker CMS sign-in path with Sveltia's built-in token sign-in. config.yml now points at the plain GitHub backend with auth_methods: [token], so the live login screen shows only \"Sign in with Token\" (no dead OAuth button); the /admin \"Signing in\" guide was rewritten to a fine-grained-PAT walkthrough (repo-scoped, Contents: Read & Write) plus the Local owner path; the cms-auth-worker/ directory was deleted; and README.md / CMS_SETUP.md were trimmed to the two real paths (Token, Local). AdminGate/adminGate comments now name the GitHub token as the real write boundary.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/.last-reconcile.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/cms-token-only-self-serve-signin.md\t.codeyam/plans/completed/cms-token-only-self-serve-signin.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/reconciliation-log.jsonl",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/admin-dashboard-empty.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/admin-dashboard-populated.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/admin-dashboard-empty--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/admin-dashboard-populated--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-run-marker.json",
+      "status": "modified"
+    },
+    {
+      "path": "CMS_SETUP.md",
+      "status": "modified"
+    },
+    {
+      "path": "README.md",
+      "status": "modified"
+    },
+    {
+      "path": "cms-auth-worker/worker.js",
+      "status": "deleted"
+    },
+    {
+      "path": "cms-auth-worker/wrangler.toml",
+      "status": "deleted"
+    },
+    {
+      "path": "public/admin/editor/config.yml",
+      "status": "modified"
+    },
+    {
+      "path": "public/admin/editor/index.html",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/admin/AdminGate.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/admin/SignInGuide.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/blog/welcome.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/chapters/japan.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/chapters/la.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/chapters/nyc.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/chapters/san-francisco.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/events/founders-investors-mixer-sf.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/events/harvard-in-tech-summit-2026.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/events/women-in-tech-panel.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/pages/about.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/team/ben-wei.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/team/jessica-li.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/team/krysia-lenzo.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/team/nadia-eldeib.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/content/team/peter-boyce.md",
+      "status": "deleted"
+    },
+    {
+      "path": "src/lib/adminGate.ts",
+      "status": "modified"
+    }
+  ],
+  "testResults": {
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 7,
+        "passed": 7
+      }
+    ]
+  }
+}

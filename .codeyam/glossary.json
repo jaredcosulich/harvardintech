@@ -122,15 +122,6 @@
     "testFile": "src/lib/adminDashboard.test.ts"
   },
   {
-    "description": "Escapes HTML special characters for safe interpolation into the CMS auth worker's HTML responses.",
-    "filePath": "cms-auth-worker/worker.js",
-    "name": "escapeHtml",
-    "untestabilityReason": {
-      "justification": "Template CMS auth worker shipped by the astro-github-pages scaffold; not part of the landing-page feature.",
-      "kind": "scaffold"
-    }
-  },
-  {
     "description": "Formats an event date as a long en-US date string (e.g. 'September 24, 2026') for display on event cards.",
     "filePath": "src/lib/events.ts",
     "name": "formatEventDate",
@@ -147,33 +138,6 @@
     "filePath": "src/lib/gallery.ts",
     "name": "galleryStaggerDelay",
     "testFile": "src/lib/gallery.test.ts"
-  },
-  {
-    "description": "Handles the password-form submission in the CMS auth worker's OAuth handshake.",
-    "filePath": "cms-auth-worker/worker.js",
-    "name": "handlePasswordSubmit",
-    "untestabilityReason": {
-      "justification": "Template CMS auth worker shipped by the astro-github-pages scaffold; not part of the landing-page feature.",
-      "kind": "scaffold"
-    }
-  },
-  {
-    "description": "Renders the CMS auth worker's OAuth handshake page.",
-    "filePath": "cms-auth-worker/worker.js",
-    "name": "handshakePage",
-    "untestabilityReason": {
-      "justification": "Template CMS auth worker shipped by the astro-github-pages scaffold; not part of the landing-page feature.",
-      "kind": "scaffold"
-    }
-  },
-  {
-    "description": "Builds an HTML Response object for the CMS auth worker.",
-    "filePath": "cms-auth-worker/worker.js",
-    "name": "htmlResponse",
-    "untestabilityReason": {
-      "justification": "Template CMS auth worker shipped by the astro-github-pages scaffold; not part of the landing-page feature.",
-      "kind": "scaffold"
-    }
   },
   {
     "description": "Idempotent, SSR-safe DOM wiring for the Event Gallery fade-in: reveals every tile immediately when galleryRevealImmediately says to, otherwise observes each tile via IntersectionObserver and adds the in-view class as it scrolls into the viewport, unobserving once revealed.",
@@ -210,15 +174,6 @@
     "filePath": "src/lib/parallax.ts",
     "name": "parallaxOffset",
     "testFile": "src/lib/parallax.test.ts"
-  },
-  {
-    "description": "Renders the CMS auth worker's password-gate form page.",
-    "filePath": "cms-auth-worker/worker.js",
-    "name": "passwordFormPage",
-    "untestabilityReason": {
-      "justification": "Template CMS auth worker shipped by the astro-github-pages scaffold; not part of the landing-page feature.",
-      "kind": "scaffold"
-    }
   },
   {
     "description": "Returns a new array of board members ordered by ascending order field (missing order treated as 0), so the public Board of Directors matches the curated sequence regardless of on-disk file order.",

@@ -4,8 +4,9 @@
 //
 // DETERRENT, NOT SECURITY (see src/lib/adminGate.ts for the full caveat): on a
 // static GitHub Pages site the passcode ships in the HTML. This only keeps the
-// dashboard from being stumbled into; the Cloudflare Worker in cms-auth-worker/
-// is the real write-access boundary.
+// dashboard from being stumbled into. The real write-access boundary is each
+// editor's GitHub token (Contents: Read & Write), entered via Sveltia's "Sign in
+// with Token" — without a valid token no commit can land.
 //
 // PRODUCTION-ONLY. The gate's blocking script is emitted only for production
 // builds (`import.meta.env.PROD`). On a local dev server / the codeyam preview

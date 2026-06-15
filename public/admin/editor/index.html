@@ -19,10 +19,9 @@
       itself is the CRM dashboard (src/pages/admin/index.astro), which links here.
 
       The script auto-initialises on load — the same convention Decap uses — so
-      no inline init code is needed here. The auth backend (GitHub OAuth, a
-      password-gated Cloudflare Worker, or local-repository mode) is selected
-      entirely in config.yml; see CMS_SETUP.md for the three paths and how the
-      build agent wires the one you pick.
+      no inline init code is needed here. The auth backend (token sign-in — paste
+      a fine-grained GitHub PAT — or local-repository mode) is selected entirely
+      in config.yml; see CMS_SETUP.md for the two paths.
 
       Pinned to the v0 major from the CDN for reproducible scaffolds.
     -->

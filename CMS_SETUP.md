@@ -9,11 +9,6 @@ the static-hosting model is unchanged: GitHub Pages still serves plain HTML, and
 codeyam can still seed the same files per scenario through the
 `content-collection` seed adapter.
 
-> **Build agent: ask first.** Before wiring auth, ask the user **which editing
-> path(s) they want** — the three below can coexist (e.g. local for yourself +
-> hosted OAuth for a teammate). Only the "Hosted + password" path adds a service
-> outside GitHub Pages. Wire exactly what they pick; don't assume.
-
 ## The admin app
 
 - `src/pages/admin/index.astro` renders the CRM **dashboard** at `/admin` — a
@@ -23,64 +18,47 @@ codeyam can still seed the same files per scenario through the
   `/admin/editor/` (Astro serves `public/` verbatim — works live and locally).
 - `public/admin/editor/config.yml` is the Decap/Sveltia config. Its `collections`
   block mirrors `src/content/config.ts`; see **Keeping the schema honest** below.
-  The shipped default is **Path 2 (Hosted + password)** — the `backend:` block
-  carries `base_url` + `auth_endpoint: auth` pointing at the `cms-auth-worker/`
-  Worker. Replace the `<your-subdomain>` placeholder with your deployed Worker's
-  hostname (see below) before hosted sign-in will work.
+  The `backend:` block points at the plain GitHub backend with
+  `auth_methods: [token]`, so the live login screen shows a single **"Sign in
+  with Token"** button and nothing extra to deploy.
 
 ## Choosing an editing path
 
 | Path | Editors need | Extra service | Best for |
 | --- | --- | --- | --- |
-| **GitHub OAuth** | a GitHub account with repo write | an OAuth relay (free) | teammates; per-user commit attribution |
-| **Password** | the shared password | one free Cloudflare Worker | non-technical editors, no GitHub account |
+| **Token (hosted)** | a GitHub account with repo write + a fine-grained PAT | none | editors working on the live site |
 | **Local** | the repo cloned locally | none | yourself / quick edits |
 
-### 1. Hosted + GitHub OAuth
+### 1. Hosted editing with a GitHub token
 
-Editors open the editor at `/admin/editor/` (linked from the `/admin` dashboard)
-on the live site and click "Sign in with GitHub". GitHub Pages can't run the
-OAuth callback itself, so point the CMS at an OAuth relay.
+Sveltia ships a built-in **"Sign in with Token"** flow that needs no relay and no
+service: editors paste a fine-grained GitHub Personal Access Token, Sveltia
+stores it in their browser, and commits go straight to the repo. Because
+`auth_methods: [token]` is set in `config.yml`, the login screen shows only that
+one button (no unwired "Sign in with GitHub").
 
-**Pre-flight:** a GitHub account with write access to this repo.
+**Pre-flight:** a GitHub account with write access to
+`jaredcosulich/harvardintech`.
 
-1. Register a GitHub OAuth App (Settings → Developer settings → OAuth Apps).
-   Set the callback URL to your relay's callback (Sveltia's hosted helper, or a
-   self-hosted relay such as `sveltia/sveltia-cms-auth` on Cloudflare Workers).
-2. In `public/admin/editor/config.yml`, under `backend:` add:
-   ```yaml
-   base_url: https://<your-oauth-relay>
-   auth_endpoint: oauth/authorize   # match your relay's route
-   ```
-3. Store the OAuth App's **client secret** wherever the relay expects it (a
-   Worker secret for the self-hosted relay) — never in this repo.
+1. On GitHub, go to **Settings → Developer settings → Fine-grained tokens →
+   Generate new token**. Set **Repository access → Only select repositories →
+   jaredcosulich/harvardintech** and **Repository permissions → Contents → Read
+   and write** (the single permission the CMS needs). Choose an expiry, generate,
+   and copy the token.
+2. Open `/admin/editor/` on the live site (linked from the `/admin` dashboard),
+   click **"Sign in with Token"**, and paste the token.
+3. Edit content; your changes commit straight to `src/content/` under your own
+   GitHub identity and the site redeploys. The token lives in your browser only
+   (local storage) — each editor uses their own, and you revoke or rotate it from
+   GitHub's token settings when its expiry approaches.
 
-### 2. Hosted + password
+> **Want OAuth instead?** "Sign in with Token" is the zero-infrastructure path.
+> To offer a one-click "Sign in with GitHub" button later, stand up an OAuth
+> relay (Sveltia's hosted helper or a self-hosted `sveltia/sveltia-cms-auth`
+> Worker), add `base_url`/`auth_endpoint` to the `backend:` block, and add
+> `oauth` to `auth_methods` (e.g. `auth_methods: [token, oauth]`).
 
-The exact "password at the same domain" UX, backed by the minimal Cloudflare
-Worker shipped in **`cms-auth-worker/`**. This is the one path that adds a
-non-GitHub free service.
-
-**Pre-flight:** a free Cloudflare account; a fine-grained GitHub PAT scoped to
-**Contents: Read & Write on this repo only**.
-
-1. Deploy the Worker:
-   ```bash
-   cd cms-auth-worker
-   npx wrangler deploy
-   npx wrangler secret put CMS_PASSWORD   # the shared editor password
-   npx wrangler secret put GITHUB_TOKEN   # the fine-grained PAT
-   ```
-2. In `public/admin/editor/config.yml`, under `backend:` add:
-   ```yaml
-   base_url: https://<name>.<subdomain>.workers.dev
-   auth_endpoint: auth
-   ```
-3. Editors open `/admin/editor/`, get a password prompt, and commit as the PAT's
-   identity. See the security trade-off documented at the top of
-   `cms-auth-worker/worker.js` (one shared identity, no per-user attribution).
-
-### 3. Local
+### 2. Local
 
 Always available, no auth, no server.
 
@@ -109,8 +87,8 @@ cancel/incorrect redirects to the public home.
 - **It is a deterrent, not server-enforced security.** On static GitHub Pages the
   passcode ships inside the public HTML, so anyone reading source can find it. It
   only keeps casual visitors out of the dashboard. The real write-access boundary
-  is the password Worker above, which holds the GitHub token server-side and is
-  what actually gates commits.
+  is each editor's GitHub token (Contents: Read & Write), entered via "Sign in
+  with Token" — without a valid token no commit can land.
 
 ## Keeping the schema honest
 

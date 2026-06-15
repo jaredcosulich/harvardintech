@@ -104,3 +104,8 @@
 {"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › ben-wei.md › points at an image that exists under public/`: added from runner `tests` output"}
 {"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › ben-wei.md › declares a non-empty photo`: added from runner `tests` output"}
 {"timestamp":"2026-06-15T12:22:55Z","kind":"registry-add","message":"registry `seeded team headshots › nadia-eldeib.md › points at an image that exists under public/`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T13:00:39Z","kind":"glossary-delete","message":"glossary `escapeHtml` deleted: source file cms-auth-worker/worker.js no longer exists"}
+{"timestamp":"2026-06-15T13:00:39Z","kind":"glossary-delete","message":"glossary `handlePasswordSubmit` deleted: source file cms-auth-worker/worker.js no longer exists"}
+{"timestamp":"2026-06-15T13:00:39Z","kind":"glossary-delete","message":"glossary `handshakePage` deleted: source file cms-auth-worker/worker.js no longer exists"}
+{"timestamp":"2026-06-15T13:00:39Z","kind":"glossary-delete","message":"glossary `htmlResponse` deleted: source file cms-auth-worker/worker.js no longer exists"}
+{"timestamp":"2026-06-15T13:00:39Z","kind":"glossary-delete","message":"glossary `passwordFormPage` deleted: source file cms-auth-worker/worker.js no longer exists"}

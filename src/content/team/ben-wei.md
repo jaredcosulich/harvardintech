@@ -1,5 +1,5 @@
 ---
-name: Ben Wei2
+name: Ben Wei
 role: Founder · Harvard C'08
 photo: /images/team/ben-wei.png
 bio: ''

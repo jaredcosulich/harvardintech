@@ -43,6 +43,14 @@
     ]
   },
   {
+    "description": "Per-chapter \"Upcoming Events in {city}\" section. Takes an already-filtered, sorted list of upcoming events for one chapter and renders them as shared EventCards; renders nothing when the list is empty so a chapter with no events shows no empty block.",
+    "filePath": "src/components/ChapterEvents.astro",
+    "name": "ChapterEvents",
+    "scenarios": [
+      "chapterevents-rich-list"
+    ]
+  },
+  {
     "description": "Full-bleed city header for a chapter page (mirrors the live harvardintech.com pages): a background photo with a dark overlay and centered light 'HARVARD IN TECH <CITY>' title plus tagline. Falls back to the centered ChapterHeader when heroImage is absent.",
     "filePath": "src/components/ChapterHero.astro",
     "name": "ChapterHero",

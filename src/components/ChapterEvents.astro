@@ -1,0 +1,32 @@
+---
+// Per-chapter "Upcoming Events" section. Mirrors the live harvardintech.com SF
+// chapter page, where a featured panel/event sits between the hero and the Sign
+// Up band. Takes an already-filtered, already-sorted list of upcoming events for
+// one chapter and renders them as the shared EventCards (so chapter cards stay
+// identical to the landing UpcomingEvents section and the /events page). Renders
+// NOTHING when there are no events — the parent guards too, but keep it safe so
+// a chapter with no events shows no empty "Upcoming Events" block.
+import EventCard from './EventCard.astro';
+import type { EventLike } from '../lib/events';
+
+interface Props {
+  events?: EventLike[];
+  city: string;
+}
+const { events = [], city } = Astro.props;
+---
+
+{
+  events.length > 0 ? (
+    <section class="s-section" id="chapter-events">
+      <div class="s-inner" style="text-align: center;">
+        <h2 class="s-title s-title--plain">Upcoming Events in {city}</h2>
+        <div style="display: grid; gap: var(--space-lg); grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 920px; margin: 0 auto;">
+          {events.map((event) => (
+            <EventCard event={event} variant="upcoming" />
+          ))}
+        </div>
+      </div>
+    </section>
+  ) : null
+}

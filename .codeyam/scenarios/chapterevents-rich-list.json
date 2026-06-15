@@ -1,0 +1,11 @@
+{
+  "name": "ChapterEvents - Rich List",
+  "id": "89f009b7-0063-4b59-909e-14eaa075796c",
+  "url": "/isolated-components/ChapterEvents",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ChapterEvents",
+  "scenarioType": "component"
+}

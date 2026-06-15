@@ -1,6 +1,7 @@
 ---
 blurb: Our first international chapter.
 city: Japan
+contactEmail: japan@harvardintech.com
 heroImage: /images/chapters/japan.jpg
 order: 4
 region: Tokyo

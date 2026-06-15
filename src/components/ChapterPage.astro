@@ -7,11 +7,13 @@
 // slot) and from isolated scenarios (NYC with hero/gallery, sparse Japan with no
 // hero → centered-header fallback).
 import ChapterHero from './ChapterHero.astro';
+import ChapterEvents from './ChapterEvents.astro';
 import ChapterSignUp from './ChapterSignUp.astro';
 import ChapterConnect from './ChapterConnect.astro';
 import ChapterLeads from './ChapterLeads.astro';
 import ChapterLinks from './ChapterLinks.astro';
 import EventGallery from './landing/EventGallery.astro';
+import type { EventLike } from '../lib/events';
 import { withBase } from '../lib/url';
 
 interface Lead {
@@ -29,6 +31,8 @@ interface Props {
   heroImage?: string;
   tagline?: string;
   showGallery?: boolean;
+  events?: EventLike[];
+  contactEmail?: string;
   leads?: Lead[];
   links?: ChapterLink[];
 }
@@ -38,7 +42,9 @@ const {
   blurb,
   heroImage,
   tagline,
-  showGallery = false,
+  showGallery = true,
+  events = [],
+  contactEmail,
   leads = [],
   links = [],
 } = Astro.props;
@@ -50,6 +56,8 @@ const hasContent = leads.length > 0 || links.length > 0 || hasBody;
 ---
 
 <ChapterHero city={city} region={region} blurb={blurb} heroImage={heroImage} tagline={tagline} />
+
+<ChapterEvents events={events} city={city} />
 
 <ChapterSignUp />
 
@@ -75,4 +83,4 @@ const hasContent = leads.length > 0 || links.length > 0 || hasBody;
 
 {showGallery ? <EventGallery /> : null}
 
-<ChapterConnect />
+<ChapterConnect email={contactEmail} />

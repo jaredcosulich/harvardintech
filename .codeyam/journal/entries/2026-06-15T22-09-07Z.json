@@ -1,0 +1,199 @@
+{
+  "timestamp": "2026-06-15T22:09:07Z",
+  "title": "Chapter Pages — Galleries, Events, and Per-Chapter Email",
+  "type": "feature",
+  "userRequest": "## Summary\n\nThe chapter pages (`/chapters/<slug>`) still don't match the live\nharvardintech.com chapter pages below the fold. On the live site **every**\nchapter page (NYC, San Francisco, Japan) shows an event-photo **gallery** as you\nscroll, the **SF page shows a featured event/panel**, and **Connect With Us\ndisplays a per-chapter contact email** (NYC `info@…`, Japan `japan@…`, SF\n`risdhillon@…`). Locally only Japan renders the gallery (it's the lone chapter\nwith `showGallery: true`), no chapter renders any events, and Connect always\nshows the single global settings email. This plan makes the gallery appear on\nevery chapter page, adds a per-chapter Upcoming Events section (reusing the\nexisting event card/data helpers), and lets each chapter show its own contact\nemail in Connect.\n\n## Key Decisions\n\n- **Gallery on by default** — change `showGallery` to default `true` so the\n  event-photo gallery renders on every chapter page (matching the live site),\n  while a chapter can still opt out with `showGallery: false`. Chosen over\n  hand-setting `showGallery: true` in each of the four chapter files because the\n  live behavior is \"every chapter has one,\" so the default should reflect that\n  and new chapters inherit it automatically.\n- **Explicit `chapter` link on events** — associate events to a chapter via a\n  new optional `chapter` slug field on the `events` collection rather than\n  fuzzy-matching `event.location` against `chapter.region`. Explicit, CMS-\n  editable, and unambiguous. Events with no `chapter` (e.g. the Cambridge panel)\n  simply don't appear on any chapter page.\n- **Events section only renders when the chapter has events** — avoids an empty\n  \"Upcoming Events\" block on chapters with none (Japan, L.A.), matching the live\n  NYC/Japan pages which show no events list.\n- **Per-chapter email is an optional override** — add optional `contactEmail` to\n  the `chapters` schema; `ChapterConnect` uses it when set and falls back to the\n  global `settings.contactEmail` otherwise. Keeps existing global behavior intact\n  for chapters that don't set one.\n- **Scroll order mirrors the live SF page** — Hero → Upcoming Events (when any)\n  → Sign Up → narrow content block (when any) → Gallery → Connect.\n\n## Implementation\n\n### 1. Add `chapter` to the events schema and `contactEmail` to the chapters schema\n\n**File**: `src/content/config.ts`\n\n- In the `events` collection schema, add `chapter: z.string().optional()` — the\n  slug/id of the chapter this event belongs to. Keep the existing comment style;\n  note it's optional so a non-chapter event (e.g. Cambridge) still validates.\n- In the `chapters` collection schema, add `contactEmail: z.string().optional()`\n  — per-chapter Connect email; absent means fall back to the global settings\n  email.\n\n### 2. Show the gallery on every chapter page by default\n\n**File**: `src/components/ChapterPage.astro`\n\n- Change the `showGallery` prop default from `false` to `true` so an unset\n  chapter renders the gallery.\n\n**File**: `src/pages/chapters/[slug].astro`\n\n- The route currently passes `showGallery={showGallery}`; when the frontmatter\n  omits it this is `undefined`, which now falls through to the component default\n  (`true`). Confirm Japan (`showGallery: true`) is unchanged. No content edit\n  needed for NYC/SF/L.A. — they inherit the gallery from the new default.\n\n### 3. New per-chapter Upcoming Events section\n\n**New file**: `src/components/ChapterEvents.astro`\n\nA section component that takes an already-filtered, already-split list of\nupcoming events for one chapter plus the `city`, and renders a heading like\n\"Upcoming Events\" (or \"Upcoming Events in {city}\") above a grid of cards reusing\nthe shared `EventCard` (`variant=\"upcoming\"`). Mirror the grid/markup of\n`landing/UpcomingEvents.astro` (`s-section` / `s-inner` / `s-title`,\n`auto-fit minmax(280px, 1fr)` grid) for visual consistency. Render **nothing**\nwhen the events array is empty (the parent already guards, but keep it safe).\n\n### 4. Wire events + per-chapter email through the page\n\n**File**: `src/components/ChapterPage.astro`\n\n- Add props: `events?: EventLike[]` (upcoming events for this chapter, already\n  filtered) and `contactEmail?: string`.\n- Insert `<ChapterEvents>` immediately after `<ChapterHero>` and before\n  `<ChapterSignUp>`, rendered only when `events.length > 0` — matching the live\n  SF page where the panel sits between the hero and Sign Up.\n- Pass `contactEmail` down to `<ChapterConnect>` (see step 5).\n\n**File**: `src/pages/chapters/[slug].astro`\n\n- In `getStaticPaths` (or the page frontmatter), load the events collection,\n  filter to `event.data.chapter === chapter.id`, map to the `EventLike` shape,\n  and split with `splitEvents(...)` to take `upcoming` (soonest first). Pass the\n  result as the `events` prop and `chapter.data.contactEmail` as `contactEmail`\n  to `<ChapterPage>`.\n\n### 5. Per-chapter email in Connect\n\n**File**: `src/components/ChapterConnect.astro`\n\n- Add an optional `email?: string` prop; use it when provided, otherwise fall\n  back to `settings.contactEmail`. The mailto + displayed address both use the\n  resolved email. Socials remain from settings.\n\n### 6. Tag existing events to chapters and set per-chapter emails\n\n**Files**: `src/content/events/founders-investors-mixer-sf.md`,\n`src/content/events/harvard-in-tech-summit-2026.md`\n\n- Add `chapter: san-francisco` to the SF mixer and `chapter: nyc` to the Summit.\n  Leave `women-in-tech-panel.md` (Cambridge) unassigned so it demonstrates an\n  event that appears on no chapter page.\n\n**Files**: `src/content/chapters/nyc.md`, `src/content/chapters/japan.md`,\n`src/content/chapters/san-francisco.md`\n\n- Add `contactEmail` matching the live pages: `info@harvardintech.com` (NYC),\n  `japan@harvardintech.com` (Japan), and the SF chapter's live address. Leave\n  L.A. without one so it demonstrates the global-email fallback.\n\n### 7. Update the CMS config for the new fields\n\n**File**: `public/admin/editor/config.yml`\n\n- Add the optional `contactEmail` field to the chapters collection and the\n  optional `chapter` field to the events collection so both stay editable in the\n  Sveltia/Decap CMS. Keep them optional (`required: false`).\n\n## Reused existing code\n\n- `EventCard` from `src/components/EventCard.astro` (glossary entry: not yet\n  registered — component already shared by `UpcomingEvents` and the events page)\n- `splitEvents`, `formatEventDate`, `EventLike` from `src/lib/events.ts`\n  (glossary entries: `splitEvents`, `formatEventDate`)\n- `EventGallery` from `src/components/landing/EventGallery.astro` — already\n  wired into `ChapterPage`; now shown on every chapter via the default change\n- `ChapterConnect` from `src/components/ChapterConnect.astro` (glossary entry:\n  `ChapterConnect`) — extended with an optional `email` override\n- `buildMailto` from `src/lib/mailto.ts` and `socialIconSrc` from\n  `src/lib/socialIcon.ts` — unchanged, used by `ChapterConnect`\n- `landing/UpcomingEvents.astro` as the markup/grid reference for the new\n  `ChapterEvents` section\n\n## Scenarios to Demonstrate\n\n- **NYC chapter** — hero, an Upcoming Events section with the Summit 2026 card,\n  Sign Up, the photo gallery, and Connect showing `info@harvardintech.com`.\n- **San Francisco chapter** — hero, Upcoming Events showing the Founders &\n  Investors Mixer, gallery, and Connect with the SF email.\n- **Japan chapter** — hero + tagline, **no** events section (no chapter events),\n  the gallery, and Connect showing `japan@harvardintech.com`.\n- **L.A. chapter** — gallery present, no events section, Connect falling back to\n  the global settings email (no per-chapter override).\n- **ChapterEvents (isolated)** — rich (multiple cards) vs empty (renders nothing)\n  to prove the empty-state guard.\n- **ChapterConnect (isolated)** — with a per-chapter `email` override vs without\n  (global fallback).",
+  "description": "Made chapter pages (/chapters/<slug>) match the live harvardintech.com behavior below the fold: the event-photo gallery now renders on every chapter (showGallery defaults to true), each chapter shows its own tagged Upcoming Events via a new ChapterEvents component (events gain an optional chapter slug; the section renders nothing when empty), and Connect With Us shows a per-chapter contactEmail with the global settings email as fallback. Tagged the SF Mixer to SF and the Summit to NYC; set per-chapter emails for NYC/Japan/SF and left L.A. on the global fallback. Updated the Sveltia/Decap CMS config for both new fields.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/.last-reconcile.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/chapters-chapter-pages-galleries-events-and-per-chapter-email.md\t.codeyam/plans/completed/chapters-chapter-pages-galleries-events-and-per-chapter-email.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-japan-with-gallery--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-new-york-city--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterconnect-default--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-full-chapter--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterpage-sparse-no-leads--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/scenario-taxonomy.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": "public/admin/editor/config.yml",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterConnect.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/ChapterPage.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/japan.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/nyc.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/chapters/san-francisco.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/config.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/events/founders-investors-mixer-sf.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/events/harvard-in-tech-summit-2026.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/chapters/[slug].astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-los-angeles-fallback-email.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/chapter-route-san-francisco.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterconnect-per-chapter-email.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/chapterevents-rich-list.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-los-angeles-fallback-email--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-los-angeles-fallback-email--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-san-francisco--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapter-route-san-francisco--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterconnect-per-chapter-email--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterconnect-per-chapter-email--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-rich-list--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/chapterevents-rich-list--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": "src/components/ChapterEvents.astro",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Chapter Route - Japan With Gallery",
+      "screenshotPath": "chapter-route-japan-with-gallery--desktop.png"
+    },
+    {
+      "name": "Chapter Route - Los Angeles Fallback Email",
+      "screenshotPath": "chapter-route-los-angeles-fallback-email--desktop.png"
+    },
+    {
+      "name": "Chapter Route - New York City",
+      "screenshotPath": "chapter-route-new-york-city--desktop.png"
+    },
+    {
+      "name": "Chapter Route - San Francisco",
+      "screenshotPath": "chapter-route-san-francisco--desktop.png"
+    },
+    {
+      "name": "ChapterConnect - Default",
+      "screenshotPath": "chapterconnect-default--desktop.png"
+    },
+    {
+      "name": "ChapterConnect - Per-Chapter Email",
+      "screenshotPath": "chapterconnect-per-chapter-email--desktop.png"
+    },
+    {
+      "name": "ChapterEvents - Rich List",
+      "screenshotPath": "chapterevents-rich-list--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Full Chapter",
+      "screenshotPath": "chapterpage-full-chapter--desktop.png"
+    },
+    {
+      "name": "ChapterPage - Sparse No Leads",
+      "screenshotPath": "chapterpage-sparse-no-leads--desktop.png"
+    }
+  ]
+}

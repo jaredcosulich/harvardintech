@@ -160,6 +160,10 @@ collections:
       - { name: location, label: Location, widget: string, required: false }
       - { name: description, label: Description, widget: string, required: false }
       - { name: link, label: Link, widget: string, required: false }
+      # Slug of the chapter this event belongs to (e.g. `nyc`, `san-francisco`).
+      # Surfaces the event in that chapter page's Upcoming Events section; leave
+      # blank for a non-chapter event.
+      - { name: chapter, label: Chapter, widget: string, required: false }
       - { name: body, label: Body, widget: markdown, required: false }
 
   - name: chapters
@@ -186,7 +190,10 @@ collections:
         media_folder: "/public/images/chapters"
         public_folder: "/images/chapters"
       - { name: tagline, label: Tagline, widget: string, required: false }
-      - { name: showGallery, label: "Show photo gallery", widget: boolean, default: false, required: false }
+      - { name: showGallery, label: "Show photo gallery", widget: boolean, default: true, required: false }
+      # Per-chapter "Connect With Us" email; leave blank to use the global
+      # Site Settings contact email.
+      - { name: contactEmail, label: "Contact email", widget: string, required: false }
       - { name: order, label: Order, widget: number, required: false }
       - name: leads
         label: "Leads"

@@ -3,12 +3,18 @@
 // heading, the contact email, and the social links rendered as dark circular
 // icon badges (distinct from the landing ContactUs icon-over-label treatment).
 // Reads the editable socials + contact email from the settings singleton so it
-// stays CMS-editable, and reuses the shared icon + mailto helpers.
+// stays CMS-editable, and reuses the shared icon + mailto helpers. An optional
+// `email` prop lets a chapter page override the displayed address with its own
+// per-chapter contact email; absent → the global settings email.
 import { buildMailto } from '../lib/mailto';
 import { socialIconSrc } from '../lib/socialIcon';
 import { settings } from '../lib/site';
 
-const email = settings.contactEmail;
+interface Props {
+  email?: string;
+}
+const { email: emailProp } = Astro.props;
+const email = emailProp ?? settings.contactEmail;
 const contactHref = buildMailto({ to: email, subject: 'Hello from the website' });
 
 // Twitter, E-mail, Facebook in the live site's order. The e-mail entry is

@@ -56,7 +56,10 @@ const team = defineCollection({
 });
 
 // Upcoming / past events. `link` points at an external registration page;
-// `location` and `description` are optional for a bare save-the-date.
+// `location` and `description` are optional for a bare save-the-date. `chapter`
+// is the slug/id of the regional chapter this event belongs to — optional so a
+// non-chapter event (e.g. the Cambridge panel) still validates and simply
+// appears on no chapter page.
 const events = defineCollection({
   loader: glob({ pattern: '**/*.md', base: `${root}/events` }),
   schema: z.object({
@@ -65,6 +68,7 @@ const events = defineCollection({
     location: z.string().optional(),
     description: z.string().optional(),
     link: z.string().optional(),
+    chapter: z.string().optional(),
   }),
 });
 
@@ -82,11 +86,15 @@ const chapters = defineCollection({
     // Full-bleed city header (mirrors the live harvardintech.com chapter pages):
     // `heroImage` is the background photo, `tagline` the subtitle beneath the
     // "HARVARD IN TECH <CITY>" title. `showGallery` toggles the shared event
-    // photo gallery (true for Japan). All optional → a chapter without them
-    // falls back to the centered header.
+    // photo gallery; absent → shown (the live site shows it on every chapter),
+    // set `false` to opt out. All optional → a chapter without them falls back
+    // to the centered header.
     heroImage: z.string().optional(),
     tagline: z.string().optional(),
     showGallery: z.boolean().optional(),
+    // Per-chapter "Connect With Us" email; absent → fall back to the global
+    // settings contact email.
+    contactEmail: z.string().optional(),
     leads: z
       .array(z.object({ name: z.string(), role: z.string().optional() }))
       .optional(),

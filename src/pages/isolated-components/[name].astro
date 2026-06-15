@@ -4,6 +4,7 @@ import EmbedForm from '../../components/EmbedForm.astro';
 import EventsPage from '../../components/EventsPage.astro';
 import ChapterPage from '../../components/ChapterPage.astro';
 import ChapterHero from '../../components/ChapterHero.astro';
+import ChapterEvents from '../../components/ChapterEvents.astro';
 import ChapterSignUp from '../../components/ChapterSignUp.astro';
 import ChapterConnect from '../../components/ChapterConnect.astro';
 import CollectionCountCard from '../../components/admin/CollectionCountCard.astro';
@@ -117,6 +118,38 @@ const chapterHeroStates = {
   },
 };
 
+// ChapterEvents states: the per-chapter "Upcoming Events in {city}" section.
+// Default shows a rich, multi-card list (mirrors the SF chapter page); Empty
+// passes no events to prove the guard renders NOTHING (no empty heading/block).
+const SAMPLE_CHAPTER_EVENTS = [
+  {
+    title: 'Founders & Investors Mixer — San Francisco',
+    date: '2026-07-15',
+    location: 'San Francisco, CA',
+    description: 'An evening connecting Harvard alumni founders with active investors across the Bay Area.',
+    link: 'https://www.harvardintech.com/events/sf-mixer',
+  },
+  {
+    title: 'SF Chapter Summer Social',
+    date: '2026-08-20',
+    location: 'San Francisco, CA',
+    description: 'Casual drinks and conversation for Bay Area alumni building in tech.',
+    link: 'https://www.harvardintech.com/events/sf-summer-social',
+  },
+];
+const chapterEventsStates = {
+  Default: { events: SAMPLE_CHAPTER_EVENTS, city: 'San Francisco' },
+  Empty: { events: [] as typeof SAMPLE_CHAPTER_EVENTS, city: 'Los Angeles' },
+};
+
+// ChapterConnect states: Default reads the global settings contact email;
+// Email passes a per-chapter `email` override (the SF chapter's address),
+// proving the override branch wins over the settings fallback.
+const chapterConnectStates = {
+  Default: {},
+  Email: { email: 'risdhillon@harvardintech.com' },
+} as const;
+
 // CollectionCountCard states: a populated count (links into the editor) vs an
 // empty collection (count 0 → the "No entries yet" note). `editorHref` mirrors
 // the real dashboard link.
@@ -173,8 +206,11 @@ export async function getStaticPaths() {
     { params: { name: 'ChapterPage-Sparse' } },
     { params: { name: 'ChapterHero' } },
     { params: { name: 'ChapterHero-Fallback' } },
+    { params: { name: 'ChapterEvents' } },
+    { params: { name: 'ChapterEvents-Empty' } },
     { params: { name: 'ChapterSignUp' } },
     { params: { name: 'ChapterConnect' } },
+    { params: { name: 'ChapterConnect-Email' } },
     { params: { name: 'CollectionCountCard' } },
     { params: { name: 'CollectionCountCard-Empty' } },
     { params: { name: 'DashboardSummary' } },
@@ -223,8 +259,22 @@ if (name && name.startsWith('ChapterHero')) {
   chapterHeroProps = chapterHeroStates[stateKey] ?? chapterHeroStates.Default;
 }
 
+// ChapterEvents resolves its state from the route suffix (Default rich list vs
+// Empty no-events guard).
+let chapterEventsProps: (typeof chapterEventsStates)[keyof typeof chapterEventsStates] | null = null;
+if (name && name.startsWith('ChapterEvents')) {
+  const stateKey = (name === 'ChapterEvents' ? 'Default' : name.slice('ChapterEvents-'.length)) as keyof typeof chapterEventsStates;
+  chapterEventsProps = chapterEventsStates[stateKey] ?? chapterEventsStates.Default;
+}
+
 const isChapterSignUp = name === 'ChapterSignUp';
-const isChapterConnect = name === 'ChapterConnect';
+
+// ChapterConnect resolves Default (settings email) vs Email (per-chapter override).
+let chapterConnectProps: (typeof chapterConnectStates)[keyof typeof chapterConnectStates] | null = null;
+if (name && name.startsWith('ChapterConnect')) {
+  const stateKey = (name === 'ChapterConnect' ? 'Default' : name.slice('ChapterConnect-'.length)) as keyof typeof chapterConnectStates;
+  chapterConnectProps = chapterConnectStates[stateKey] ?? chapterConnectStates.Default;
+}
 
 let collectionCountCardProps: (typeof collectionCountCardStates)[keyof typeof collectionCountCardStates] | null = null;
 if (name && name.startsWith('CollectionCountCard')) {
@@ -284,10 +334,12 @@ if (name && name.startsWith('ContactUs')) {
           </ChapterPage>
         ) : chapterHeroProps ? (
           <ChapterHero {...chapterHeroProps} />
+        ) : chapterEventsProps ? (
+          <ChapterEvents {...chapterEventsProps} />
         ) : isChapterSignUp ? (
           <ChapterSignUp />
-        ) : isChapterConnect ? (
-          <ChapterConnect />
+        ) : chapterConnectProps ? (
+          <ChapterConnect {...chapterConnectProps} />
         ) : collectionCountCardProps ? (
           <div style="width: 240px; background: var(--color-bg-soft); padding: var(--space-md);">
             <CollectionCountCard {...collectionCountCardProps} />

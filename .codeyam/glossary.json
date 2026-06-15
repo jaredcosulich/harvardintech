@@ -9,6 +9,15 @@
     ]
   },
   {
+    "description": "Production-only client-side passcode gate mounted first in AdminLayout. Renders no visual output — emits a single is:inline script that, on the live site, checks a sessionStorage unlock flag, prompts for the passcode, reveals the page on success, and redirects to the public home otherwise. Inert in dev/preview. Its pure comparison logic is extracted and unit-tested as isPasscodeCorrect in src/lib/adminGate.ts.",
+    "filePath": "src/components/admin/AdminGate.astro",
+    "name": "AdminGate",
+    "untestabilityReason": {
+      "justification": "No rendered DOM surface; browser sessionStorage/window.prompt/location glue. Logic tested via isPasscodeCorrect in adminGate.ts.",
+      "kind": "platform-glue"
+    }
+  },
+  {
     "description": "A single Board of Directors member card: a circular B&W headshot, or an initials-avatar fallback when the member has no photo, plus name and role. Shared by the landing BoardOfDirectors section and isolated scenarios.",
     "filePath": "src/components/BoardMemberCard.astro",
     "name": "BoardMemberCard",
@@ -165,6 +174,12 @@
     "filePath": "src/lib/team.ts",
     "name": "initials",
     "testFile": "src/lib/team.test.ts"
+  },
+  {
+    "description": "Pure passcode comparison for the /admin dashboard deterrent gate: trims input and expected, treats an empty expected value as never-matching, and returns whether they are equal. The inline gate script in AdminGate.astro mirrors this logic.",
+    "filePath": "src/lib/adminGate.ts",
+    "name": "isPasscodeCorrect",
+    "testFile": "src/lib/adminGate.test.ts"
   },
   {
     "description": "Pure gate deciding whether the scroll parallax runs: returns fineHover && !reducedMotion. Encodes the desktop-only / prefers-reduced-motion policy (parallax is janky or ignored on touch browsers) as testable logic, separate from the matchMedia DOM reads in initParallax.",

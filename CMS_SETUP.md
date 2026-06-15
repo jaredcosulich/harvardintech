@@ -23,6 +23,10 @@ codeyam can still seed the same files per scenario through the
   `/admin/editor/` (Astro serves `public/` verbatim — works live and locally).
 - `public/admin/editor/config.yml` is the Decap/Sveltia config. Its `collections`
   block mirrors `src/content/config.ts`; see **Keeping the schema honest** below.
+  The shipped default is **Path 2 (Hosted + password)** — the `backend:` block
+  carries `base_url` + `auth_endpoint: auth` pointing at the `cms-auth-worker/`
+  Worker. Replace the `<your-subdomain>` placeholder with your deployed Worker's
+  hostname (see below) before hosted sign-in will work.
 
 ## Choosing an editing path
 
@@ -87,6 +91,26 @@ Always available, no auth, no server.
    the `/admin` dashboard), and choose **"Work with Local Repository"**.
 3. Edit posts; Sveltia writes straight to `src/content/`. Commit and push
    yourself — the change goes live on the next GitHub Pages deploy.
+
+## Dashboard gate
+
+The `/admin` dashboard is fronted by a lightweight **client-side passcode gate**
+(`src/components/admin/AdminGate.astro`, logic in `src/lib/adminGate.ts`). On the
+live site, first visit prompts for a passcode; a correct value unlocks the
+dashboard for the rest of the browser session (`sessionStorage`), and
+cancel/incorrect redirects to the public home.
+
+- **Set the passcode** with the build-time env var `ADMIN_GATE_PASSCODE` (e.g. a
+  CI/Pages build secret). When unset, a clearly-named non-secret fallback keeps
+  the build from breaking.
+- **The gate runs only in production builds.** On a local dev server / the
+  codeyam preview the dashboard is left open — the same "local is trusted"
+  stance as `local_backend: true` — so editing and previewing stay frictionless.
+- **It is a deterrent, not server-enforced security.** On static GitHub Pages the
+  passcode ships inside the public HTML, so anyone reading source can find it. It
+  only keeps casual visitors out of the dashboard. The real write-access boundary
+  is the password Worker above, which holds the GitHub token server-side and is
+  what actually gates commits.
 
 ## Keeping the schema honest
 

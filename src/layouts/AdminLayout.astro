@@ -4,6 +4,7 @@
 // chrome, and the centered content column. Pages under /admin compose their
 // sections into the <slot/>. noindex — an editing surface, never content.
 import '../styles/tokens.css';
+import AdminGate from '../components/admin/AdminGate.astro';
 import AdminHeader from '../components/admin/AdminHeader.astro';
 import { settings } from '../lib/site';
 
@@ -30,6 +31,7 @@ const pageTitle = title
     />
   </head>
   <body style="background: var(--color-bg-soft); min-height: 100vh;">
+    <AdminGate />
     <AdminHeader siteTitle={settings.siteTitle} />
     <main style="max-width: var(--content-width); margin: 0 auto; padding: var(--space-xl) var(--space-lg);">
       <slot />

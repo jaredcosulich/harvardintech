@@ -1,5 +1,6 @@
-# regenerated from glossary.json on 2026-06-15T01:44:18Z; do not hand-edit
+# regenerated from glossary.json on 2026-06-15T11:34:43Z; do not hand-edit
 AdminDashboard :: src/pages/admin/index.astro :: tags=
+AdminGate :: src/components/admin/AdminGate.astro :: tags=
 BoardMemberCard :: src/components/BoardMemberCard.astro :: tags=
 ChapterPage :: src/components/ChapterPage.astro :: tags=
 ChapterRoute :: src/pages/chapters/[slug].astro :: tags=
@@ -20,6 +21,7 @@ handshakePage :: cms-auth-worker/worker.js :: tags=
 htmlResponse :: cms-auth-worker/worker.js :: tags=
 initParallax :: src/lib/parallax.ts :: tags= :: test=src/lib/parallax.test.ts
 initials :: src/lib/team.ts :: tags= :: test=src/lib/team.test.ts
+isPasscodeCorrect :: src/lib/adminGate.ts :: tags= :: test=src/lib/adminGate.test.ts
 parallaxEnabled :: src/lib/parallax.ts :: tags= :: test=src/lib/parallax.test.ts
 parallaxOffset :: src/lib/parallax.ts :: tags= :: test=src/lib/parallax.test.ts
 passwordFormPage :: cms-auth-worker/worker.js :: tags=

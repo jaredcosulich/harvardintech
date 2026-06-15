@@ -19,6 +19,15 @@
       "runner": "tests"
     },
     {
+      "description": "The inline gate script and the helper must agree on the sessionStorage key.",
+      "file": "src/lib/adminGate.test.ts",
+      "format": "vitest",
+      "key": "ADMIN_GATE_STORAGE_KEY › is the stable admin-unlocked key",
+      "line": 6,
+      "registeredAt": "2026-06-15T11:32:43Z",
+      "runner": "tests"
+    },
+    {
       "description": "Clicking the button increments the hydrated counter, proving the island is genuinely interactive and not a static render.",
       "file": "src/components/Greeting.test.tsx",
       "format": "vitest",
@@ -268,6 +277,60 @@
       "key": "initials › uses only the first two words for a three-word name",
       "line": 16,
       "registeredAt": "2026-06-14T15:43:56Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The happy path: an exact match unlocks.",
+      "file": "src/lib/adminGate.test.ts",
+      "format": "vitest",
+      "key": "isPasscodeCorrect › accepts an exact match",
+      "line": 13,
+      "registeredAt": "2026-06-15T11:32:43Z",
+      "runner": "tests"
+    },
+    {
+      "description": "The comparison is case-sensitive (a deterrent, but not a careless one).",
+      "file": "src/lib/adminGate.test.ts",
+      "format": "vitest",
+      "key": "isPasscodeCorrect › is case-sensitive",
+      "line": 40,
+      "registeredAt": "2026-06-15T11:32:43Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An empty expected passcode never matches — a blank build value must not unlock the dashboard for everyone.",
+      "file": "src/lib/adminGate.test.ts",
+      "format": "vitest",
+      "key": "isPasscodeCorrect › never matches an empty expected passcode",
+      "line": 34,
+      "registeredAt": "2026-06-15T11:32:43Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A wrong value is rejected.",
+      "file": "src/lib/adminGate.test.ts",
+      "format": "vitest",
+      "key": "isPasscodeCorrect › rejects a wrong value",
+      "line": 18,
+      "registeredAt": "2026-06-15T11:32:43Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Surrounding whitespace on the expected passcode is trimmed too.",
+      "file": "src/lib/adminGate.test.ts",
+      "format": "vitest",
+      "key": "isPasscodeCorrect › trims surrounding whitespace on the expected value",
+      "line": 28,
+      "registeredAt": "2026-06-15T11:32:43Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Surrounding whitespace on the input is trimmed before comparing.",
+      "file": "src/lib/adminGate.test.ts",
+      "format": "vitest",
+      "key": "isPasscodeCorrect › trims surrounding whitespace on the input",
+      "line": 23,
+      "registeredAt": "2026-06-15T11:32:43Z",
       "runner": "tests"
     },
     {

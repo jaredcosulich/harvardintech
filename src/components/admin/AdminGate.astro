@@ -1,0 +1,70 @@
+---
+// Client-side passcode gate for the /admin dashboard. Mounted as the first child
+// of <body> in AdminLayout, so it covers every page rendered through that shell.
+//
+// DETERRENT, NOT SECURITY (see src/lib/adminGate.ts for the full caveat): on a
+// static GitHub Pages site the passcode ships in the HTML. This only keeps the
+// dashboard from being stumbled into; the Cloudflare Worker in cms-auth-worker/
+// is the real write-access boundary.
+//
+// PRODUCTION-ONLY. The gate's blocking script is emitted only for production
+// builds (`import.meta.env.PROD`). On a local dev server / the codeyam preview
+// the dashboard is left open — same "local is trusted, no auth" stance as
+// `local_backend: true` in the editor config — so editing and scenario capture
+// stay frictionless. The deterrent matters only on the public deployment.
+import { withBase } from '../../lib/url';
+import { ADMIN_GATE_STORAGE_KEY } from '../../lib/adminGate';
+
+// Build-time passcode. Real value comes from the ADMIN_GATE_PASSCODE env var set
+// in CI; the clearly-named fallback only keeps local production builds from
+// breaking when it is unset (it is not a secret — see the module caveat).
+const expectedPasscode =
+  import.meta.env.ADMIN_GATE_PASSCODE ?? 'harvardintech-admin-preview';
+
+// Base-aware public home, used when a visitor cancels or fails the prompt.
+const homePath = withBase('/');
+
+const gateActive = import.meta.env.PROD;
+---
+
+{
+  gateActive && (
+    <script
+      is:inline
+      define:vars={{
+        expected: expectedPasscode,
+        storageKey: ADMIN_GATE_STORAGE_KEY,
+        homePath,
+      }}
+    >
+      {
+        // Runs before the rest of <body> is parsed. Mirrors isPasscodeCorrect()
+        // from src/lib/adminGate.ts (an inline script can't import the bundled
+        // module). Hide the document up front to avoid flashing the dashboard,
+        // then prompt; reveal on a correct passcode, redirect home otherwise.
+      }
+      (function () {
+        try {
+          if (sessionStorage.getItem(storageKey) === '1') return;
+        } catch (e) {
+          // sessionStorage blocked (private mode / disabled) — fall through to prompt.
+        }
+        var root = document.documentElement;
+        var prev = root.style.visibility;
+        root.style.visibility = 'hidden';
+        var want = String(expected).trim();
+        var entry = window.prompt('Enter the admin passcode to continue:');
+        if (entry !== null && want.length > 0 && entry.trim() === want) {
+          try {
+            sessionStorage.setItem(storageKey, '1');
+          } catch (e) {
+            // Can't persist the unlock; the page still reveals for this view.
+          }
+          root.style.visibility = prev || '';
+        } else {
+          window.location.replace(homePath);
+        }
+      })();
+    </script>
+  )
+}

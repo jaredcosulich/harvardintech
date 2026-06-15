@@ -1,4 +1,4 @@
-# regenerated from dependency-graph.json on 2026-06-15T09:57:10Z; do not hand-edit
+# regenerated from dependency-graph.json on 2026-06-15T11:43:08Z; do not hand-edit
 .codeyam/scenario-issues.js :: imports=0 :: imported_by=2
 .codeyam/scenario-metrics.js :: imports=0 :: imported_by=2
 src/lib/parallax.ts :: imports=0 :: imported_by=2
@@ -15,6 +15,7 @@ src/content/config.js :: imports=0 :: imported_by=1
 src/data/nav.json :: imports=0 :: imported_by=1
 src/data/settings.json :: imports=0 :: imported_by=1
 src/lib/adminDashboard.ts :: imports=0 :: imported_by=1
+src/lib/adminGate.ts :: imports=0 :: imported_by=1
 src/lib/events.ts :: imports=0 :: imported_by=1
 src/lib/mailto.ts :: imports=0 :: imported_by=1
 src/lib/team.ts :: imports=0 :: imported_by=1
@@ -38,6 +39,7 @@ src/components/landing/landing-images.test.ts :: imports=1 :: imported_by=0
 src/content/config.ts :: imports=0 :: imported_by=0
 src/env.d.ts :: imports=0 :: imported_by=0
 src/lib/adminDashboard.test.ts :: imports=1 :: imported_by=0
+src/lib/adminGate.test.ts :: imports=1 :: imported_by=0
 src/lib/events.test.ts :: imports=1 :: imported_by=0
 src/lib/mailto.test.ts :: imports=1 :: imported_by=0
 src/lib/parallax.test.ts :: imports=2 :: imported_by=0

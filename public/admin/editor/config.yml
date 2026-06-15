@@ -20,23 +20,27 @@ backend:
   name: github
   repo: jaredcosulich/harvardintech
   branch: main
-  # ── Hosted editing (activate ONE of the two blocks below) ────────────────
-  # `local_backend: true` (further down) always covers the Local path on
-  # localhost. The two HOSTED paths both drive this single `base_url`, so they
-  # are mutually exclusive on the live site — uncomment exactly one once you
-  # have deployed its relay. See CMS_SETUP.md for the full deploy steps.
+  # ── Hosted editing: ACTIVE PATH = Path B (Hosted + password) ─────────────
+  # The two lines below point the GitHub backend at the Cloudflare Worker in
+  # cms-auth-worker/ (without them, Sveltia/Decap falls back to the
+  # decommissioned Netlify OAuth endpoint and sign-in shows "Not Found").
   #
-  # Path A — Hosted + GitHub OAuth (per-user commit attribution). Register a
-  # GitHub OAuth App and point at its relay (Sveltia's hosted helper or a
-  # self-hosted sveltia/sveltia-cms-auth Worker):
+  # ONE-TIME DEPLOY (repo owner): deploy the Worker, set its secrets, then
+  # replace <your-subdomain> below with the hostname `wrangler deploy` prints.
+  # Until that real URL is filled in, hosted sign-in will still fail. See
+  # CMS_SETUP.md → "Hosted + password" for the exact steps.
+  base_url: https://cms-auth-worker.<your-subdomain>.workers.dev
+  auth_endpoint: auth
+  #
+  # `local_backend: true` (further down) always covers the Local path on
+  # localhost, independent of this hosted `base_url`.
+  #
+  # Path A — Hosted + GitHub OAuth (alternative; per-user commit attribution).
+  # To use it instead, register a GitHub OAuth App and swap the two active lines
+  # above for its relay (Sveltia's hosted helper or a self-hosted
+  # sveltia/sveltia-cms-auth Worker):
   #   base_url: https://<your-oauth-relay>
   #   auth_endpoint: oauth/authorize
-  #
-  # Path B — Hosted + password (shared identity via cms-auth-worker/). Deploy
-  # the Worker in cms-auth-worker/, set its CMS_PASSWORD + GITHUB_TOKEN
-  # secrets, then point at its workers.dev URL:
-  #   base_url: https://cms-auth-worker.<subdomain>.workers.dev
-  #   auth_endpoint: auth
 
 # Local-repository editing. When /admin is opened from a local dev server,
 # Sveltia offers "Work with Local Repository" and writes straight to disk — no

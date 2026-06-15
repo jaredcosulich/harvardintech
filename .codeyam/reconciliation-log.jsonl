@@ -49,3 +49,10 @@
 {"timestamp":"2026-06-15T01:41:28Z","kind":"registry-add","message":"registry `parallaxEnabled › disables parallax when the user prefers reduced motion`: added from runner `tests` output"}
 {"timestamp":"2026-06-15T01:41:28Z","kind":"registry-add","message":"registry `parallaxOffset › returns zero when the section is flush with the viewport top`: added from runner `tests` output"}
 {"timestamp":"2026-06-15T01:41:28Z","kind":"registry-add","message":"registry `parallaxOffset › returns a positive offset for a section scrolled above the viewport top`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T11:32:43Z","kind":"registry-add","message":"registry `isPasscodeCorrect › accepts an exact match`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T11:32:43Z","kind":"registry-add","message":"registry `isPasscodeCorrect › never matches an empty expected passcode`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T11:32:43Z","kind":"registry-add","message":"registry `isPasscodeCorrect › trims surrounding whitespace on the input`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T11:32:43Z","kind":"registry-add","message":"registry `isPasscodeCorrect › is case-sensitive`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T11:32:43Z","kind":"registry-add","message":"registry `isPasscodeCorrect › rejects a wrong value`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T11:32:43Z","kind":"registry-add","message":"registry `ADMIN_GATE_STORAGE_KEY › is the stable admin-unlocked key`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T11:32:43Z","kind":"registry-add","message":"registry `isPasscodeCorrect › trims surrounding whitespace on the expected value`: added from runner `tests` output"}

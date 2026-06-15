@@ -1,9 +1,24 @@
 {
   "tests": {
     "lastSuccessfulRunSecs": 4,
-    "lastSuccessfulRunAt": "2026-06-14T21:15:28.201540160+00:00",
+    "lastSuccessfulRunAt": "2026-06-15T09:57:07.668603114+00:00",
     "lastSuccessfulRunKind": "full",
     "recentRuns": [
+      {
+        "secs": 4,
+        "at": "2026-06-15T09:57:07.668603114+00:00",
+        "kind": "full"
+      },
+      {
+        "secs": 5,
+        "at": "2026-06-15T01:43:48.103142663+00:00",
+        "kind": "full"
+      },
+      {
+        "secs": 6,
+        "at": "2026-06-15T01:41:16.470633173+00:00",
+        "kind": "full"
+      },
       {
         "secs": 4,
         "at": "2026-06-14T21:15:28.201540160+00:00",

@@ -42,3 +42,10 @@
 {"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `initials › returns two-letter initials for a two-word name`: added from runner `tests` output"}
 {"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `sortBoardMembers › returns a new array without mutating the input`: added from runner `tests` output"}
 {"timestamp":"2026-06-14T15:43:56Z","kind":"registry-add","message":"registry `sortBoardMembers › returns an empty array for no members`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T01:41:28Z","kind":"registry-add","message":"registry `parallaxEnabled › enables parallax for fine-hover devices without reduced motion`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T01:41:28Z","kind":"registry-add","message":"registry `parallaxEnabled › disables parallax on non-fine-hover (touch) devices`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T01:41:28Z","kind":"registry-add","message":"registry `parallaxEnabled › disables parallax for touch devices with reduced motion`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T01:41:28Z","kind":"registry-add","message":"registry `parallaxOffset › returns a negative offset for a section below the viewport top`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T01:41:28Z","kind":"registry-add","message":"registry `parallaxEnabled › disables parallax when the user prefers reduced motion`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T01:41:28Z","kind":"registry-add","message":"registry `parallaxOffset › returns zero when the section is flush with the viewport top`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T01:41:28Z","kind":"registry-add","message":"registry `parallaxOffset › returns a positive offset for a section scrolled above the viewport top`: added from runner `tests` output"}

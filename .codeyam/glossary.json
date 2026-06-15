@@ -155,10 +155,28 @@
     }
   },
   {
+    "description": "Idempotent client-side DOM wiring for the banner parallax: no-op under SSR/vitest and on re-invocation. When parallaxEnabled (read via matchMedia) is true, sizes every [data-parallax] <img> to 100vh and, on a rAF-throttled scroll/resize listener, sets translateY(parallaxOffset(rootTop)) so the photo stays fixed while its [data-parallax-root] section scrolls over it; otherwise leaves the images as static object-fit: cover. Hoisted from Hero.astro and GetInvolved.astro.",
+    "filePath": "src/lib/parallax.ts",
+    "name": "initParallax",
+    "testFile": "src/lib/parallax.test.ts"
+  },
+  {
     "description": "Derives up-to-two-letter uppercase initials from a board member name, used as the BoardMemberCard avatar fallback when a member has no photo.",
     "filePath": "src/lib/team.ts",
     "name": "initials",
     "testFile": "src/lib/team.test.ts"
+  },
+  {
+    "description": "Pure gate deciding whether the scroll parallax runs: returns fineHover && !reducedMotion. Encodes the desktop-only / prefers-reduced-motion policy (parallax is janky or ignored on touch browsers) as testable logic, separate from the matchMedia DOM reads in initParallax.",
+    "filePath": "src/lib/parallax.ts",
+    "name": "parallaxEnabled",
+    "testFile": "src/lib/parallax.test.ts"
+  },
+  {
+    "description": "Pure helper returning the translateY (px) that keeps a banner <img> pinned to the viewport top as its section scrolls: returns -sectionTop, where sectionTop is the section's getBoundingClientRect().top. Reproduces the background-attachment: fixed look on the Hero and Get Involved banners without CSS background-image (which the preview proxy / Pages base path rewrite breaks).",
+    "filePath": "src/lib/parallax.ts",
+    "name": "parallaxOffset",
+    "testFile": "src/lib/parallax.test.ts"
   },
   {
     "description": "Renders the CMS auth worker's password-gate form page.",

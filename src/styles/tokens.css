@@ -28,6 +28,9 @@
   --radius: 4px;
   --content-width: 1080px;
   --text-width: 760px;
+  /* Header bar height — shared by the header in BaseLayout and the hero's
+     full-viewport `calc()` so the two can never drift. */
+  --header-height: 89px;
 }
 
 * {

@@ -1,5 +1,27 @@
 {
   "files": {
+    "src/content/config.js": {
+      "imports": [],
+      "importedBy": [
+        ".astro/content.d.ts"
+      ]
+    },
+    "src/lib/mailto.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/mailto.test.ts"
+      ]
+    },
+    "astro.config.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/components/Greeting.tsx": {
+      "imports": [],
+      "importedBy": [
+        "src/components/Greeting.test.tsx"
+      ]
+    },
     "src/lib/site.ts": {
       "imports": [
         "src/data/settings.json",
@@ -7,36 +29,24 @@
       ],
       "importedBy": []
     },
-    ".codeyam/scenario-mocks.js": {
-      "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js"
-      ]
-    },
-    ".codeyam/scenario-playwright.js": {
+    ".claude/skills/review-session/scripts/find-last-session.mjs": {
       "imports": [
-        ".codeyam/scenario-metrics.js"
-      ],
-      "importedBy": [
-        ".codeyam/capture.js"
-      ]
-    },
-    ".codeyam/scenario-handlers.js": {
-      "imports": [
-        ".codeyam/scenario-issues.js"
-      ],
-      "importedBy": [
-        ".codeyam/capture.js"
-      ]
-    },
-    "src/components/Greeting.test.tsx": {
-      "imports": [
-        "src/components/Greeting.tsx"
+        ".claude/skills/review-session/scripts/find-last-session-helpers.mjs"
       ],
       "importedBy": []
     },
-    ".claude/hooks/_step_metadata.py": {
+    ".claude/hooks/editor-step-hook.py": {
       "imports": [],
+      "importedBy": []
+    },
+    ".claude/hooks/editor-pretool-hook.py": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/components/admin/DashboardSummary.test.ts": {
+      "imports": [
+        "src/components/admin/DashboardSummary.astro"
+      ],
       "importedBy": []
     },
     "src/lib/adminDashboard.ts": {
@@ -45,14 +55,15 @@
         "src/lib/adminDashboard.test.ts"
       ]
     },
-    ".claude/hooks/editor-pretool-hook.py": {
+    ".codeyam/scenario-metrics.js": {
       "imports": [],
-      "importedBy": []
+      "importedBy": [
+        ".codeyam/capture.js",
+        ".codeyam/scenario-playwright.js"
+      ]
     },
-    ".astro/content.d.ts": {
-      "imports": [
-        "src/content/config.js"
-      ],
+    ".claude/skills/review-session/scripts/extract-session.mjs": {
+      "imports": [],
       "importedBy": []
     },
     ".astro/content-modules.mjs": {
@@ -65,7 +76,36 @@
       ],
       "importedBy": []
     },
-    "src/content/config.ts": {
+    ".claude/hooks/_step_metadata.py": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/parallax.test.ts": {
+      "imports": [
+        "src/lib/parallax.ts",
+        "src/lib/parallax.ts"
+      ],
+      "importedBy": []
+    },
+    ".codeyam/scenario-interactivity.js": {
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js"
+      ]
+    },
+    ".astro/content.d.ts": {
+      "imports": [
+        "src/content/config.js"
+      ],
+      "importedBy": []
+    },
+    ".claude/skills/review-session/scripts/find-last-session-helpers.mjs": {
+      "imports": [],
+      "importedBy": [
+        ".claude/skills/review-session/scripts/find-last-session.mjs"
+      ]
+    },
+    "ui/src/helpers/stepLabels.generated.ts": {
       "imports": [],
       "importedBy": []
     },
@@ -75,81 +115,9 @@
       ],
       "importedBy": []
     },
-    "src/components/Greeting.tsx": {
-      "imports": [],
-      "importedBy": [
-        "src/components/Greeting.test.tsx"
-      ]
-    },
-    "src/components/admin/DashboardSummary.test.ts": {
-      "imports": [
-        "src/components/admin/DashboardSummary.astro"
-      ],
-      "importedBy": []
-    },
-    "src/lib/url.ts": {
-      "imports": [],
-      "importedBy": [
-        "src/components/landing/landing-images.test.ts",
-        "src/lib/url.test.ts"
-      ]
-    },
-    ".astro/types.d.ts": {
-      "imports": [],
-      "importedBy": []
-    },
-    ".codeyam/scenario-metrics.js": {
-      "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js",
-        ".codeyam/scenario-playwright.js"
-      ]
-    },
-    "src/lib/events.ts": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/events.test.ts"
-      ]
-    },
-    ".astro/content-assets.mjs": {
-      "imports": [],
-      "importedBy": []
-    },
-    ".claude/skills/review-session/scripts/extract-session-helpers.mjs": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/content/config.js": {
-      "imports": [],
-      "importedBy": [
-        ".astro/content.d.ts"
-      ]
-    },
     "vitest.config.ts": {
       "imports": [],
       "importedBy": []
-    },
-    ".claude/skills/review-session/scripts/find-last-session.mjs": {
-      "imports": [
-        ".claude/skills/review-session/scripts/find-last-session-helpers.mjs"
-      ],
-      "importedBy": []
-    },
-    "src/lib/events.test.ts": {
-      "imports": [
-        "src/lib/events.ts"
-      ],
-      "importedBy": []
-    },
-    "ui/src/helpers/stepLabels.generated.ts": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/lib/team.ts": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/team.test.ts"
-      ]
     },
     "src/components/admin/DashboardSummary.astro": {
       "imports": [],
@@ -157,21 +125,9 @@
         "src/components/admin/DashboardSummary.test.ts"
       ]
     },
-    "src/lib/mailto.ts": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/mailto.test.ts"
-      ]
-    },
-    "src/env.d.ts": {
+    "src/content/config.ts": {
       "imports": [],
       "importedBy": []
-    },
-    "src/data/nav.json": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/site.ts"
-      ]
     },
     ".codeyam/scenario-issues.js": {
       "imports": [],
@@ -180,26 +136,8 @@
         ".codeyam/scenario-handlers.js"
       ]
     },
-    ".codeyam/scenario-interactivity.js": {
+    ".claude/skills/review-session/scripts/extract-session-helpers.mjs": {
       "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js"
-      ]
-    },
-    "astro.config.mjs": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/components/landing/landing-images.test.ts": {
-      "imports": [
-        "src/lib/url.ts"
-      ],
-      "importedBy": []
-    },
-    "src/lib/url.test.ts": {
-      "imports": [
-        "src/lib/url.ts"
-      ],
       "importedBy": []
     },
     "src/data/settings.json": {
@@ -208,33 +146,11 @@
         "src/lib/site.ts"
       ]
     },
-    ".claude/skills/review-session/scripts/find-last-session-helpers.mjs": {
-      "imports": [],
-      "importedBy": [
-        ".claude/skills/review-session/scripts/find-last-session.mjs"
-      ]
-    },
-    "cms-auth-worker/worker.js": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/lib/mailto.test.ts": {
-      "imports": [
-        "src/lib/mailto.ts"
-      ],
-      "importedBy": []
-    },
     "src/components/admin/CollectionCountCard.astro": {
       "imports": [],
       "importedBy": [
         "src/components/admin/CollectionCountCard.test.ts"
       ]
-    },
-    "src/lib/team.test.ts": {
-      "imports": [
-        "src/lib/team.ts"
-      ],
-      "importedBy": []
     },
     ".codeyam/capture.js": {
       "imports": [
@@ -247,47 +163,127 @@
       ],
       "importedBy": []
     },
-    ".claude/skills/review-session/scripts/extract-session.mjs": {
+    "src/lib/events.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/events.test.ts"
+      ]
+    },
+    "src/lib/parallax.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/parallax.test.ts",
+        "src/lib/parallax.test.ts"
+      ]
+    },
+    ".codeyam/scenario-mocks.js": {
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js"
+      ]
+    },
+    "src/lib/team.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/team.test.ts"
+      ]
+    },
+    ".codeyam/scenario-handlers.js": {
+      "imports": [
+        ".codeyam/scenario-issues.js"
+      ],
+      "importedBy": [
+        ".codeyam/capture.js"
+      ]
+    },
+    "src/lib/url.test.ts": {
+      "imports": [
+        "src/lib/url.ts"
+      ],
+      "importedBy": []
+    },
+    "cms-auth-worker/worker.js": {
       "imports": [],
       "importedBy": []
     },
-    ".claude/hooks/editor-step-hook.py": {
+    ".codeyam/scenario-playwright.js": {
+      "imports": [
+        ".codeyam/scenario-metrics.js"
+      ],
+      "importedBy": [
+        ".codeyam/capture.js"
+      ]
+    },
+    "src/data/nav.json": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/site.ts"
+      ]
+    },
+    "src/lib/url.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/components/landing/landing-images.test.ts",
+        "src/lib/url.test.ts"
+      ]
+    },
+    "src/lib/events.test.ts": {
+      "imports": [
+        "src/lib/events.ts"
+      ],
+      "importedBy": []
+    },
+    "src/env.d.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/mailto.test.ts": {
+      "imports": [
+        "src/lib/mailto.ts"
+      ],
+      "importedBy": []
+    },
+    "src/components/landing/landing-images.test.ts": {
+      "imports": [
+        "src/lib/url.ts"
+      ],
+      "importedBy": []
+    },
+    ".astro/types.d.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/components/Greeting.test.tsx": {
+      "imports": [
+        "src/components/Greeting.tsx"
+      ],
+      "importedBy": []
+    },
+    "src/lib/team.test.ts": {
+      "imports": [
+        "src/lib/team.ts"
+      ],
+      "importedBy": []
+    },
+    ".astro/content-assets.mjs": {
       "imports": [],
       "importedBy": []
     }
   },
   "entities": {
-    "src/lib/team.test.ts::__file_root__": {
-      "filePath": "src/lib/team.test.ts",
+    "src/components/landing/landing-images.test.ts::__file_root__": {
+      "filePath": "src/components/landing/landing-images.test.ts",
       "name": "__file_root__",
       "imports": [
-        "src/lib/team.ts::BoardMemberLike",
-        "src/lib/team.ts::initials",
-        "src/lib/team.ts::sortBoardMembers"
+        "src/lib/url.ts::withBase"
       ],
       "importedBy": []
     },
-    "src/lib/team.ts::BoardMemberLike": {
-      "filePath": "src/lib/team.ts",
-      "name": "BoardMemberLike",
-      "imports": [],
-      "importedBy": [
-        "src/lib/team.test.ts::__file_root__"
-      ]
-    },
-    ".codeyam/capture.js::{\n  findErrorPattern,\n  buildErrorContextSnippet,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}": {
-      "filePath": ".codeyam/capture.js",
-      "name": "{\n  findErrorPattern,\n  buildErrorContextSnippet,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}",
+    ".codeyam/scenario-handlers.js::{ createIssue }": {
+      "filePath": ".codeyam/scenario-handlers.js",
+      "name": "{ createIssue }",
       "imports": [
-        ".codeyam/scenario-metrics.js::__file_root__"
-      ],
-      "importedBy": []
-    },
-    ".codeyam/capture.js::{\n  getInitScript,\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}": {
-      "filePath": ".codeyam/capture.js",
-      "name": "{\n  getInitScript,\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}",
-      "imports": [
-        ".codeyam/scenario-handlers.js::__file_root__"
+        ".codeyam/scenario-issues.js::__file_root__"
       ],
       "importedBy": []
     },
@@ -299,198 +295,8 @@
       ],
       "importedBy": []
     },
-    ".claude/skills/review-session/scripts/find-last-session-helpers.mjs::claudeProjectHashFromPath": {
-      "filePath": ".claude/skills/review-session/scripts/find-last-session-helpers.mjs",
-      "name": "claudeProjectHashFromPath",
-      "imports": [],
-      "importedBy": [
-        ".claude/skills/review-session/scripts/find-last-session.mjs::__file_root__"
-      ]
-    },
-    "src/components/admin/CollectionCountCard.astro::__file_root__": {
-      "filePath": "src/components/admin/CollectionCountCard.astro",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        "src/components/admin/CollectionCountCard.test.ts::__file_root__"
-      ]
-    },
-    "src/lib/team.ts::initials": {
-      "filePath": "src/lib/team.ts",
-      "name": "initials",
-      "imports": [],
-      "importedBy": [
-        "src/lib/team.test.ts::__file_root__"
-      ]
-    },
-    "src/components/Greeting.test.tsx::__file_root__": {
-      "filePath": "src/components/Greeting.test.tsx",
-      "name": "__file_root__",
-      "imports": [
-        "src/components/Greeting.tsx::Greeting"
-      ],
-      "importedBy": []
-    },
-    "src/components/landing/landing-images.test.ts::__file_root__": {
-      "filePath": "src/components/landing/landing-images.test.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/lib/url.ts::withBase"
-      ],
-      "importedBy": []
-    },
-    "src/lib/url.ts::withBase": {
-      "filePath": "src/lib/url.ts",
-      "name": "withBase",
-      "imports": [],
-      "importedBy": [
-        "src/lib/url.test.ts::__file_root__"
-      ]
-    },
-    ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n}": {
-      "filePath": ".codeyam/capture.js",
-      "name": "{\n  createIssue,\n  pushIssue,\n  buildResult,\n}",
-      "imports": [
-        ".codeyam/scenario-issues.js::__file_root__"
-      ],
-      "importedBy": []
-    },
-    ".codeyam/scenario-issues.js::__file_root__": {
-      "filePath": ".codeyam/scenario-issues.js",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n}",
-        ".codeyam/scenario-handlers.js::{ createIssue }"
-      ]
-    },
-    ".codeyam/capture.js::{\n  probeInteractivity,\n}": {
-      "filePath": ".codeyam/capture.js",
-      "name": "{\n  probeInteractivity,\n}",
-      "imports": [
-        ".codeyam/scenario-interactivity.js::__file_root__"
-      ],
-      "importedBy": []
-    },
     "src/data/nav.json::__file_root__": {
       "filePath": "src/data/nav.json",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        "src/lib/site.ts::__file_root__"
-      ]
-    },
-    ".codeyam/scenario-handlers.js::{ createIssue }": {
-      "filePath": ".codeyam/scenario-handlers.js",
-      "name": "{ createIssue }",
-      "imports": [
-        ".codeyam/scenario-issues.js::__file_root__"
-      ],
-      "importedBy": []
-    },
-    ".codeyam/capture.js::{\n  assertAppPortReachable,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  performInteraction,\n  waitForPredicate,\n  performInteractionSequence,\n}": {
-      "filePath": ".codeyam/capture.js",
-      "name": "{\n  assertAppPortReachable,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  performInteraction,\n  waitForPredicate,\n  performInteractionSequence,\n}",
-      "imports": [
-        ".codeyam/scenario-playwright.js::__file_root__"
-      ],
-      "importedBy": []
-    },
-    "src/lib/url.test.ts::__file_root__": {
-      "filePath": "src/lib/url.test.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/lib/url.ts::withBase"
-      ],
-      "importedBy": []
-    },
-    ".astro/content.d.ts::ContentConfig": {
-      "filePath": ".astro/content.d.ts",
-      "name": "ContentConfig",
-      "imports": [
-        "src/content/config.js::__file_root__"
-      ],
-      "importedBy": []
-    },
-    "src/lib/adminDashboard.test.ts::__file_root__": {
-      "filePath": "src/lib/adminDashboard.test.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/lib/adminDashboard.ts::CollectionCard",
-        "src/lib/adminDashboard.ts::__file_root__",
-        "src/lib/adminDashboard.ts::dashboardSummaryText",
-        "src/lib/adminDashboard.ts::dashboardTotals"
-      ],
-      "importedBy": []
-    },
-    "src/components/admin/DashboardSummary.test.ts::__file_root__": {
-      "filePath": "src/components/admin/DashboardSummary.test.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/components/admin/DashboardSummary.astro::__file_root__"
-      ],
-      "importedBy": []
-    },
-    ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}": {
-      "filePath": ".codeyam/scenario-playwright.js",
-      "name": "{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}",
-      "imports": [
-        ".codeyam/scenario-metrics.js::__file_root__"
-      ],
-      "importedBy": []
-    },
-    "src/lib/team.ts::sortBoardMembers": {
-      "filePath": "src/lib/team.ts",
-      "name": "sortBoardMembers",
-      "imports": [],
-      "importedBy": [
-        "src/lib/team.test.ts::__file_root__"
-      ]
-    },
-    ".codeyam/scenario-metrics.js::__file_root__": {
-      "filePath": ".codeyam/scenario-metrics.js",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js::{\n  findErrorPattern,\n  buildErrorContextSnippet,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}",
-        ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}"
-      ]
-    },
-    "src/lib/site.ts::__file_root__": {
-      "filePath": "src/lib/site.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/data/settings.json::__file_root__",
-        "src/data/nav.json::__file_root__"
-      ],
-      "importedBy": []
-    },
-    "src/content/config.js::__file_root__": {
-      "filePath": "src/content/config.js",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        ".astro/content.d.ts::ContentConfig"
-      ]
-    },
-    ".codeyam/scenario-interactivity.js::__file_root__": {
-      "filePath": ".codeyam/scenario-interactivity.js",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js::{\n  probeInteractivity,\n}"
-      ]
-    },
-    ".claude/skills/review-session/scripts/find-last-session.mjs::__file_root__": {
-      "filePath": ".claude/skills/review-session/scripts/find-last-session.mjs",
-      "name": "__file_root__",
-      "imports": [
-        ".claude/skills/review-session/scripts/find-last-session-helpers.mjs::claudeProjectHashFromPath"
-      ],
-      "importedBy": []
-    },
-    "src/data/settings.json::__file_root__": {
-      "filePath": "src/data/settings.json",
       "name": "__file_root__",
       "imports": [],
       "importedBy": [
@@ -505,6 +311,153 @@
       ],
       "importedBy": []
     },
+    "src/components/admin/DashboardSummary.astro::__file_root__": {
+      "filePath": "src/components/admin/DashboardSummary.astro",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/components/admin/DashboardSummary.test.ts::__file_root__"
+      ]
+    },
+    "src/data/settings.json::__file_root__": {
+      "filePath": "src/data/settings.json",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/lib/site.ts::__file_root__"
+      ]
+    },
+    ".claude/skills/review-session/scripts/find-last-session.mjs::__file_root__": {
+      "filePath": ".claude/skills/review-session/scripts/find-last-session.mjs",
+      "name": "__file_root__",
+      "imports": [
+        ".claude/skills/review-session/scripts/find-last-session-helpers.mjs::claudeProjectHashFromPath"
+      ],
+      "importedBy": []
+    },
+    "src/lib/parallax.test.ts::__file_root__": {
+      "filePath": "src/lib/parallax.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/parallax.ts::parallaxEnabled",
+        "src/lib/parallax.ts::parallaxOffset"
+      ],
+      "importedBy": []
+    },
+    ".codeyam/scenario-issues.js::__file_root__": {
+      "filePath": ".codeyam/scenario-issues.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n}",
+        ".codeyam/scenario-handlers.js::{ createIssue }"
+      ]
+    },
+    "src/lib/site.ts::__file_root__": {
+      "filePath": "src/lib/site.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/data/settings.json::__file_root__",
+        "src/data/nav.json::__file_root__"
+      ],
+      "importedBy": []
+    },
+    ".codeyam/capture.js::{\n  probeInteractivity,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "name": "{\n  probeInteractivity,\n}",
+      "imports": [
+        ".codeyam/scenario-interactivity.js::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/lib/team.ts::initials": {
+      "filePath": "src/lib/team.ts",
+      "name": "initials",
+      "imports": [],
+      "importedBy": [
+        "src/lib/team.test.ts::__file_root__"
+      ]
+    },
+    ".codeyam/capture.js::{\n  createIssue,\n  pushIssue,\n  buildResult,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "name": "{\n  createIssue,\n  pushIssue,\n  buildResult,\n}",
+      "imports": [
+        ".codeyam/scenario-issues.js::__file_root__"
+      ],
+      "importedBy": []
+    },
+    ".codeyam/capture.js::{\n  findErrorPattern,\n  buildErrorContextSnippet,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "name": "{\n  findErrorPattern,\n  buildErrorContextSnippet,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}",
+      "imports": [
+        ".codeyam/scenario-metrics.js::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/lib/parallax.test.ts::freshInit": {
+      "filePath": "src/lib/parallax.test.ts",
+      "name": "freshInit",
+      "imports": [
+        "src/lib/parallax.ts::__file_root__"
+      ],
+      "importedBy": []
+    },
+    ".codeyam/capture.js::{\n  getInitScript,\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "name": "{\n  getInitScript,\n  handleConsoleMessage,\n  handlePageError,\n  handleRequestFailed,\n}",
+      "imports": [
+        ".codeyam/scenario-handlers.js::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/components/Greeting.test.tsx::__file_root__": {
+      "filePath": "src/components/Greeting.test.tsx",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/Greeting.tsx::Greeting"
+      ],
+      "importedBy": []
+    },
+    "src/content/config.js::__file_root__": {
+      "filePath": "src/content/config.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".astro/content.d.ts::ContentConfig"
+      ]
+    },
+    "src/lib/url.ts::withBase": {
+      "filePath": "src/lib/url.ts",
+      "name": "withBase",
+      "imports": [],
+      "importedBy": [
+        "src/lib/url.test.ts::__file_root__"
+      ]
+    },
+    "src/components/admin/CollectionCountCard.astro::__file_root__": {
+      "filePath": "src/components/admin/CollectionCountCard.astro",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/components/admin/CollectionCountCard.test.ts::__file_root__"
+      ]
+    },
+    ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}": {
+      "filePath": ".codeyam/scenario-playwright.js",
+      "name": "{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}",
+      "imports": [
+        ".codeyam/scenario-metrics.js::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/components/admin/DashboardSummary.test.ts::__file_root__": {
+      "filePath": "src/components/admin/DashboardSummary.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/components/admin/DashboardSummary.astro::__file_root__"
+      ],
+      "importedBy": []
+    },
     "src/lib/events.test.ts::__file_root__": {
       "filePath": "src/lib/events.test.ts",
       "name": "__file_root__",
@@ -515,19 +468,19 @@
       ],
       "importedBy": []
     },
-    "src/components/admin/DashboardSummary.astro::__file_root__": {
-      "filePath": "src/components/admin/DashboardSummary.astro",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        "src/components/admin/DashboardSummary.test.ts::__file_root__"
-      ]
-    },
-    ".codeyam/capture.js::{\n  attachHttpMocks,\n  isDeclaredErrorMock,\n}": {
+    ".codeyam/capture.js::{\n  assertAppPortReachable,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  performInteraction,\n  waitForPredicate,\n  performInteractionSequence,\n}": {
       "filePath": ".codeyam/capture.js",
-      "name": "{\n  attachHttpMocks,\n  isDeclaredErrorMock,\n}",
+      "name": "{\n  assertAppPortReachable,\n  loadScenarioInIframe,\n  loadScenarioTopLevel,\n  resolveHarnessOrigin,\n  waitForStablePage,\n  createNetworkTracker,\n  waitForNetworkQuiet,\n  collectContentState,\n  performInteraction,\n  waitForPredicate,\n  performInteractionSequence,\n}",
       "imports": [
-        ".codeyam/scenario-mocks.js::__file_root__"
+        ".codeyam/scenario-playwright.js::__file_root__"
+      ],
+      "importedBy": []
+    },
+    ".astro/content.d.ts::ContentConfig": {
+      "filePath": ".astro/content.d.ts",
+      "name": "ContentConfig",
+      "imports": [
+        "src/content/config.js::__file_root__"
       ],
       "importedBy": []
     },
@@ -538,7 +491,85 @@
       "importedBy": [
         ".codeyam/capture.js::{\n  attachHttpMocks,\n  isDeclaredErrorMock,\n}"
       ]
+    },
+    "src/lib/team.ts::BoardMemberLike": {
+      "filePath": "src/lib/team.ts",
+      "name": "BoardMemberLike",
+      "imports": [],
+      "importedBy": [
+        "src/lib/team.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/url.test.ts::__file_root__": {
+      "filePath": "src/lib/url.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/url.ts::withBase"
+      ],
+      "importedBy": []
+    },
+    ".codeyam/scenario-metrics.js::__file_root__": {
+      "filePath": ".codeyam/scenario-metrics.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js::{\n  findErrorPattern,\n  buildErrorContextSnippet,\n  hasRenderableContent,\n  buildSettleAdvisory,\n  describeBlankReason,\n}",
+        ".codeyam/scenario-playwright.js::{\n  hasLoadingMarkers,\n  shouldStopWaitingForImages,\n}"
+      ]
+    },
+    "src/lib/adminDashboard.test.ts::__file_root__": {
+      "filePath": "src/lib/adminDashboard.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/adminDashboard.ts::CollectionCard",
+        "src/lib/adminDashboard.ts::__file_root__",
+        "src/lib/adminDashboard.ts::dashboardSummaryText",
+        "src/lib/adminDashboard.ts::dashboardTotals"
+      ],
+      "importedBy": []
+    },
+    ".codeyam/scenario-interactivity.js::__file_root__": {
+      "filePath": ".codeyam/scenario-interactivity.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js::{\n  probeInteractivity,\n}"
+      ]
+    },
+    ".claude/skills/review-session/scripts/find-last-session-helpers.mjs::claudeProjectHashFromPath": {
+      "filePath": ".claude/skills/review-session/scripts/find-last-session-helpers.mjs",
+      "name": "claudeProjectHashFromPath",
+      "imports": [],
+      "importedBy": [
+        ".claude/skills/review-session/scripts/find-last-session.mjs::__file_root__"
+      ]
+    },
+    "src/lib/team.ts::sortBoardMembers": {
+      "filePath": "src/lib/team.ts",
+      "name": "sortBoardMembers",
+      "imports": [],
+      "importedBy": [
+        "src/lib/team.test.ts::__file_root__"
+      ]
+    },
+    ".codeyam/capture.js::{\n  attachHttpMocks,\n  isDeclaredErrorMock,\n}": {
+      "filePath": ".codeyam/capture.js",
+      "name": "{\n  attachHttpMocks,\n  isDeclaredErrorMock,\n}",
+      "imports": [
+        ".codeyam/scenario-mocks.js::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/lib/team.test.ts::__file_root__": {
+      "filePath": "src/lib/team.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/team.ts::BoardMemberLike",
+        "src/lib/team.ts::initials",
+        "src/lib/team.ts::sortBoardMembers"
+      ],
+      "importedBy": []
     }
   },
-  "lastUpdated": "2026-06-15T00:12:44Z"
+  "lastUpdated": "2026-06-15T09:57:10Z"
 }

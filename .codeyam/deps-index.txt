@@ -1,6 +1,7 @@
-# regenerated from dependency-graph.json on 2026-06-15T00:12:44Z; do not hand-edit
+# regenerated from dependency-graph.json on 2026-06-15T09:57:10Z; do not hand-edit
 .codeyam/scenario-issues.js :: imports=0 :: imported_by=2
 .codeyam/scenario-metrics.js :: imports=0 :: imported_by=2
+src/lib/parallax.ts :: imports=0 :: imported_by=2
 src/lib/url.ts :: imports=0 :: imported_by=2
 .claude/skills/review-session/scripts/find-last-session-helpers.mjs :: imports=0 :: imported_by=1
 .codeyam/scenario-handlers.js :: imports=1 :: imported_by=1
@@ -39,6 +40,7 @@ src/env.d.ts :: imports=0 :: imported_by=0
 src/lib/adminDashboard.test.ts :: imports=1 :: imported_by=0
 src/lib/events.test.ts :: imports=1 :: imported_by=0
 src/lib/mailto.test.ts :: imports=1 :: imported_by=0
+src/lib/parallax.test.ts :: imports=2 :: imported_by=0
 src/lib/site.ts :: imports=2 :: imported_by=0
 src/lib/team.test.ts :: imports=1 :: imported_by=0
 src/lib/url.test.ts :: imports=1 :: imported_by=0

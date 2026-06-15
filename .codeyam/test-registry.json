@@ -181,6 +181,42 @@
       "runner": "tests"
     },
     {
+      "description": "No [data-parallax] images on the page → a clean no-op, not a throw.",
+      "file": "src/lib/parallax.test.ts",
+      "format": "vitest",
+      "key": "initParallax › is a no-op when there are no parallax images",
+      "line": 113,
+      "registeredAt": "2026-06-15T01:43:54.041645158+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Touch / coarse pointer: parallax never activates, so the image keeps its default static cover styling (no height override, no transform).",
+      "file": "src/lib/parallax.test.ts",
+      "format": "vitest",
+      "key": "initParallax › leaves the image untouched on a non-fine-hover device",
+      "line": 93,
+      "registeredAt": "2026-06-15T01:43:54.041645158+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Reduced-motion preference wins even on a capable desktop: image stays static.",
+      "file": "src/lib/parallax.test.ts",
+      "format": "vitest",
+      "key": "initParallax › leaves the image untouched when the user prefers reduced motion",
+      "line": 103,
+      "registeredAt": "2026-06-15T01:43:54.041645158+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "Desktop (fine hover, no reduced motion): the image is sized to the viewport and pinned via a transform cancelling the section's offset from the top.",
+      "file": "src/lib/parallax.test.ts",
+      "format": "vitest",
+      "key": "initParallax › pins the banner image to the viewport on a fine-hover desktop",
+      "line": 82,
+      "registeredAt": "2026-06-15T01:43:54.041645158+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "Surrounding and repeated whitespace is collapsed rather than producing blank initials.",
       "file": "src/lib/team.test.ts",
       "format": "vitest",
@@ -259,6 +295,69 @@
       "key": "landing image base paths › prefixes every internal landing image with the project base on a subpath deploy",
       "line": 33,
       "registeredAt": "2026-06-14T15:03:38Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Both unfavorable → off.",
+      "file": "src/lib/parallax.test.ts",
+      "format": "vitest",
+      "key": "parallaxEnabled › disables parallax for touch devices with reduced motion",
+      "line": 41,
+      "registeredAt": "2026-06-15T01:41:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Touch / coarse pointer → off, regardless of motion preference.",
+      "file": "src/lib/parallax.test.ts",
+      "format": "vitest",
+      "key": "parallaxEnabled › disables parallax on non-fine-hover touch devices",
+      "line": 31,
+      "registeredAt": "2026-06-15T01:41:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Reduced-motion preference wins even on a capable desktop.",
+      "file": "src/lib/parallax.test.ts",
+      "format": "vitest",
+      "key": "parallaxEnabled › disables parallax when the user prefers reduced motion",
+      "line": 36,
+      "registeredAt": "2026-06-15T01:41:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Desktop: fine pointer + hover, no reduced-motion preference → parallax on.",
+      "file": "src/lib/parallax.test.ts",
+      "format": "vitest",
+      "key": "parallaxEnabled › enables parallax for fine-hover devices without reduced motion",
+      "line": 26,
+      "registeredAt": "2026-06-15T01:41:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A section still below the viewport top (positive rect.top) is pulled UP by the same amount, so the image reads as fixed to the viewport.",
+      "file": "src/lib/parallax.test.ts",
+      "format": "vitest",
+      "key": "parallaxOffset › returns a negative offset for a section below the viewport top",
+      "line": 7,
+      "registeredAt": "2026-06-15T01:41:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Once the section has scrolled above the viewport top (negative rect.top), the image is pushed DOWN to stay pinned.",
+      "file": "src/lib/parallax.test.ts",
+      "format": "vitest",
+      "key": "parallaxOffset › returns a positive offset for a section scrolled above the viewport top",
+      "line": 19,
+      "registeredAt": "2026-06-15T01:41:28Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Flush with the viewport top: no translation needed. (`-0 === 0` is true; we compare numerically rather than via Object.is to ignore the sign of zero.)",
+      "file": "src/lib/parallax.test.ts",
+      "format": "vitest",
+      "key": "parallaxOffset › returns zero when the section is flush with the viewport top",
+      "line": 13,
+      "registeredAt": "2026-06-15T01:41:28Z",
       "runner": "tests"
     },
     {

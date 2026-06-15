@@ -9,13 +9,21 @@
     ]
   },
   {
-    "description": "Production-only client-side passcode gate mounted first in AdminLayout. Renders no visual output — emits a single is:inline script that, on the live site, checks a sessionStorage unlock flag, prompts for the passcode, reveals the page on success, and redirects to the public home otherwise. Inert in dev/preview. Its pure comparison logic is extracted and unit-tested as isPasscodeCorrect in src/lib/adminGate.ts.",
+    "description": "Production-only client-side passcode gate mounted first in AdminLayout. Renders no visual output — emits a single is:inline script that, on the live site, checks a sessionStorage unlock flag, then shows a custom opaque full-viewport overlay with a masked <input type=password> (built via document.createElement) so the typed passcode renders as dots; reveals the page on a correct entry and redirects to the public home on cancel, Escape, or an incorrect entry. Inert in dev/preview. Its overlay look mirrors AdminGatePrompt.astro and its pure comparison logic is extracted and unit-tested as isPasscodeCorrect in src/lib/adminGate.ts.",
     "filePath": "src/components/admin/AdminGate.astro",
     "name": "AdminGate",
     "untestabilityReason": {
-      "justification": "No rendered DOM surface; browser sessionStorage/window.prompt/location glue. Logic tested via isPasscodeCorrect in adminGate.ts.",
+      "justification": "No rendered DOM surface; emits an inline browser script that builds a masked overlay via document.createElement and uses sessionStorage/location glue. Comparison logic tested via isPasscodeCorrect in adminGate.ts; overlay look covered by the AdminGatePrompt scenario.",
       "kind": "platform-glue"
     }
+  },
+  {
+    "description": "Server-rendered visual twin of the /admin passcode overlay: an on-brand card with a label, a masked <input type=password> (a pre-filled value renders as dots), and Cancel / Unlock actions. The real gate (AdminGate.astro) is production-only and builds its overlay imperatively, so this isolable component is the demonstrable spec of the prompt; the two are kept in sync by hand. Optional `value` prop pre-fills the field to show the masking.",
+    "filePath": "src/components/admin/AdminGatePrompt.astro",
+    "name": "AdminGatePrompt",
+    "scenarios": [
+      "admingateprompt-masked-entry"
+    ]
   },
   {
     "description": "A single Board of Directors member card: a circular B&W headshot, or an initials-avatar fallback when the member has no photo, plus name and role. Shared by the landing BoardOfDirectors section and isolated scenarios.",

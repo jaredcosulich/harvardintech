@@ -1,0 +1,99 @@
+{
+  "timestamp": "2026-06-15T13:39:55Z",
+  "title": "cms: Masked admin passcode prompt",
+  "type": "feature",
+  "userRequest": "## Summary\n\nThe `/admin` dashboard passcode gate currently uses the native\n`window.prompt()`, which always renders the typed passcode in plain text — it\nlooks unpolished even though the gate is only a deterrent. Replace the native\nprompt with a small custom, opaque full-viewport overlay that contains an\n`<input type=\"password\">`, so characters mask to dots/bullets as you type. All\nexisting gate behavior is preserved exactly: it blocks before the dashboard\nrenders (no flash), runs in production only (`import.meta.env.PROD`), persists\nthe unlock in `sessionStorage` under `ADMIN_GATE_STORAGE_KEY`, redirects home on\ncancel or an incorrect entry, and keeps the same `ADMIN_GATE_PASSCODE`\nenv/fallback wiring. This is purely a UX upgrade to how the prompt looks — the\npasscode still ships in the built JS, so the gate remains a deterrent, not real\nsecurity.\n\n## Key Decisions\n\n- **Custom overlay instead of `window.prompt()`** — `window.prompt()` cannot\n  mask input; only a real `<input type=\"password\">` shows dots. So the inline\n  gate script must build a small DOM overlay (backdrop + label + password input +\n  Unlock button) rather than call the native prompt.\n- **Preserve the \"no flash\" guarantee via explicit `visibility`** — the current\n  script hides `document.documentElement` (`visibility: hidden`) up front so the\n  dashboard never flashes. Keep that, and make the injected overlay visible by\n  setting its own `visibility: visible` (which overrides the inherited hidden),\n  plus an opaque background and a high `z-index` so the dashboard stays covered.\n  On a correct passcode: remove the overlay and restore the document's previous\n  visibility. This keeps the exact anti-flash semantics while swapping the input\n  mechanism.\n- **Stay an inline, self-contained script** — the gate runs as an `is:inline`\n  script (it executes before the rest of `<body>` and can't import bundled\n  modules), so the overlay is created with `document.createElement` + inline\n  styles inside the same `define:vars` block. The passcode comparison continues\n  to mirror `isPasscodeCorrect` from `src/lib/adminGate.ts` (trim both sides;\n  empty expected never matches) — the lib stays the single tested source of\n  truth, the inline copy stays in sync, same as today.\n- **Match existing redirect-on-incorrect behavior** — keep parity: an empty/\n  cancelled entry or a wrong passcode redirects home (`homePath`). The button and\n  the Enter key submit; an Escape key or a Cancel affordance redirects home. (A\n  softer \"show inline error and let them retry\" flow is intentionally out of\n  scope to preserve current behavior — note it as a possible later enhancement.)\n- **On-brand but flash-safe styling** — style the overlay with the site's design\n  tokens (`var(--color-bg)`, `var(--color-border)`, `var(--radius)`, brand blue\n  for the button) but give each a literal fallback in the inline styles, since\n  the inline script may run before `tokens.css` applies. Keep it minimal and\n  centered.\n- **Scope kept to the prompt mechanism** — this plan only changes how the gate\n  collects the passcode. It deliberately does not touch the stale \"cms-auth-worker\n  is the real write boundary\" comments in `AdminGate.astro` / `adminGate.ts`;\n  the separate queued `cms-token-only-self-serve-signin` plan already updates\n  those. Both edit `AdminGate.astro`, but in different regions (this one rewrites\n  the inline prompt logic; the other rewrites a doc comment), so they reconcile\n  cleanly regardless of run order.\n\n## Implementation\n\n### 1. Replace the native prompt with a masked overlay\n\n**File**: `src/components/admin/AdminGate.astro`\n\nKeep the component's frontmatter and gating unchanged: the\n`expectedPasscode = import.meta.env.ADMIN_GATE_PASSCODE ?? 'harvardintech-admin-preview'`\nfallback, `homePath = withBase('/')`, `gateActive = import.meta.env.PROD`, and\nthe `is:inline` script with `define:vars={{ expected, storageKey, homePath }}`.\n\nRewrite the body of the inline IIFE so that, instead of calling\n`window.prompt()`:\n\n1. Early-return if `sessionStorage[storageKey] === '1'` (unchanged).\n2. Hide the document up front: save `document.documentElement.style.visibility`\n   and set it to `'hidden'` (unchanged anti-flash behavior).\n3. Build an overlay via `document.createElement`:\n   - A fixed, full-viewport backdrop (`position: fixed; inset: 0; z-index`\n     very high; opaque background) with its own `visibility: 'visible'` so it\n     shows despite the hidden documentElement.\n   - A centered card containing a short label (\"Enter the admin passcode to\n     continue\"), an `<input type=\"password\">` (autofocus), and an \"Unlock\"\n     button. Optionally a small \"Cancel\" link/button.\n   - Append the backdrop to `document.documentElement` (it exists even before\n     `<body>` finishes parsing) and focus the input.\n4. Wire submission:\n   - A `submit` handler (button click / form submit / Enter key) reads the\n     input value and compares it with the same trim-based check used by\n     `isPasscodeCorrect` (`String(expected).trim()` length > 0 and\n     `entry.trim() === want`).\n   - **Correct:** set `sessionStorage[storageKey] = '1'` (guarded in try/catch\n     as today), remove the overlay, and restore\n     `document.documentElement.style.visibility` to its saved value.\n   - **Incorrect or cancelled (Cancel / Escape):** `window.location.replace(homePath)`\n     — same redirect-home behavior as today.\n   - Preserve the `sessionStorage` try/catch fallthrough (private mode / disabled\n     storage) exactly as in the current script.\n\nKeep the explanatory comment block at the top of the inline script, updating it\nto describe the custom masked overlay (replacing the \"then prompt\" wording) while\nstill noting it mirrors `isPasscodeCorrect()` from `src/lib/adminGate.ts`.\n\nNo change to `gateActive` (production-only) — on local dev / codeyam preview the\ngate stays off and the overlay never renders.\n\n### 2. Keep the comparison logic in the tested lib\n\n**File**: `src/lib/adminGate.ts` (no functional change)\n\n`isPasscodeCorrect` and `ADMIN_GATE_STORAGE_KEY` remain the canonical,\nunit-tested logic that the inline overlay mirrors. Do not change their behavior.\n(If the separate token-only plan hasn't yet refreshed the \"cms-auth-worker\"\ncomment here, leave it for that plan — out of scope.)\n\n## Reused existing code\n\n- `isPasscodeCorrect` from `src/lib/adminGate.ts` (glossary entry:\n  `isPasscodeCorrect`; tested in `src/lib/adminGate.test.ts`) — the trim-based\n  compare the inline overlay mirrors.\n- `ADMIN_GATE_STORAGE_KEY` from `src/lib/adminGate.ts` — the `sessionStorage`\n  unlock key, passed into the inline script via `define:vars` as today.\n- `AdminGate` component from `src/components/admin/AdminGate.astro` (glossary\n  entry: `AdminGate`) — rewritten in place; still mounted as the first child of\n  `<body>` by `src/layouts/AdminLayout.astro`, covering every `/admin` page.\n- `withBase` from `src/lib/url.ts` — unchanged; still builds `homePath` for the\n  cancel/incorrect redirect.\n\n## Scenarios to Demonstrate\n\n- **Masked entry (happy path)** — the overlay appears over a hidden dashboard;\n  typing the passcode shows dots/bullets; the correct value unlocks and reveals\n  the dashboard.\n- **Incorrect passcode** — entering a wrong value redirects to the public home\n  page (parity with current behavior).\n- **Cancel** — dismissing the prompt (Cancel / Escape) redirects home without\n  revealing the dashboard.\n- **Already unlocked** — with `sessionStorage[admin-unlocked] === '1'`, the\n  overlay never appears and the dashboard renders immediately.\n- **No flash** — on a fresh production load the dashboard content is never\n  visible before the overlay (document stays hidden behind the opaque overlay\n  until unlock).\n- **Gate disabled in dev** — on the local dev server / codeyam preview\n  (`import.meta.env.PROD` false), no overlay renders and the dashboard is open.",
+  "description": "Replaced the native window.prompt() on the production-only /admin passcode gate with a custom opaque full-viewport overlay containing an <input type=password>, so the typed passcode now masks to dots instead of showing in plain text. All prior gate behavior is preserved exactly — anti-flash document hide, sessionStorage unlock persistence, redirect-home on cancel/Escape/incorrect entry, and the same ADMIN_GATE_PASSCODE env wiring; the comparison still mirrors the unit-tested isPasscodeCorrect in src/lib/adminGate.ts. Added AdminGatePrompt.astro as the isolable visual twin of the overlay (the real gate is production-only and never renders in dev), captured as two component scenarios: the initial empty prompt and the masked-entry state.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/.last-reconcile.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/cms-masked-admin-passcode-prompt.md\t.codeyam/plans/completed/cms-masked-admin-passcode-prompt.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-run-marker.json",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/admin/AdminGate.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/admingateprompt-initial-empty.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/admingateprompt-masked-entry.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/admingateprompt-initial-empty--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/admingateprompt-initial-empty--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/admingateprompt-masked-entry--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/admingateprompt-masked-entry--desktop.png.hash",
+      "status": "added"
+    },
+    {
+      "path": "src/components/admin/AdminGatePrompt.astro",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "AdminGatePrompt - Initial Empty",
+      "screenshotPath": "admingateprompt-initial-empty--desktop.png"
+    },
+    {
+      "name": "AdminGatePrompt - Masked Entry",
+      "screenshotPath": "admingateprompt-masked-entry--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 7,
+        "passed": 7
+      }
+    ]
+  }
+}

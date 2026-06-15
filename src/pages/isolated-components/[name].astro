@@ -5,6 +5,7 @@ import EventsPage from '../../components/EventsPage.astro';
 import ChapterPage from '../../components/ChapterPage.astro';
 import CollectionCountCard from '../../components/admin/CollectionCountCard.astro';
 import DashboardSummary from '../../components/admin/DashboardSummary.astro';
+import AdminGatePrompt from '../../components/admin/AdminGatePrompt.astro';
 import BoardMemberCard from '../../components/BoardMemberCard.astro';
 import '../../styles/tokens.css';
 
@@ -136,6 +137,8 @@ export async function getStaticPaths() {
     { params: { name: 'DashboardSummary-Empty' } },
     { params: { name: 'BoardMemberCard' } },
     { params: { name: 'BoardMemberCard-Initials' } },
+    { params: { name: 'AdminGatePrompt' } },
+    { params: { name: 'AdminGatePrompt-Empty' } },
   ];
 }
 
@@ -184,6 +187,15 @@ if (name && name.startsWith('BoardMemberCard')) {
   const stateKey = (name === 'BoardMemberCard' ? 'Default' : name.slice('BoardMemberCard-'.length)) as keyof typeof boardMemberCardStates;
   boardMemberCardProps = boardMemberCardStates[stateKey] ?? boardMemberCardStates.Default;
 }
+
+// AdminGatePrompt: the masked /admin passcode overlay. The default route shows a
+// pre-filled password rendered as dots (demonstrating the masking the real
+// production-only gate provides); the `-Empty` route shows the initial, untouched
+// prompt the visitor first sees.
+const adminGatePromptValue = name === 'AdminGatePrompt' ? 'harvardintech-admin'
+  : name === 'AdminGatePrompt-Empty' ? ''
+  : null;
+const isAdminGatePrompt = adminGatePromptValue !== null;
 ---
 
 <html lang="en">
@@ -219,6 +231,10 @@ if (name && name.startsWith('BoardMemberCard')) {
         ) : boardMemberCardProps ? (
           <div style="width: 200px;">
             <BoardMemberCard {...boardMemberCardProps} />
+          </div>
+        ) : isAdminGatePrompt ? (
+          <div style="width: 640px; max-width: 100%;">
+            <AdminGatePrompt value={adminGatePromptValue} />
           </div>
         ) : (
           <p>Unknown component: {name}</p>

@@ -1,41 +1,17 @@
 {
   "files": {
-    ".claude/hooks/editor-pretool-hook.py": {
-      "imports": [],
-      "importedBy": []
-    },
-    ".astro/content.d.ts": {
-      "imports": [
-        "src/content/config.js"
-      ],
-      "importedBy": []
-    },
-    ".claude/skills/review-session/scripts/find-last-session-helpers.mjs": {
+    "src/data/settings.json": {
       "imports": [],
       "importedBy": [
-        ".claude/skills/review-session/scripts/find-last-session.mjs"
+        "src/lib/site.ts"
       ]
     },
-    ".astro/content-modules.mjs": {
+    "scripts/ours-shot.mjs": {
       "imports": [],
       "importedBy": []
     },
-    ".codeyam/scenario-interactivity.js": {
+    ".astro/content-assets.mjs": {
       "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js"
-      ]
-    },
-    "src/lib/url.test.ts": {
-      "imports": [
-        "src/lib/url.ts"
-      ],
-      "importedBy": []
-    },
-    "src/components/admin/DashboardSummary.test.ts": {
-      "imports": [
-        "src/components/admin/DashboardSummary.astro"
-      ],
       "importedBy": []
     },
     "src/components/Greeting.test.tsx": {
@@ -44,163 +20,9 @@
       ],
       "importedBy": []
     },
-    ".codeyam/scenario-mocks.js": {
-      "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js"
-      ]
-    },
-    "src/lib/adminDashboard.test.ts": {
-      "imports": [
-        "src/lib/adminDashboard.ts"
-      ],
-      "importedBy": []
-    },
-    "src/lib/team.photos.test.ts": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/data/nav.json": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/site.ts"
-      ]
-    },
-    "scripts/download-assets.mjs": {
-      "imports": [],
-      "importedBy": []
-    },
-    "scripts/ours-shot.mjs": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/components/admin/DashboardSummary.astro": {
-      "imports": [],
-      "importedBy": [
-        "src/components/admin/DashboardSummary.test.ts"
-      ]
-    },
-    "scripts/extract.mjs": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/lib/team.test.ts": {
-      "imports": [
-        "src/lib/team.ts"
-      ],
-      "importedBy": []
-    },
     ".claude/hooks/editor-step-hook.py": {
       "imports": [],
       "importedBy": []
-    },
-    "src/lib/adminDashboard.ts": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/adminDashboard.test.ts"
-      ]
-    },
-    "src/lib/parallax.ts": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/parallax.test.ts",
-        "src/lib/parallax.test.ts"
-      ]
-    },
-    ".astro/types.d.ts": {
-      "imports": [],
-      "importedBy": []
-    },
-    ".claude/skills/review-session/scripts/extract-session.mjs": {
-      "imports": [],
-      "importedBy": []
-    },
-    "astro.config.mjs": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/lib/events.ts": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/events.test.ts"
-      ]
-    },
-    ".claude/skills/review-session/scripts/extract-session-helpers.mjs": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/components/Greeting.tsx": {
-      "imports": [],
-      "importedBy": [
-        "src/components/Greeting.test.tsx"
-      ]
-    },
-    "src/content/config.js": {
-      "imports": [],
-      "importedBy": [
-        ".astro/content.d.ts"
-      ]
-    },
-    "src/lib/adminGate.ts": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/adminGate.test.ts"
-      ]
-    },
-    "src/lib/events.test.ts": {
-      "imports": [
-        "src/lib/events.ts"
-      ],
-      "importedBy": []
-    },
-    "src/components/landing/landing-images.test.ts": {
-      "imports": [
-        "src/lib/url.ts"
-      ],
-      "importedBy": []
-    },
-    "ui/src/helpers/stepLabels.generated.ts": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/lib/mailto.ts": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/mailto.test.ts"
-      ]
-    },
-    "scripts/section-shot.mjs": {
-      "imports": [],
-      "importedBy": []
-    },
-    ".codeyam/scenario-issues.js": {
-      "imports": [],
-      "importedBy": [
-        ".codeyam/capture.js",
-        ".codeyam/scenario-handlers.js"
-      ]
-    },
-    "src/content/config.ts": {
-      "imports": [],
-      "importedBy": []
-    },
-    "src/lib/mailto.test.ts": {
-      "imports": [
-        "src/lib/mailto.ts"
-      ],
-      "importedBy": []
-    },
-    "src/components/admin/CollectionCountCard.astro": {
-      "imports": [],
-      "importedBy": [
-        "src/components/admin/CollectionCountCard.test.ts"
-      ]
-    },
-    "src/data/settings.json": {
-      "imports": [],
-      "importedBy": [
-        "src/lib/site.ts"
-      ]
     },
     ".codeyam/scenario-playwright.js": {
       "imports": [
@@ -210,15 +32,148 @@
         ".codeyam/capture.js"
       ]
     },
-    "cms-auth-worker/worker.js": {
+    "src/content/config.ts": {
       "imports": [],
       "importedBy": []
+    },
+    "src/lib/events.test.ts": {
+      "imports": [
+        "src/lib/events.ts"
+      ],
+      "importedBy": []
+    },
+    ".astro/types.d.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    ".codeyam/scenario-interactivity.js": {
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js"
+      ]
+    },
+    "src/lib/parallax.test.ts": {
+      "imports": [
+        "src/lib/parallax.ts",
+        "src/lib/parallax.ts"
+      ],
+      "importedBy": []
+    },
+    "src/lib/adminDashboard.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/adminDashboard.test.ts"
+      ]
+    },
+    "vitest.config.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    "ui/src/helpers/stepLabels.generated.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/components/admin/CollectionCountCard.test.ts": {
+      "imports": [
+        "src/components/admin/CollectionCountCard.astro"
+      ],
+      "importedBy": []
+    },
+    ".codeyam/scenario-issues.js": {
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js",
+        ".codeyam/scenario-handlers.js"
+      ]
+    },
+    "src/lib/adminGate.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/adminGate.test.ts"
+      ]
+    },
+    "scripts/compare-shot.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/url.test.ts": {
+      "imports": [
+        "src/lib/url.ts"
+      ],
+      "importedBy": []
+    },
+    ".claude/hooks/editor-pretool-hook.py": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/site.ts": {
+      "imports": [
+        "src/data/settings.json",
+        "src/data/nav.json"
+      ],
+      "importedBy": []
+    },
+    ".claude/hooks/_step_metadata.py": {
+      "imports": [],
+      "importedBy": []
+    },
+    "scripts/download-assets.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/adminDashboard.test.ts": {
+      "imports": [
+        "src/lib/adminDashboard.ts"
+      ],
+      "importedBy": []
+    },
+    "scripts/section-shot.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/components/landing/landing-images.test.ts": {
+      "imports": [
+        "src/lib/url.ts"
+      ],
+      "importedBy": []
+    },
+    "src/components/admin/DashboardSummary.astro": {
+      "imports": [],
+      "importedBy": [
+        "src/components/admin/DashboardSummary.test.ts"
+      ]
     },
     ".codeyam/scenario-metrics.js": {
       "imports": [],
       "importedBy": [
         ".codeyam/capture.js",
         ".codeyam/scenario-playwright.js"
+      ]
+    },
+    "scripts/crop.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    ".claude/skills/review-session/scripts/extract-session.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/content/config.js": {
+      "imports": [],
+      "importedBy": [
+        ".astro/content.d.ts"
+      ]
+    },
+    ".claude/skills/review-session/scripts/find-last-session-helpers.mjs": {
+      "imports": [],
+      "importedBy": [
+        ".claude/skills/review-session/scripts/find-last-session.mjs"
+      ]
+    },
+    "src/components/Greeting.tsx": {
+      "imports": [],
+      "importedBy": [
+        "src/components/Greeting.test.tsx"
       ]
     },
     ".codeyam/capture.js": {
@@ -232,11 +187,82 @@
       ],
       "importedBy": []
     },
-    "src/lib/team.ts": {
+    "scripts/extract.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/env.d.ts": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/events.ts": {
       "imports": [],
       "importedBy": [
-        "src/lib/team.test.ts"
+        "src/lib/events.test.ts"
       ]
+    },
+    "src/components/admin/DashboardSummary.test.ts": {
+      "imports": [
+        "src/components/admin/DashboardSummary.astro"
+      ],
+      "importedBy": []
+    },
+    "src/lib/parallax.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/parallax.test.ts",
+        "src/lib/parallax.test.ts"
+      ]
+    },
+    "src/lib/mailto.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/mailto.test.ts"
+      ]
+    },
+    "src/data/nav.json": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/site.ts"
+      ]
+    },
+    ".codeyam/scenario-handlers.js": {
+      "imports": [
+        ".codeyam/scenario-issues.js"
+      ],
+      "importedBy": [
+        ".codeyam/capture.js"
+      ]
+    },
+    ".astro/content.d.ts": {
+      "imports": [
+        "src/content/config.js"
+      ],
+      "importedBy": []
+    },
+    "astro.config.mjs": {
+      "imports": [],
+      "importedBy": []
+    },
+    ".codeyam/scenario-mocks.js": {
+      "imports": [],
+      "importedBy": [
+        ".codeyam/capture.js"
+      ]
+    },
+    "src/components/admin/CollectionCountCard.astro": {
+      "imports": [],
+      "importedBy": [
+        "src/components/admin/CollectionCountCard.test.ts"
+      ]
+    },
+    "cms-auth-worker/worker.js": {
+      "imports": [],
+      "importedBy": []
+    },
+    "src/lib/team.photos.test.ts": {
+      "imports": [],
+      "importedBy": []
     },
     "src/lib/url.ts": {
       "imports": [],
@@ -245,16 +271,10 @@
         "src/lib/url.test.ts"
       ]
     },
-    ".claude/hooks/_step_metadata.py": {
-      "imports": [],
-      "importedBy": []
-    },
-    "scripts/crop.mjs": {
-      "imports": [],
-      "importedBy": []
-    },
-    ".astro/content-assets.mjs": {
-      "imports": [],
+    "src/lib/mailto.test.ts": {
+      "imports": [
+        "src/lib/mailto.ts"
+      ],
       "importedBy": []
     },
     ".claude/skills/review-session/scripts/find-last-session.mjs": {
@@ -263,42 +283,24 @@
       ],
       "importedBy": []
     },
-    "src/lib/adminGate.test.ts": {
-      "imports": [
-        "src/lib/adminGate.ts"
-      ],
-      "importedBy": []
-    },
-    "src/components/admin/CollectionCountCard.test.ts": {
-      "imports": [
-        "src/components/admin/CollectionCountCard.astro"
-      ],
-      "importedBy": []
-    },
-    "vitest.config.ts": {
+    ".astro/content-modules.mjs": {
       "imports": [],
       "importedBy": []
     },
-    "src/lib/site.ts": {
-      "imports": [
-        "src/data/settings.json",
-        "src/data/nav.json"
-      ],
-      "importedBy": []
+    "src/lib/team.ts": {
+      "imports": [],
+      "importedBy": [
+        "src/lib/team.test.ts"
+      ]
     },
-    "src/env.d.ts": {
+    ".claude/skills/review-session/scripts/extract-session-helpers.mjs": {
       "imports": [],
       "importedBy": []
     },
-    "src/lib/parallax.test.ts": {
+    "src/lib/team.test.ts": {
       "imports": [
-        "src/lib/parallax.ts",
-        "src/lib/parallax.ts"
+        "src/lib/team.ts"
       ],
-      "importedBy": []
-    },
-    "scripts/compare-shot.mjs": {
-      "imports": [],
       "importedBy": []
     },
     "src/lib/gallery.test.ts": {
@@ -311,14 +313,6 @@
       ],
       "importedBy": []
     },
-    ".codeyam/scenario-handlers.js": {
-      "imports": [
-        ".codeyam/scenario-issues.js"
-      ],
-      "importedBy": [
-        ".codeyam/capture.js"
-      ]
-    },
     "src/lib/gallery.ts": {
       "imports": [],
       "importedBy": [
@@ -328,31 +322,20 @@
         "src/lib/gallery.test.ts",
         "src/lib/gallery.test.ts"
       ]
+    },
+    "src/lib/adminGate.test.ts": {
+      "imports": [
+        "src/lib/adminGate.ts"
+      ],
+      "importedBy": []
     }
   },
   "entities": {
-    "src/content/config.js::__file_root__": {
-      "filePath": "src/content/config.js",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        ".astro/content.d.ts::ContentConfig"
-      ]
-    },
     "src/components/Greeting.test.tsx::__file_root__": {
       "filePath": "src/components/Greeting.test.tsx",
       "name": "__file_root__",
       "imports": [
         "src/components/Greeting.tsx::Greeting"
-      ],
-      "importedBy": []
-    },
-    "src/lib/adminGate.test.ts::__file_root__": {
-      "filePath": "src/lib/adminGate.test.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/lib/adminGate.ts::__file_root__",
-        "src/lib/adminGate.ts::isPasscodeCorrect"
       ],
       "importedBy": []
     },
@@ -364,73 +347,6 @@
         "src/lib/url.test.ts::__file_root__"
       ]
     },
-    "src/data/settings.json::__file_root__": {
-      "filePath": "src/data/settings.json",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        "src/lib/site.ts::__file_root__"
-      ]
-    },
-    ".claude/skills/review-session/scripts/find-last-session.mjs::__file_root__": {
-      "filePath": ".claude/skills/review-session/scripts/find-last-session.mjs",
-      "name": "__file_root__",
-      "imports": [
-        ".claude/skills/review-session/scripts/find-last-session-helpers.mjs::claudeProjectHashFromPath"
-      ],
-      "importedBy": []
-    },
-    "src/data/nav.json::__file_root__": {
-      "filePath": "src/data/nav.json",
-      "name": "__file_root__",
-      "imports": [],
-      "importedBy": [
-        "src/lib/site.ts::__file_root__"
-      ]
-    },
-    ".claude/skills/review-session/scripts/find-last-session-helpers.mjs::claudeProjectHashFromPath": {
-      "filePath": ".claude/skills/review-session/scripts/find-last-session-helpers.mjs",
-      "name": "claudeProjectHashFromPath",
-      "imports": [],
-      "importedBy": [
-        ".claude/skills/review-session/scripts/find-last-session.mjs::__file_root__"
-      ]
-    },
-    "src/lib/site.ts::__file_root__": {
-      "filePath": "src/lib/site.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/data/settings.json::__file_root__",
-        "src/data/nav.json::__file_root__"
-      ],
-      "importedBy": []
-    },
-    "src/components/landing/landing-images.test.ts::__file_root__": {
-      "filePath": "src/components/landing/landing-images.test.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/lib/url.ts::withBase"
-      ],
-      "importedBy": []
-    },
-    "src/lib/events.test.ts::__file_root__": {
-      "filePath": "src/lib/events.test.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/lib/events.ts::formatEventDate",
-        "src/lib/events.ts::splitEvents",
-        "src/lib/events.ts::toEventDate"
-      ],
-      "importedBy": []
-    },
-    "src/lib/url.test.ts::__file_root__": {
-      "filePath": "src/lib/url.test.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/lib/url.ts::withBase"
-      ],
-      "importedBy": []
-    },
     "src/lib/mailto.test.ts::__file_root__": {
       "filePath": "src/lib/mailto.test.ts",
       "name": "__file_root__",
@@ -439,42 +355,16 @@
       ],
       "importedBy": []
     },
-    "src/lib/parallax.test.ts::__file_root__": {
-      "filePath": "src/lib/parallax.test.ts",
+    "src/lib/adminDashboard.test.ts::__file_root__": {
+      "filePath": "src/lib/adminDashboard.test.ts",
       "name": "__file_root__",
       "imports": [
-        "src/lib/parallax.ts::parallaxEnabled",
-        "src/lib/parallax.ts::parallaxOffset"
+        "src/lib/adminDashboard.ts::CollectionCard",
+        "src/lib/adminDashboard.ts::__file_root__",
+        "src/lib/adminDashboard.ts::dashboardSummaryText",
+        "src/lib/adminDashboard.ts::dashboardTotals"
       ],
       "importedBy": []
-    },
-    "src/lib/team.test.ts::__file_root__": {
-      "filePath": "src/lib/team.test.ts",
-      "name": "__file_root__",
-      "imports": [
-        "src/lib/team.ts::BoardMemberLike",
-        "src/lib/team.ts::initials",
-        "src/lib/team.ts::sortBoardMembers",
-        "src/lib/team.ts::splitRole"
-      ],
-      "importedBy": []
-    },
-    "src/lib/gallery.test.ts::tiles": {
-      "filePath": "src/lib/gallery.test.ts",
-      "name": "tiles",
-      "imports": [
-        "src/lib/gallery.ts::__file_root__",
-        "src/lib/gallery.ts::__file_root__"
-      ],
-      "importedBy": []
-    },
-    "src/lib/team.ts::splitRole": {
-      "filePath": "src/lib/team.ts",
-      "name": "splitRole",
-      "imports": [],
-      "importedBy": [
-        "src/lib/team.test.ts::__file_root__"
-      ]
     },
     "src/lib/gallery.test.ts::__file_root__": {
       "filePath": "src/lib/gallery.test.ts",
@@ -495,22 +385,48 @@
         "src/lib/team.test.ts::__file_root__"
       ]
     },
-    "src/lib/adminDashboard.test.ts::__file_root__": {
-      "filePath": "src/lib/adminDashboard.test.ts",
+    ".claude/skills/review-session/scripts/find-last-session-helpers.mjs::claudeProjectHashFromPath": {
+      "filePath": ".claude/skills/review-session/scripts/find-last-session-helpers.mjs",
+      "name": "claudeProjectHashFromPath",
+      "imports": [],
+      "importedBy": [
+        ".claude/skills/review-session/scripts/find-last-session.mjs::__file_root__"
+      ]
+    },
+    "src/data/nav.json::__file_root__": {
+      "filePath": "src/data/nav.json",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        "src/lib/site.ts::__file_root__"
+      ]
+    },
+    "src/content/config.js::__file_root__": {
+      "filePath": "src/content/config.js",
+      "name": "__file_root__",
+      "imports": [],
+      "importedBy": [
+        ".astro/content.d.ts::ContentConfig"
+      ]
+    },
+    "src/lib/team.test.ts::__file_root__": {
+      "filePath": "src/lib/team.test.ts",
       "name": "__file_root__",
       "imports": [
-        "src/lib/adminDashboard.ts::CollectionCard",
-        "src/lib/adminDashboard.ts::__file_root__",
-        "src/lib/adminDashboard.ts::dashboardSummaryText",
-        "src/lib/adminDashboard.ts::dashboardTotals"
+        "src/lib/team.ts::BoardMemberLike",
+        "src/lib/team.ts::initials",
+        "src/lib/team.ts::sortBoardMembers",
+        "src/lib/team.ts::splitRole"
       ],
       "importedBy": []
     },
-    ".astro/content.d.ts::ContentConfig": {
-      "filePath": ".astro/content.d.ts",
-      "name": "ContentConfig",
+    "src/lib/events.test.ts::__file_root__": {
+      "filePath": "src/lib/events.test.ts",
+      "name": "__file_root__",
       "imports": [
-        "src/content/config.js::__file_root__"
+        "src/lib/events.ts::formatEventDate",
+        "src/lib/events.ts::splitEvents",
+        "src/lib/events.ts::toEventDate"
       ],
       "importedBy": []
     },
@@ -522,13 +438,30 @@
       ],
       "importedBy": []
     },
-    "src/lib/team.ts::sortBoardMembers": {
-      "filePath": "src/lib/team.ts",
-      "name": "sortBoardMembers",
+    ".claude/skills/review-session/scripts/find-last-session.mjs::__file_root__": {
+      "filePath": ".claude/skills/review-session/scripts/find-last-session.mjs",
+      "name": "__file_root__",
+      "imports": [
+        ".claude/skills/review-session/scripts/find-last-session-helpers.mjs::claudeProjectHashFromPath"
+      ],
+      "importedBy": []
+    },
+    "src/data/settings.json::__file_root__": {
+      "filePath": "src/data/settings.json",
+      "name": "__file_root__",
       "imports": [],
       "importedBy": [
-        "src/lib/team.test.ts::__file_root__"
+        "src/lib/site.ts::__file_root__"
       ]
+    },
+    "src/lib/adminGate.test.ts::__file_root__": {
+      "filePath": "src/lib/adminGate.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/adminGate.ts::__file_root__",
+        "src/lib/adminGate.ts::isPasscodeCorrect"
+      ],
+      "importedBy": []
     },
     "src/lib/team.ts::BoardMemberLike": {
       "filePath": "src/lib/team.ts",
@@ -537,7 +470,74 @@
       "importedBy": [
         "src/lib/team.test.ts::__file_root__"
       ]
+    },
+    "src/lib/team.ts::sortBoardMembers": {
+      "filePath": "src/lib/team.ts",
+      "name": "sortBoardMembers",
+      "imports": [],
+      "importedBy": [
+        "src/lib/team.test.ts::__file_root__"
+      ]
+    },
+    "src/lib/site.ts::__file_root__": {
+      "filePath": "src/lib/site.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/data/settings.json::__file_root__",
+        "src/data/nav.json::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/lib/parallax.test.ts::__file_root__": {
+      "filePath": "src/lib/parallax.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/parallax.ts::parallaxEnabled",
+        "src/lib/parallax.ts::parallaxOffset"
+      ],
+      "importedBy": []
+    },
+    ".astro/content.d.ts::ContentConfig": {
+      "filePath": ".astro/content.d.ts",
+      "name": "ContentConfig",
+      "imports": [
+        "src/content/config.js::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/lib/gallery.test.ts::tiles": {
+      "filePath": "src/lib/gallery.test.ts",
+      "name": "tiles",
+      "imports": [
+        "src/lib/gallery.ts::__file_root__",
+        "src/lib/gallery.ts::__file_root__"
+      ],
+      "importedBy": []
+    },
+    "src/lib/url.test.ts::__file_root__": {
+      "filePath": "src/lib/url.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/url.ts::withBase"
+      ],
+      "importedBy": []
+    },
+    "src/lib/team.ts::splitRole": {
+      "filePath": "src/lib/team.ts",
+      "name": "splitRole",
+      "imports": [],
+      "importedBy": [
+        "src/lib/team.test.ts::__file_root__"
+      ]
+    },
+    "src/components/landing/landing-images.test.ts::__file_root__": {
+      "filePath": "src/components/landing/landing-images.test.ts",
+      "name": "__file_root__",
+      "imports": [
+        "src/lib/url.ts::withBase"
+      ],
+      "importedBy": []
     }
   },
-  "lastUpdated": "2026-06-15T13:11:28Z"
+  "lastUpdated": "2026-06-15T13:40:28Z"
 }

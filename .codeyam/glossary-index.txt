@@ -1,4 +1,4 @@
-# regenerated from glossary.json on 2026-06-15T13:36:16Z; do not hand-edit
+# regenerated from glossary.json on 2026-06-15T15:45:05Z; do not hand-edit
 AdminDashboard :: src/pages/admin/index.astro :: tags=
 AdminGate :: src/components/admin/AdminGate.astro :: tags=
 AdminGatePrompt :: src/components/admin/AdminGatePrompt.astro :: tags=
@@ -24,6 +24,7 @@ initials :: src/lib/team.ts :: tags= :: test=src/lib/team.test.ts
 isPasscodeCorrect :: src/lib/adminGate.ts :: tags= :: test=src/lib/adminGate.test.ts
 parallaxEnabled :: src/lib/parallax.ts :: tags= :: test=src/lib/parallax.test.ts
 parallaxOffset :: src/lib/parallax.ts :: tags= :: test=src/lib/parallax.test.ts
+socialIconSrc :: src/lib/socialIcon.ts :: tags= :: test=src/lib/socialIcon.test.ts
 sortBoardMembers :: src/lib/team.ts :: tags= :: test=src/lib/team.test.ts
 splitEvents :: src/lib/events.ts :: tags= :: test=src/lib/events.test.ts
 splitRole :: src/lib/team.ts :: tags= :: test=src/lib/team.test.ts

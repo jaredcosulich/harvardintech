@@ -631,6 +631,60 @@
       "runner": "tests"
     },
     {
+      "description": "The synthesized e-mail entry resolves to the envelope icon.",
+      "file": "src/lib/socialIcon.test.ts",
+      "format": "vitest",
+      "key": "socialIconSrc › maps email to its self-hosted asset",
+      "line": 16,
+      "registeredAt": "2026-06-15T15:44:36Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Facebook resolves to the downloaded facebook icon.",
+      "file": "src/lib/socialIcon.test.ts",
+      "format": "vitest",
+      "key": "socialIconSrc › maps facebook to its self-hosted asset",
+      "line": 11,
+      "registeredAt": "2026-06-15T15:44:36Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Each known platform maps to its self-hosted asset under public/images/social/.",
+      "file": "src/lib/socialIcon.test.ts",
+      "format": "vitest",
+      "key": "socialIconSrc › maps twitter to its self-hosted asset",
+      "line": 6,
+      "registeredAt": "2026-06-15T15:44:36Z",
+      "runner": "tests"
+    },
+    {
+      "description": "Lookup is case-insensitive so data-layer casing variations still resolve.",
+      "file": "src/lib/socialIcon.test.ts",
+      "format": "vitest",
+      "key": "socialIconSrc › resolves regardless of icon casing",
+      "line": 21,
+      "registeredAt": "2026-06-15T15:44:36Z",
+      "runner": "tests"
+    },
+    {
+      "description": "An unknown platform returns null so the caller degrades to label-only.",
+      "file": "src/lib/socialIcon.test.ts",
+      "format": "vitest",
+      "key": "socialIconSrc › returns null for an unknown icon",
+      "line": 27,
+      "registeredAt": "2026-06-15T15:44:36Z",
+      "runner": "tests"
+    },
+    {
+      "description": "A missing icon value returns null rather than throwing or guessing.",
+      "file": "src/lib/socialIcon.test.ts",
+      "format": "vitest",
+      "key": "socialIconSrc › returns null for null, undefined, or empty input",
+      "line": 32,
+      "registeredAt": "2026-06-15T15:44:36Z",
+      "runner": "tests"
+    },
+    {
       "description": "Members are ordered by ascending order field.",
       "file": "src/lib/team.test.ts",
       "format": "vitest",

@@ -184,6 +184,12 @@
     "testFile": "src/lib/parallax.test.ts"
   },
   {
+    "description": "Maps a social link icon field (twitter/facebook/email, case-insensitive) to its self-hosted asset path under public/images/social/. Returns null for unknown or missing icons so the Contact Us section degrades to a label-only link. Icons were downloaded from the original harvardintech.com site to keep the GitHub Pages build CDN-independent.",
+    "filePath": "src/lib/socialIcon.ts",
+    "name": "socialIconSrc",
+    "testFile": "src/lib/socialIcon.test.ts"
+  },
+  {
     "description": "Returns a new array of board members ordered by ascending order field (missing order treated as 0), so the public Board of Directors matches the curated sequence regardless of on-disk file order.",
     "filePath": "src/lib/team.ts",
     "name": "sortBoardMembers",

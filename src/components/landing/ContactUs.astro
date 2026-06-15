@@ -1,8 +1,12 @@
 ---
 // "CONTACT US" — reproduces the live site's contact section: "We'd love to hear
-// from you!" plus Twitter / E-mail / Facebook links. Reads the editable socials
-// + contact email from the settings singleton.
+// from you!" plus Twitter / E-mail / Facebook links. Each link renders its
+// platform logo above the text label (icon-over-label, as on the live site).
+// Icons are the real assets pulled from the original harvardintech.com site,
+// self-hosted under public/images/social/ and selected by each link's `icon`
+// field. Reads the editable socials + contact email from the settings singleton.
 import { buildMailto } from '../../lib/mailto';
+import { socialIconSrc } from '../../lib/socialIcon';
 import type { SocialLink } from '../../lib/site';
 
 interface Props {
@@ -12,10 +16,12 @@ interface Props {
 const { socials, email } = Astro.props;
 const contactHref = buildMailto({ to: email, subject: 'Hello from the website' });
 
-// Render the live site's labels in order: Twitter, E-mail, Facebook.
+// Render the live site's labels in order: Twitter, E-mail, Facebook. The
+// e-mail entry is synthesized from the contact email so it always renders even
+// when the socials list omits it.
 const links = [
   ...socials.filter((s) => /twitter/i.test(s.label)),
-  { label: 'E-mail', url: contactHref },
+  { label: 'E-mail', url: contactHref, icon: 'email' },
   ...socials.filter((s) => /facebook/i.test(s.label)),
 ];
 ---
@@ -26,18 +32,53 @@ const links = [
     <p style="font-size: 1.15rem; color: var(--color-fg); margin: 0 0 var(--space-lg);">
       We'd love to hear from you!
     </p>
-    <div style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: center;">
+    <div style="display: flex; flex-wrap: wrap; gap: 3.5rem; justify-content: center; align-items: flex-start;">
       {
         links.map((link) => (
           <a
             href={link.url}
             rel="noopener"
-            style="font-family: var(--font-sans); font-size: 1.35rem; color: var(--color-link);"
+            class="contact-link"
+            aria-label={link.label}
           >
-            {link.label}
+            {socialIconSrc(link.icon) && (
+              <span class="contact-icon">
+                <img src={socialIconSrc(link.icon)} alt="" width="48" height="48" loading="lazy" />
+              </span>
+            )}
+            <span class="contact-label">{link.label}</span>
           </a>
         ))
       }
     </div>
   </div>
 </section>
+
+<style>
+  .contact-link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    text-decoration: none;
+    color: var(--color-link);
+  }
+  .contact-icon {
+    display: inline-flex;
+  }
+  .contact-icon img {
+    display: block;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    transition: transform 0.15s ease;
+  }
+  .contact-link:hover .contact-icon img {
+    transform: scale(1.08);
+  }
+  .contact-label {
+    font-family: var(--font-sans);
+    font-size: 1.35rem;
+    color: var(--color-link);
+  }
+</style>

@@ -1,4 +1,4 @@
-# regenerated from dependency-graph.json on 2026-06-15T13:40:28Z; do not hand-edit
+# regenerated from dependency-graph.json on 2026-06-15T16:00:21Z; do not hand-edit
 src/lib/gallery.ts :: imports=0 :: imported_by=5
 .codeyam/scenario-issues.js :: imports=0 :: imported_by=2
 .codeyam/scenario-metrics.js :: imports=0 :: imported_by=2
@@ -19,6 +19,7 @@ src/lib/adminDashboard.ts :: imports=0 :: imported_by=1
 src/lib/adminGate.ts :: imports=0 :: imported_by=1
 src/lib/events.ts :: imports=0 :: imported_by=1
 src/lib/mailto.ts :: imports=0 :: imported_by=1
+src/lib/socialIcon.ts :: imports=0 :: imported_by=1
 src/lib/team.ts :: imports=0 :: imported_by=1
 .astro/content-assets.mjs :: imports=0 :: imported_by=0
 .astro/content-modules.mjs :: imports=0 :: imported_by=0
@@ -52,6 +53,7 @@ src/lib/gallery.test.ts :: imports=5 :: imported_by=0
 src/lib/mailto.test.ts :: imports=1 :: imported_by=0
 src/lib/parallax.test.ts :: imports=2 :: imported_by=0
 src/lib/site.ts :: imports=2 :: imported_by=0
+src/lib/socialIcon.test.ts :: imports=1 :: imported_by=0
 src/lib/team.photos.test.ts :: imports=0 :: imported_by=0
 src/lib/team.test.ts :: imports=1 :: imported_by=0
 src/lib/url.test.ts :: imports=1 :: imported_by=0

@@ -7,7 +7,6 @@
 import '../styles/tokens.css';
 import SEO from '../components/SEO.astro';
 import { settings, nav } from '../lib/site';
-import { buildMailto } from '../lib/mailto';
 import { withBase } from '../lib/url';
 
 interface Props {
@@ -17,10 +16,6 @@ interface Props {
 }
 
 const { title, description, image } = Astro.props;
-const contactHref = buildMailto({
-  to: settings.contactEmail,
-  subject: `Hello from ${settings.siteTitle}`,
-});
 ---
 
 <html lang="en">
@@ -97,26 +92,13 @@ const contactHref = buildMailto({
       <slot />
     </main>
 
+    <!-- The live site's bottom band is minimal: just the copyright + cookie
+         line. The social links live only in the "CONTACT US" section above
+         (see ContactUs.astro), so they are intentionally not repeated here. -->
     <footer style="background: var(--color-bg-dark); color: #cfd2d6;">
       <div
         style="max-width: var(--content-width); margin: 0 auto; padding: var(--space-lg); text-align: center;"
       >
-        {
-          settings.socials.length > 0 ? (
-            <ul style="list-style: none; display: flex; gap: var(--space-lg); justify-content: center; margin: 0 0 var(--space-md); padding: 0;">
-              {settings.socials.map((social) => (
-                <li>
-                  <a href={social.url} rel="noopener" style="color: #fff;">
-                    {social.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : null
-        }
-        <p style="margin: 0 0 var(--space-sm);">
-          <a href={contactHref} style="color: #fff;">{settings.contactEmail}</a>
-        </p>
         <p style="margin: 0; color: var(--color-faint); font-size: 0.85rem;">{settings.footerText}</p>
       </div>
     </footer>

@@ -1,0 +1,11 @@
+{
+  "name": "ContactUs - Default",
+  "id": "b3644dab-7f60-4987-b245-154b985afeef",
+  "url": "/isolated-components/ContactUs",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "ContactUs",
+  "scenarioType": "component"
+}

@@ -1,0 +1,185 @@
+{
+  "timestamp": "2026-06-15T15:59:04Z",
+  "title": "Contact footer social icons",
+  "type": "feature",
+  "userRequest": "# Contact footer social icons\n\nMake the bottom of the home page faithful to harvardintech.com: render the\nsocial links in the \"CONTACT US\" section as platform icons above their labels,\nand trim the dark footer band down to just the copyright/cookie line.\n\n## What was prototyped\n\n### Contact Us section — `src/components/landing/ContactUs.astro`\n- Previously rendered Twitter / E-mail / Facebook as plain text links laid out\n  horizontally.\n- Now renders each link as an **icon-over-label** stack, matching the live\n  site: the platform logo on top, the text label below.\n- **Refinement (2026-06-15):** instead of hand-drawn inline SVGs, use the\n  **actual icons from the original site** (harvardintech.com), **downloaded and\n  self-hosted** in the repo so the GitHub Pages build has no dependency on\n  Strikingly's CDN. The icons are selected by the existing `icon` field on each\n  social link (`twitter`, `facebook`, `email`):\n  - **Twitter** — `static-assets.strikinglycdn.com/images/themes/persona/twitter.png`\n  - **E-mail** — the custom uploaded image used on the original site; the e-mail\n    entry is synthesized from `contactEmail` (via `buildMailto`) so it always\n    renders even if the socials list omits it.\n  - **Facebook** — `static-assets.strikinglycdn.com/images/themes/persona/facebook.png`\n- A link whose `icon` value is unknown/missing degrades gracefully to\n  label-only (no broken image).\n- Order preserved: Twitter, E-mail, Facebook.\n- Added a scoped `<style>` block: `.contact-link` (flex column, centered),\n  `.contact-icon`, `.contact-label` (reusing `--font-sans` / `--color-link`),\n  plus a subtle `scale(1.08)` hover on the icon. Each link carries an\n  `aria-label`.\n\n### Dark footer band — `src/layouts/BaseLayout.astro`\n- The live site's bottom band is minimal — only the copyright + cookie line.\n- Removed the redundant plain-text social links list and the email paragraph\n  from the dark `<footer>`; it now renders only `settings.footerText`.\n- Cleaned up the now-unused `buildMailto` import and `contactHref` constant.\n\n## Decisions made\n- Social links appear **only** in the Contact Us section, not repeated in the\n  dark footer band — confirmed against the original site.\n- Icons are driven by the data-layer `icon` field already present in\n  `settings.json`, keeping social links a CMS data edit rather than a code\n  change.\n- Use the real icons from the original site, **downloaded and self-hosted** in\n  the repo (not hotlinked to Strikingly's CDN), for a faithful, self-contained\n  GitHub Pages reproduction.\n\n## Verified\n- `/#contact` at desktop width: Twitter, E-mail, Facebook icons render above\n  their labels, horizontally arranged.\n- Dark footer band shows only the copyright/cookie line.\n\n## Scenarios\n- Exercised the existing `harvard-in-tech-landing-page` application scenario\n  (route `/`, `#contact`). No new scenario registered.\n\n## Follow-ups for Deconstruct / TDD\n- Download the three real icons (Twitter, E-mail, Facebook) from the original\n  site into the repo's self-hosted assets.\n- Extract the icon-selection logic so it's testable (icon name → asset path),\n  and cover: each `icon` value maps to the right asset; an unknown/missing icon\n  degrades gracefully to label-only; the synthesized e-mail entry always renders.\n- Verify the dark footer renders only `footerText` (no social/email links).\n- Confirm mobile reflow of the icon-over-label row.",
+  "description": "Reproduced harvardintech.com's CONTACT US section: Twitter, E-mail, and Facebook now render as the real icons downloaded from the original site (self-hosted under public/images/social/ so the GitHub Pages build is CDN-independent) in an icon-over-label layout, with the dark footer trimmed to just the copyright/cookie line. Extracted a testable socialIconSrc helper (icon field to asset path, case-insensitive, null-degrading) and added an isolated ContactUs component scenario.",
+  "modifiedFiles": [
+    {
+      "path": ".claude/hooks/_step_metadata.py",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/hooks/editor-pretool-hook.py",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/hooks/editor-step-hook.py",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-audit/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-design/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-editor/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-explore/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-new-app/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-onboard/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-plan/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-prototype/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-see-app/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-see-recent-change/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/codeyam-slice/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".claude/skills/review-session/SKILL.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/.last-reconcile.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/completed/contact-footer-social-icons.md",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/reconciliation-log.jsonl",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/runner-timing-history.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/provider-auth-verdict.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-run-marker.json",
+      "status": "modified"
+    },
+    {
+      "path": ".gitignore",
+      "status": "modified"
+    },
+    {
+      "path": "src/components/landing/ContactUs.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/layouts/BaseLayout.astro",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/isolated-components/[name].astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/contactus-default.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/contactus-default--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": "public/images/social/email.jpg",
+      "status": "added"
+    },
+    {
+      "path": "public/images/social/facebook.png",
+      "status": "added"
+    },
+    {
+      "path": "public/images/social/twitter.png",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/socialIcon.test.ts",
+      "status": "added"
+    },
+    {
+      "path": "src/lib/socialIcon.ts",
+      "status": "added"
+    }
+  ],
+  "testResults": {
+    "total": 101,
+    "passed": 101,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 101,
+        "passed": 101
+      }
+    ]
+  }
+}

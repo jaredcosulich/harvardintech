@@ -7,6 +7,7 @@ import CollectionCountCard from '../../components/admin/CollectionCountCard.astr
 import DashboardSummary from '../../components/admin/DashboardSummary.astro';
 import AdminGatePrompt from '../../components/admin/AdminGatePrompt.astro';
 import BoardMemberCard from '../../components/BoardMemberCard.astro';
+import ContactUs from '../../components/landing/ContactUs.astro';
 import '../../styles/tokens.css';
 
 // Component-isolation harness. codeyam captures a single component in isolation
@@ -119,6 +120,21 @@ const boardMemberCardStates = {
   },
 } as const;
 
+// ContactUs states: the live "CONTACT US" section with its real downloaded
+// social icons (Twitter / E-mail / Facebook) rendered icon-over-label. The
+// e-mail entry is always synthesized from `email`, so the Default state shows
+// all three icons exactly as on harvardintech.com.
+const contactUsStates = {
+  Default: {
+    socials: [
+      { label: 'Twitter', url: 'https://twitter.com/harvardintech', icon: 'twitter' },
+      { label: 'Facebook', url: 'https://facebook.com/harvardintech', icon: 'facebook' },
+      { label: 'Email', url: 'mailto:ben@harvardintech.com', icon: 'email' },
+    ],
+    email: 'ben@harvardintech.com',
+  },
+} as const;
+
 export async function getStaticPaths() {
   // getStaticPaths runs in an isolated scope and cannot reference the
   // module-level consts — enumerate route names inline.
@@ -139,6 +155,7 @@ export async function getStaticPaths() {
     { params: { name: 'BoardMemberCard-Initials' } },
     { params: { name: 'AdminGatePrompt' } },
     { params: { name: 'AdminGatePrompt-Empty' } },
+    { params: { name: 'ContactUs' } },
   ];
 }
 
@@ -196,6 +213,12 @@ const adminGatePromptValue = name === 'AdminGatePrompt' ? 'harvardintech-admin'
   : name === 'AdminGatePrompt-Empty' ? ''
   : null;
 const isAdminGatePrompt = adminGatePromptValue !== null;
+
+let contactUsProps: (typeof contactUsStates)[keyof typeof contactUsStates] | null = null;
+if (name && name.startsWith('ContactUs')) {
+  const stateKey = (name === 'ContactUs' ? 'Default' : name.slice('ContactUs-'.length)) as keyof typeof contactUsStates;
+  contactUsProps = contactUsStates[stateKey] ?? contactUsStates.Default;
+}
 ---
 
 <html lang="en">
@@ -235,6 +258,10 @@ const isAdminGatePrompt = adminGatePromptValue !== null;
         ) : isAdminGatePrompt ? (
           <div style="width: 640px; max-width: 100%;">
             <AdminGatePrompt value={adminGatePromptValue} />
+          </div>
+        ) : contactUsProps ? (
+          <div style="width: 960px; max-width: 100%;">
+            <ContactUs {...contactUsProps} />
           </div>
         ) : (
           <p>Unknown component: {name}</p>

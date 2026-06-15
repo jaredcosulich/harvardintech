@@ -6,4 +6,4 @@ location: Cambridge, MA
 title: Women in Tech Leadership Panel
 ---
 
-
+Panelists share career and leadership lessons.

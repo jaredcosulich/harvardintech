@@ -1,9 +1,7 @@
 ---
-title: About
-description: Who we are and what we do.
+description: About Harvard in Tech.
 order: 1
+title: About
 ---
 
-We are a student-run nonprofit bringing technology education to under-resourced
-communities. This page is a `pages` collection entry — edit it in the CMS or as
-markdown under `src/content/pages/`.
+Harvard in Tech connects alumni building and investing in technology.

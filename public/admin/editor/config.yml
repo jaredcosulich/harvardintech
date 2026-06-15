@@ -110,7 +110,7 @@ collections:
       - { name: date, label: Date, widget: datetime }
       - { name: summary, label: Summary, widget: string, required: false }
       - { name: coverImage, label: "Cover image", widget: image, required: false }
-      - { name: body, label: Body, widget: markdown }
+      - { name: body, label: Body, widget: markdown, required: false }
 
   - name: pages
     label: "Pages"
@@ -121,7 +121,7 @@ collections:
       - { name: title, label: Title, widget: string }
       - { name: description, label: Description, widget: string, required: false }
       - { name: order, label: Order, widget: number, required: false }
-      - { name: body, label: Body, widget: markdown }
+      - { name: body, label: Body, widget: markdown, required: false }
 
   - name: team
     label: "Team"
@@ -147,7 +147,7 @@ collections:
       - { name: bio, label: Bio, widget: markdown, required: false }
       - { name: order, label: Order, widget: number, required: false }
       - { name: active, label: "Show on Board of Directors", widget: boolean, default: true, required: false }
-      - { name: body, label: Body, widget: markdown }
+      - { name: body, label: Body, widget: markdown, required: false }
 
   - name: events
     label: "Events"
@@ -160,7 +160,7 @@ collections:
       - { name: location, label: Location, widget: string, required: false }
       - { name: description, label: Description, widget: string, required: false }
       - { name: link, label: Link, widget: string, required: false }
-      - { name: body, label: Body, widget: markdown }
+      - { name: body, label: Body, widget: markdown, required: false }
 
   - name: chapters
     label: "Chapters"
@@ -202,4 +202,4 @@ collections:
         fields:
           - { name: label, label: Label, widget: string }
           - { name: url, label: URL, widget: string }
-      - { name: body, label: Body, widget: markdown }
+      - { name: body, label: Body, widget: markdown, required: false }

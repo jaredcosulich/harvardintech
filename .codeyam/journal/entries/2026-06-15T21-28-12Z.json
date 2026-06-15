@@ -1,0 +1,45 @@
+{
+  "timestamp": "2026-06-15T21:28:12Z",
+  "title": "cms: Make Body fields optional across all collections",
+  "type": "feature",
+  "userRequest": "## Summary\n\nSaving a team member entry in the hosted CMS (e.g. Ben Wei) fails with the\ngeneric message \"One field has an error. Please correct it to save the entry\"\neven when the editor only tweaks existing text. The cause is that the `body`\nfield in `public/admin/editor/config.yml` has no `required: false`, and in\nSveltia/Decap CMS **every field is required by default**. The reserved `body`\nfield maps to the markdown body — it is *never* part of the Astro content\nschema in `src/content/config.ts` and is never validated as frontmatter — so\nrequiring it in the CMS is a latent foot-gun on every collection: any entry\nwith an empty markdown body can't be saved, and the markdown widget's inline\nerror is easy to miss, leaving only the unhelpful top-level message.\n\nThis is already actively broken on two collections and will break a third the\nmoment an editor touches a body-less entry:\n\n- **team** — all 5 entries (`ben-wei`, `peter-boyce`, `krysia-lenzo`,\n  `jessica-li`, `nadia-eldeib`) have empty bodies.\n- **events** — 2 of 3 entries (`founders-investors-mixer-sf`,\n  `women-in-tech-panel`) are external-link save-the-dates with empty bodies.\n- **blog / pages / chapters** — entries currently have body content, but the\n  same required-by-default trap applies if any body is ever cleared.\n\nTo make every table properly configured and eliminate this error class\nentirely, mark the `body` field `required: false` on all five folder\ncollections. This matches the content model (where `body` is never required)\nand removes the only field in the config that is implicitly required against\nthe schema's intent.\n\n## Key Decisions\n\n- **Make `body` optional on every folder collection, not just the broken ones**\n  — `body` is never declared in `src/content/config.ts` (it's the reserved\n  markdown-body widget, not frontmatter), so no collection's schema requires it.\n  Requiring it in the CMS is inconsistent with the content model everywhere, and\n  fixing only team/events would leave the same trap armed on blog, pages, and\n  chapters. Relaxing all five guarantees the \"One field has an error\" failure\n  can't recur on any table.\n- **No content-schema change** — `src/content/config.ts` does not declare `body`\n  in any collection, so making the CMS field optional keeps the template\n  contract (`astro_cms_config_fields_subset_of_content_schema`) valid. This is a\n  CMS-config-only change.\n- **Leave all other fields as-is** — Audit confirmed every *optional schema\n  field* (`summary`, `coverImage`, `description`, `order`, `location`, `link`,\n  `region`, `blurb`, `heroImage`, `tagline`, `showGallery`, `leads`, `links`,\n  `photo`, `bio`, `icon`) already has `required: false`, and every\n  required-frontmatter field has a value in all entries. `body` is the only\n  misconfiguration.\n\n## Implementation\n\n### 1. Make the `body` field optional on every folder collection\n\n**File**: `public/admin/editor/config.yml`\n\nFor each of the five folder collections, change the `body` field definition from:\n\n```yaml\n      - { name: body, label: Body, widget: markdown }\n```\n\nto:\n\n```yaml\n      - { name: body, label: Body, widget: markdown, required: false }\n```\n\nThe collections and their current `body` line locations:\n\n- `blog` (around line 113)\n- `pages` (around line 124)\n- `team` (around line 150) — actively broken\n- `events` (around line 163) — actively broken\n- `chapters` (around line 205)\n\nThis mirrors the already-optional `bio` field in the team collection and\nremoves the hidden required-validation that blocks saving an entry with an\nempty body. The `settings` and `nav` singletons have no `body` field and are\nunchanged.\n\n## Reused existing code\n\n- `public/admin/editor/config.yml` — the team `bio` field already uses\n  `required: false`; this change applies the same pattern to every `body` field.\n- `src/content/config.ts` — confirms no collection schema declares `body`, so\n  making the CMS field optional keeps the config-vs-schema contract valid and\n  requires no schema edit.\n\n## Scenarios to Demonstrate\n\n- **Team happy path** — Open Ben Wei, edit the Role text, click Save: the entry\n  saves successfully (no \"One field has an error\"), despite the empty Body.\n- **All team members** — Same edit-and-save succeeds for Peter Boyce, Krysia\n  Lenzo, Jessica Li, and Nadia Eldeib (all body-less).\n- **Events** — Edit and save the `founders-investors-mixer-sf` and\n  `women-in-tech-panel` events (empty bodies) without a validation error.\n- **Body with content still works** — Editing a blog post, page, or chapter that\n  *has* body content still saves, and the body is written to the markdown file.\n- **Clearing a body is now allowed** — Removing the body from a blog/page/chapter\n  entry and saving succeeds instead of throwing the generic error.",
+  "description": "Marked the reserved markdown `body` field as `required: false` on all five Sveltia/Decap CMS folder collections (blog, pages, team, events, chapters) in public/admin/editor/config.yml. Sveltia treats every field as required by default, so body-less entries (all team members, the external-link save-the-date events) failed to save with the generic \"One field has an error\" message even on trivial edits. Since `body` is the reserved markdown widget and is never part of the Astro content schema, relaxing it everywhere matches the content model and eliminates the error class without any schema change.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/cms-make-body-fields-optional-across-collections.md\t.codeyam/plans/completed/cms-make-body-fields-optional-across-collections.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/events-route-upcoming-and-past--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-with-members-hidden--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": "public/admin/editor/config.yml",
+      "status": "modified"
+    }
+  ]
+}

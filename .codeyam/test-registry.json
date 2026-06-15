@@ -163,6 +163,60 @@
       "runner": "tests"
     },
     {
+      "description": "an explicitly active member is kept",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "filterActiveBoardMembers › keeps a member with active: true",
+      "line": 75,
+      "registeredAt": "2026-06-15T16:33:22Z",
+      "runner": "tests"
+    },
+    {
+      "description": "a member with no active field defaults to shown (backward-compatible)",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "filterActiveBoardMembers › keeps a member with no active field",
+      "line": 85,
+      "registeredAt": "2026-06-15T16:33:22Z",
+      "runner": "tests"
+    },
+    {
+      "description": "mixed list keeps only the non-false members, order preserved",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "filterActiveBoardMembers › keeps active and undefined members while dropping inactive ones",
+      "line": 90,
+      "registeredAt": "2026-06-15T16:33:22Z",
+      "runner": "tests"
+    },
+    {
+      "description": "an explicitly inactive member is removed",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "filterActiveBoardMembers › removes a member with active: false",
+      "line": 80,
+      "registeredAt": "2026-06-15T16:33:22Z",
+      "runner": "tests"
+    },
+    {
+      "description": "does not mutate the caller's array",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "filterActiveBoardMembers › returns a new array without mutating the input",
+      "line": 58,
+      "registeredAt": "2026-06-15T16:33:22Z",
+      "runner": "tests"
+    },
+    {
+      "description": "an all-inactive list returns empty (board falls back to the graphic)",
+      "file": "src/lib/team.test.ts",
+      "format": "vitest",
+      "key": "filterActiveBoardMembers › returns an empty array when every member is inactive",
+      "line": 96,
+      "registeredAt": "2026-06-15T16:33:22Z",
+      "runner": "tests"
+    },
+    {
       "description": "Single-digit days are not zero-padded.",
       "file": "src/lib/events.test.ts",
       "format": "vitest",
@@ -338,7 +392,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "initials › ignores surrounding and repeated whitespace",
-      "line": 26,
+      "line": 32,
       "registeredAt": "2026-06-14T15:43:56Z",
       "runner": "tests"
     },
@@ -347,7 +401,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "initials › returns an empty string for an empty name",
-      "line": 31,
+      "line": 37,
       "registeredAt": "2026-06-14T15:43:56Z",
       "runner": "tests"
     },
@@ -356,7 +410,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "initials › returns one letter for a single-word name",
-      "line": 11,
+      "line": 17,
       "registeredAt": "2026-06-14T15:43:56Z",
       "runner": "tests"
     },
@@ -365,7 +419,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "initials › returns two-letter initials for a two-word name",
-      "line": 6,
+      "line": 12,
       "registeredAt": "2026-06-14T15:43:56Z",
       "runner": "tests"
     },
@@ -374,7 +428,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "initials › upper-cases lowercase names",
-      "line": 21,
+      "line": 27,
       "registeredAt": "2026-06-14T15:43:56Z",
       "runner": "tests"
     },
@@ -383,7 +437,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "initials › uses only the first two words for a three-word name",
-      "line": 16,
+      "line": 22,
       "registeredAt": "2026-06-14T15:43:56Z",
       "runner": "tests"
     },
@@ -689,7 +743,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "sortBoardMembers › orders members by ascending order value",
-      "line": 40,
+      "line": 46,
       "registeredAt": "2026-06-14T15:43:56Z",
       "runner": "tests"
     },
@@ -698,7 +752,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "sortBoardMembers › returns a new array without mutating the input",
-      "line": 52,
+      "line": 58,
       "registeredAt": "2026-06-14T15:43:56Z",
       "runner": "tests"
     },
@@ -707,7 +761,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "sortBoardMembers › returns an empty array for no members",
-      "line": 60,
+      "line": 66,
       "registeredAt": "2026-06-14T15:43:56Z",
       "runner": "tests"
     },
@@ -716,7 +770,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "sortBoardMembers › treats a missing order as zero",
-      "line": 46,
+      "line": 52,
       "registeredAt": "2026-06-14T15:43:56Z",
       "runner": "tests"
     },
@@ -779,7 +833,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "splitRole › returns a single empty string for an empty role",
-      "line": 88,
+      "line": 132,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -788,7 +842,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "splitRole › returns a single-element array when there is no separator",
-      "line": 78,
+      "line": 122,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -797,7 +851,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "splitRole › splits a role on the middot into two lines",
-      "line": 67,
+      "line": 111,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -806,7 +860,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "splitRole › splits every occurrence of the separator",
-      "line": 83,
+      "line": 127,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },
@@ -815,7 +869,7 @@
       "file": "src/lib/team.test.ts",
       "format": "vitest",
       "key": "splitRole › trims whitespace around the separator",
-      "line": 72,
+      "line": 116,
       "registeredAt": "2026-06-15T11:47:49.192519914+00:00",
       "runner": "tests"
     },

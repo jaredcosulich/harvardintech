@@ -30,7 +30,9 @@ const pages = defineCollection({
 });
 
 // Team / board members. `photo` and `bio` are optional so a name-and-role-only
-// entry still renders; `order` controls display order.
+// entry still renders; `order` controls display order. `active` toggles whether
+// a member appears on the public Board of Directors — an absent `active` means
+// shown, so existing entries (and members who never toggled it) stay visible.
 const team = defineCollection({
   type: 'content',
   schema: z.object({
@@ -39,6 +41,7 @@ const team = defineCollection({
     photo: z.string().optional(),
     bio: z.string().optional(),
     order: z.number().optional(),
+    active: z.boolean().optional(),
   }),
 });
 

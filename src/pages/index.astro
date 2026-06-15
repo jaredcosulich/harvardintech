@@ -6,7 +6,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { settings } from '../lib/site';
-import { sortBoardMembers } from '../lib/team';
+import { sortBoardMembers, filterActiveBoardMembers } from '../lib/team';
 import Hero from '../components/landing/Hero.astro';
 import WhatsappCommunity from '../components/landing/WhatsappCommunity.astro';
 import UpcomingEvents from '../components/landing/UpcomingEvents.astro';
@@ -20,11 +20,14 @@ const events = (await getCollection('events'))
   .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())
   .map((e) => ({ slug: e.slug, ...e.data }));
 
-// Board of Directors — editable via the CMS `team` collection. Sorted by the
-// `order` field so the public board matches the curated sequence; when the
-// collection is empty the section falls back to the faithful board graphic.
+// Board of Directors — editable via the CMS `team` collection. Members toggled
+// off (`active: false`) are filtered out, then sorted by the `order` field so
+// the public board matches the curated sequence; when the resulting list is
+// empty the section falls back to the faithful board graphic.
 const board = sortBoardMembers(
-  (await getCollection('team')).map((m) => ({ slug: m.slug, ...m.data })),
+  filterActiveBoardMembers(
+    (await getCollection('team')).map((m) => ({ slug: m.slug, ...m.data })),
+  ),
 );
 ---
 

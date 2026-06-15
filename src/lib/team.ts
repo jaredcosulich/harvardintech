@@ -10,6 +10,7 @@ export interface BoardMemberLike {
   photo?: string;
   bio?: string;
   order?: number;
+  active?: boolean;
 }
 
 /**
@@ -35,6 +36,16 @@ export function initials(name: string): string {
  */
 export function sortBoardMembers<T extends BoardMemberLike>(members: T[]): T[] {
   return [...members].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+}
+
+/**
+ * Keep only board members marked active for public display. A member is shown
+ * unless `active` is explicitly false, so existing entries with no `active`
+ * field (and members who never toggled the CMS checkbox) remain on the board.
+ * Returns a new array — the input is not mutated.
+ */
+export function filterActiveBoardMembers<T extends BoardMemberLike>(members: T[]): T[] {
+  return members.filter((m) => m.active !== false);
 }
 
 /**

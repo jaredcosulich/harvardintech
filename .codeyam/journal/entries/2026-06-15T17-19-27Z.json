@@ -1,0 +1,167 @@
+{
+  "timestamp": "2026-06-15T17:19:27Z",
+  "title": "cms: Team photo previews + board active toggle",
+  "type": "feature",
+  "userRequest": "## Summary\n\nTwo CMS improvements to the `team` collection. First, fix the blank headshot\npreviews in the hosted Sveltia editor (`/harvardintech/admin/editor/#/collections/team`):\nthe headshots render on the website but show blank in the CMS. Second, add a\n\"Show on Board of Directors\" checkbox so an editor can hide a member from the\npublic board without deleting their entry.\n\nThe blank-preview bug is a GitHub Pages base-path mismatch. Team photos are\nstored as root-absolute paths (e.g. `/images/team/ben-wei.png`) and live under\n`public/images/team/`, which is **outside** the CMS's configured media folder\n(`media_folder: public/uploads`, `public_folder: /uploads`). Because the CMS is\nhosted under the project subpath `/harvardintech/`, Sveltia resolves an\nunmanaged `/images/...` value against the origin root\n(`jaredcosulich.github.io/images/team/...` → 404) instead of the deployed\nsubpath. The website avoids this only because `withBase()` prepends\n`/harvardintech` at render time; the CMS has no such awareness. The fix is to\ndeclare a field-level `media_folder`/`public_folder` for the `photo` field so\nSveltia treats those headshots as managed media (resolved from the repo via the\nGitHub backend), independent of the Pages base — and, per the chosen scope, to\nmake the global `public_folder` base-aware so future uploads also preview\ncorrectly in the hosted CMS.\n\n## Key Decisions\n\n- **Field-level media mapping for `photo`** rather than rewriting the stored\n  frontmatter paths. The stored value (`/images/team/ben-wei.png`) must stay\n  exactly as-is, because the website's `withBase()` already prefixes the base at\n  render time — adding the base to the frontmatter would double-prefix it\n  (`/harvardintech/harvardintech/...`) on the live site and break\n  `team.photos.test.ts`'s existence check. A field-level\n  `media_folder: \"/public/images/team\"` + `public_folder: \"/images/team\"` lets\n  Sveltia map the existing value back to the repo file for preview without\n  touching the value.\n- **Base-aware global `public_folder`** (chosen scope: also fix future uploads).\n  The config comment already flags this: when a GitHub Pages `base` is set, the\n  `public_folder` must include it. Since `base` is env-driven (`/` locally,\n  `/harvardintech` on the Pages build) this can't be a single hard-coded string\n  that's correct in both environments — see the open note below; the editor\n  workflow picks the concrete approach (most likely point `public_folder` at the\n  deployed subpath used by the hosted CMS while keeping `media_folder`\n  unchanged).\n- **`active` defaults to shown.** New schema field is `active: z.boolean().optional()`\n  and the board filter treats `active !== false` as visible. Existing entries\n  (no `active` key) and any member who simply hasn't toggled it stay on the board\n  — backward-compatible, no content migration needed. Unchecking removes the\n  member from the board section entirely (chosen behavior), not a visual\n  de-emphasis.\n- **Filter lives in a pure helper** in `src/lib/team.ts` alongside\n  `sortBoardMembers`, so it is unit-testable under vitest and reused by the\n  landing page. The `.astro` components stay declarative.\n\n## Implementation\n\n### 1. Add a field-level media mapping to the team `photo` field\n\n**File**: `public/admin/editor/config.yml`\n\nIn the `team` collection, replace the `photo` field line with an expanded\nmapping so Sveltia resolves the existing `/images/team/*.png` values as managed\nmedia from the repo:\n\n```yaml\n- name: photo\n  label: Photo\n  widget: image\n  required: false\n  media_folder: \"/public/images/team\"\n  public_folder: \"/images/team\"\n```\n\nThis must not change the stored frontmatter value format — entries keep\n`photo: /images/team/<slug>.png`.\n\n### 2. Make the global upload path base-aware (future uploads)\n\n**File**: `public/admin/editor/config.yml`\n\nUpdate the global media config (currently `media_folder: \"public/uploads\"` /\n`public_folder: \"/uploads\"`) so images uploaded through the hosted CMS preview\ncorrectly under the `/harvardintech` Pages subpath, per the existing config\ncomment (\"If you set a GitHub Pages `base` in astro.config.mjs, prefix that base\nhere too\"). The editor workflow should verify the resulting preview URL against\nthe hosted CMS and pick the concrete value. Update the surrounding comment to\nexplain the chosen approach so the contract stays documented. Note: `base` is\nenv-driven (`/` in local/codeyam preview, `/harvardintech` on the Pages build),\nso confirm the chosen value doesn't break local \"Work with Local Repository\"\npreviews.\n\n### 3. Add the `active` field to the team content schema\n\n**File**: `src/content/config.ts`\n\nAdd `active: z.boolean().optional()` to the `team` collection's `z.object({...})`.\nKeep it optional so existing entries without the key still validate and so the\nCMS-config-subset-of-schema contract (`astro_cms_config_fields_subset_of_content_schema`)\nstays satisfied. Add a short comment noting that an absent `active` means shown.\n\n### 4. Add the \"Show on Board of Directors\" checkbox to the CMS\n\n**File**: `public/admin/editor/config.yml`\n\nAdd to the `team` collection `fields`:\n\n```yaml\n- { name: active, label: \"Show on Board of Directors\", widget: boolean, default: true, required: false }\n```\n\n`required: false` keeps it an optional field, matching the optional schema field\n(the subset-of-schema contract requires every config field name to exist in the\nschema, which step 3 ensures).\n\n### 5. Add an active-filter helper and surface `active` on the type\n\n**File**: `src/lib/team.ts`\n\n- Add `active?: boolean` to the `BoardMemberLike` interface.\n- Add an exported helper, e.g.:\n\n```ts\n/**\n * Keep only board members marked active for public display. A member is shown\n * unless `active` is explicitly false, so existing entries with no `active`\n * field (and members who never toggled it) remain on the board.\n */\nexport function filterActiveBoardMembers<T extends BoardMemberLike>(members: T[]): T[] {\n  return members.filter((m) => m.active !== false);\n}\n```\n\n### 6. Apply the filter on the homepage board\n\n**File**: `src/pages/index.astro`\n\nWhere `board` is built, apply the active filter before/after `sortBoardMembers`,\ne.g.:\n\n```ts\nconst board = sortBoardMembers(\n  filterActiveBoardMembers(\n    (await getCollection('team')).map((m) => ({ slug: m.slug, ...m.data })),\n  ),\n);\n```\n\n`BoardOfDirectors.astro` and `BoardMemberCard.astro` need no change — when the\nfiltered list is empty the section already falls back to the board graphic /\n\"announced soon\" empty state.\n\n### 7. Unit tests for the active filter\n\n**File**: `src/lib/team.test.ts`\n\nAdd a `describe('filterActiveBoardMembers', ...)` block covering: a member with\n`active: true` is kept; `active: false` is removed; a member with no `active`\nfield is kept (backward-compatible default); an all-inactive list returns empty;\ninput array is not mutated.\n\n## Reused existing code\n\n- `sortBoardMembers` from `src/lib/team.ts` (glossary entry: `sortBoardMembers`) — board ordering, composed with the new filter\n- `BoardMemberLike` interface from `src/lib/team.ts` — extended with `active?`\n- `withBase` from `src/lib/url.ts` (glossary entry: `withBase`) — explains why frontmatter paths must stay base-less; not modified\n- `BoardMemberCard` from `src/components/BoardMemberCard.astro` (glossary entry: `BoardMemberCard`) — unchanged; renders the filtered members\n- `team.photos.test.ts` existing guard — the photo paths must remain `/images/team/*.png` so this test keeps passing after the CMS config change\n\n## Scenarios to Demonstrate\n\n- **Board with all members active** — five headshots render, all visible (current state, unchanged on the public site).\n- **A member toggled off** — uncheck one member's \"Show on Board of Directors\"; that member disappears from the board, the rest reorder/fill in.\n- **All members inactive** — board section falls back to the composite board graphic / \"announced soon\" empty state.\n- **Member with no `active` field (legacy entry)** — still appears on the board (default-shown).\n- **CMS image preview (the bug fix)** — opening the team collection in the hosted editor shows each member's headshot thumbnail instead of a blank box.\n- **New CMS image upload** — uploading a fresh image (e.g. a blog cover) previews correctly under the hosted `/harvardintech` subpath.",
+  "description": "Two CMS improvements to the team collection. Fixed blank headshot previews in the hosted Sveltia editor by giving the team photo field a field-level media_folder/public_folder mapping so Sveltia loads the committed /images/team/*.png headshots from the repo via the GitHub backend (independent of the GitHub Pages base), without changing the stored frontmatter; the global upload public_folder stays base-less because the site applies the base once at render via withBase(). Added a Show on Board of Directors checkbox (optional active schema field, default shown) and a pure, unit-tested filterActiveBoardMembers helper applied on the homepage board so editors can hide a member without deleting them.",
+  "modifiedFiles": [
+    {
+      "path": ".codeyam/.last-reconcile.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/dependency-graph.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/deps-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary-index.txt",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/glossary.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/per-test-evidence.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/plans/cms-team-photo-previews-and-board-active-toggle.md\t.codeyam/plans/completed/cms-team-photo-previews-and-board-active-toggle.md",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/reconciliation-log.jsonl",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-board-of-directors.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-no-upcoming-events.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-of-directors--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-landing-page--mobile.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-no-upcoming-events--desktop.png.hash",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/state/session-results-snapshot.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-cache/all.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-registry.json",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/test-run-marker.json",
+      "status": "modified"
+    },
+    {
+      "path": "public/admin/editor/config.yml",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/config.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/krysia-lenzo.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/content/team/nadia-eldeib.md",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/team.test.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/lib/team.ts",
+      "status": "modified"
+    },
+    {
+      "path": "src/pages/index.astro",
+      "status": "modified"
+    },
+    {
+      "path": ".codeyam/scenarios/harvard-in-tech-board-with-members-hidden.json",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-with-members-hidden--desktop.png",
+      "status": "added"
+    },
+    {
+      "path": ".codeyam/scenarios/screenshots/harvard-in-tech-board-with-members-hidden--desktop.png.hash",
+      "status": "added"
+    }
+  ],
+  "scenarioScreenshots": [
+    {
+      "name": "Harvard in Tech - Board With Members Hidden",
+      "screenshotPath": "harvard-in-tech-board-with-members-hidden--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Board of Directors",
+      "screenshotPath": "harvard-in-tech-board-of-directors--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - Landing Page",
+      "screenshotPath": "harvard-in-tech-landing-page--desktop.png"
+    },
+    {
+      "name": "Harvard in Tech - No Upcoming Events",
+      "screenshotPath": "harvard-in-tech-no-upcoming-events--desktop.png"
+    }
+  ],
+  "testResults": {
+    "total": 107,
+    "passed": 0,
+    "failed": 0,
+    "runners": [
+      {
+        "name": "tests",
+        "total": 107,
+        "passed": 0
+      }
+    ]
+  }
+}

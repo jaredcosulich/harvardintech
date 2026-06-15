@@ -1,4 +1,4 @@
-# regenerated from glossary.json on 2026-06-15T15:45:05Z; do not hand-edit
+# regenerated from glossary.json on 2026-06-15T16:33:48Z; do not hand-edit
 AdminDashboard :: src/pages/admin/index.astro :: tags=
 AdminGate :: src/components/admin/AdminGate.astro :: tags=
 AdminGatePrompt :: src/components/admin/AdminGatePrompt.astro :: tags=
@@ -15,6 +15,7 @@ LandingPage :: src/pages/index.astro :: tags=
 buildMailto :: src/lib/mailto.ts :: tags= :: test=src/lib/mailto.test.ts
 dashboardSummaryText :: src/lib/adminDashboard.ts :: tags= :: test=src/lib/adminDashboard.test.ts
 dashboardTotals :: src/lib/adminDashboard.ts :: tags= :: test=src/lib/adminDashboard.test.ts
+filterActiveBoardMembers :: src/lib/team.ts :: tags= :: test=src/lib/team.test.ts
 formatEventDate :: src/lib/events.ts :: tags= :: test=src/lib/events.test.ts
 galleryRevealImmediately :: src/lib/gallery.ts :: tags= :: test=src/lib/gallery.test.ts
 galleryStaggerDelay :: src/lib/gallery.ts :: tags= :: test=src/lib/gallery.test.ts

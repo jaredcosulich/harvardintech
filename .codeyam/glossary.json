@@ -130,6 +130,12 @@
     "testFile": "src/lib/adminDashboard.test.ts"
   },
   {
+    "description": "Returns a new array of board members visible on the public Board of Directors, keeping every member whose active field is not explicitly false — so existing entries with no active field (and members who never toggled the CMS checkbox) remain shown. Does not mutate the input.",
+    "filePath": "src/lib/team.ts",
+    "name": "filterActiveBoardMembers",
+    "testFile": "src/lib/team.test.ts"
+  },
+  {
     "description": "Formats an event date as a long en-US date string (e.g. 'September 24, 2026') for display on event cards.",
     "filePath": "src/lib/events.ts",
     "name": "formatEventDate",

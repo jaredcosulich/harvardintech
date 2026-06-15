@@ -32,8 +32,19 @@ local_backend: true
 
 # Uploaded images. `media_folder` is repo-relative; living under public/ means
 # Astro serves them verbatim (no asset-pipeline step), so the `public_folder`
-# URL resolves on a static build. If you set a GitHub Pages `base` in
-# astro.config.mjs, prefix that base here too.
+# URL resolves on a static build.
+#
+# `public_folder` stays BASE-LESS (`/uploads`, no `/harvardintech` prefix) on
+# purpose. This site applies the GitHub Pages `base` once at render time via
+# `withBase()` (src/lib/url.ts), and `base` is env-driven (`/` locally, `/<repo>/`
+# on the Pages build) — so baking the base into the stored value here would
+# double-prefix it under `withBase` and break local "Work with Local Repository"
+# previews. Hosted-CMS previews stay correct regardless of the Pages base because
+# uploads live INSIDE `media_folder`: Sveltia resolves them to their repo path and
+# loads the blob through the GitHub backend, not via the deployed public URL.
+# (Media stored OUTSIDE this folder — e.g. the committed team headshots under
+# /images/team — needs a field-level media_folder mapping to get the same
+# backend-blob preview; see the team `photo` field below.)
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
@@ -120,9 +131,21 @@ collections:
     fields:
       - { name: name, label: Name, widget: string }
       - { name: role, label: Role, widget: string }
-      - { name: photo, label: Photo, widget: image, required: false }
+      # The committed headshots live under public/images/team — OUTSIDE the global
+      # media_folder — and are stored base-less (e.g. `/images/team/ben-wei.png`)
+      # because the site adds the Pages base at render via withBase(). A field-level
+      # media_folder/public_folder maps that existing value back to its repo file so
+      # Sveltia previews the thumbnail via the GitHub backend (fixing the blank-box
+      # bug in the hosted CMS) without rewriting the stored frontmatter value.
+      - name: photo
+        label: Photo
+        widget: image
+        required: false
+        media_folder: "/public/images/team"
+        public_folder: "/images/team"
       - { name: bio, label: Bio, widget: markdown, required: false }
       - { name: order, label: Order, widget: number, required: false }
+      - { name: active, label: "Show on Board of Directors", widget: boolean, default: true, required: false }
       - { name: body, label: Body, widget: markdown }
 
   - name: events

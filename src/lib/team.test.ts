@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { initials, sortBoardMembers, splitRole, type BoardMemberLike } from './team';
+import {
+  initials,
+  sortBoardMembers,
+  filterActiveBoardMembers,
+  splitRole,
+  type BoardMemberLike,
+} from './team';
 
 describe('initials', () => {
   // takes the first letter of the first two words, upper-cased
@@ -59,6 +65,44 @@ describe('sortBoardMembers', () => {
   // an empty list stays empty
   it('returns an empty array for no members', () => {
     expect(sortBoardMembers([])).toEqual([]);
+  });
+});
+
+describe('filterActiveBoardMembers', () => {
+  const make = (name: string, active?: boolean): BoardMemberLike => ({ name, role: 'r', active });
+
+  // an explicitly active member is kept
+  it('keeps a member with active: true', () => {
+    expect(filterActiveBoardMembers([make('A', true)]).map((m) => m.name)).toEqual(['A']);
+  });
+
+  // an explicitly inactive member is removed
+  it('removes a member with active: false', () => {
+    expect(filterActiveBoardMembers([make('A', false)])).toEqual([]);
+  });
+
+  // a member with no active field defaults to shown (backward-compatible)
+  it('keeps a member with no active field', () => {
+    expect(filterActiveBoardMembers([make('A')]).map((m) => m.name)).toEqual(['A']);
+  });
+
+  // mixed list keeps only the non-false members, order preserved
+  it('keeps active and undefined members while dropping inactive ones', () => {
+    const out = filterActiveBoardMembers([make('A', true), make('B', false), make('C')]);
+    expect(out.map((m) => m.name)).toEqual(['A', 'C']);
+  });
+
+  // an all-inactive list returns empty (board falls back to the graphic)
+  it('returns an empty array when every member is inactive', () => {
+    expect(filterActiveBoardMembers([make('A', false), make('B', false)])).toEqual([]);
+  });
+
+  // does not mutate the caller's array
+  it('returns a new array without mutating the input', () => {
+    const input = [make('A', true), make('B', false)];
+    const out = filterActiveBoardMembers(input);
+    expect(input.map((m) => m.name)).toEqual(['A', 'B']);
+    expect(out).not.toBe(input);
   });
 });
 

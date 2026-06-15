@@ -115,3 +115,9 @@
 {"timestamp":"2026-06-15T15:44:36Z","kind":"registry-add","message":"registry `socialIconSrc › resolves regardless of icon casing`: added from runner `tests` output"}
 {"timestamp":"2026-06-15T15:44:36Z","kind":"registry-add","message":"registry `socialIconSrc › maps twitter to its self-hosted asset`: added from runner `tests` output"}
 {"timestamp":"2026-06-15T15:44:36Z","kind":"registry-add","message":"registry `socialIconSrc › maps facebook to its self-hosted asset`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T16:33:22Z","kind":"registry-add","message":"registry `filterActiveBoardMembers › returns an empty array when every member is inactive`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T16:33:22Z","kind":"registry-add","message":"registry `filterActiveBoardMembers › returns a new array without mutating the input`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T16:33:22Z","kind":"registry-add","message":"registry `filterActiveBoardMembers › keeps active and undefined members while dropping inactive ones`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T16:33:22Z","kind":"registry-add","message":"registry `filterActiveBoardMembers › keeps a member with no active field`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T16:33:22Z","kind":"registry-add","message":"registry `filterActiveBoardMembers › removes a member with active: false`: added from runner `tests` output"}
+{"timestamp":"2026-06-15T16:33:22Z","kind":"registry-add","message":"registry `filterActiveBoardMembers › keeps a member with active: true`: added from runner `tests` output"}

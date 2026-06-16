@@ -1,0 +1,12 @@
+{
+  "name": "Event Gallery",
+  "id": "498db5f5-b910-4b21-85a7-ec666cdc5cd8",
+  "url": "/isolated-components/EventGallery",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "EventGallery",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/landing/EventGallery.astro"
+}

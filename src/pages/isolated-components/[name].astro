@@ -13,6 +13,13 @@ import DeployStatus from '../../components/admin/DeployStatus.astro';
 import AdminGatePrompt from '../../components/admin/AdminGatePrompt.astro';
 import BoardMemberCard from '../../components/BoardMemberCard.astro';
 import ContactUs from '../../components/landing/ContactUs.astro';
+import Hero from '../../components/landing/Hero.astro';
+import WhatsappCommunity from '../../components/landing/WhatsappCommunity.astro';
+import GetInvolved from '../../components/landing/GetInvolved.astro';
+import SupportUs from '../../components/landing/SupportUs.astro';
+import EventGallery from '../../components/landing/EventGallery.astro';
+import UpcomingEvents from '../../components/landing/UpcomingEvents.astro';
+import BoardOfDirectors from '../../components/landing/BoardOfDirectors.astro';
 import type { BannerView } from '../../lib/deployStatus';
 import '../../styles/tokens.css';
 
@@ -238,6 +245,28 @@ const contactUsStates = {
   },
 } as const;
 
+// Landing-page section components composed by the Home route (index.astro).
+// Hero / WhatsappCommunity / GetInvolved / SupportUs / EventGallery have all-
+// optional props, so each renders one Default state from its component defaults.
+// The two data-driven sections also get an Empty variant proving their fallback:
+// UpcomingEvents (no-events guard) and BoardOfDirectors (board graphic when the
+// member list is empty).
+const SAMPLE_BOARD = [
+  { name: 'Ben Wei', role: "Founder · Harvard C'08", photo: '/images/team/ben-wei.png', order: 1, active: true },
+  { name: 'Peter Boyce', role: "Founder · Harvard C'13", photo: '/images/team/peter-boyce.png', order: 2, active: true },
+  { name: 'Krysia Lenzo', role: "Executive Director · Harvard C'12", photo: '/images/team/krysia-lenzo.png', order: 3, active: true },
+  { name: 'Jessica Li', role: "Board Member · Harvard C'16", photo: '/images/team/jessica-li.png', order: 4, active: true },
+  { name: 'Nadia Eldeib', role: "Board Member · Harvard C'14", photo: '/images/team/nadia-eldeib.png', order: 5, active: true },
+];
+const upcomingEventsStates = {
+  Default: { events: SAMPLE_EVENTS },
+  Empty: { events: [] as typeof SAMPLE_EVENTS },
+};
+const boardOfDirectorsStates = {
+  Default: { members: SAMPLE_BOARD },
+  Empty: { members: [] as typeof SAMPLE_BOARD },
+};
+
 export async function getStaticPaths() {
   // getStaticPaths runs in an isolated scope and cannot reference the
   // module-level consts — enumerate route names inline.
@@ -273,6 +302,15 @@ export async function getStaticPaths() {
     { params: { name: 'AdminGatePrompt' } },
     { params: { name: 'AdminGatePrompt-Empty' } },
     { params: { name: 'ContactUs' } },
+    { params: { name: 'Hero' } },
+    { params: { name: 'WhatsappCommunity' } },
+    { params: { name: 'GetInvolved' } },
+    { params: { name: 'SupportUs' } },
+    { params: { name: 'EventGallery' } },
+    { params: { name: 'UpcomingEvents' } },
+    { params: { name: 'UpcomingEvents-Empty' } },
+    { params: { name: 'BoardOfDirectors' } },
+    { params: { name: 'BoardOfDirectors-Empty' } },
   ];
 }
 
@@ -367,6 +405,18 @@ if (name && name.startsWith('ContactUs')) {
   const stateKey = (name === 'ContactUs' ? 'Default' : name.slice('ContactUs-'.length)) as keyof typeof contactUsStates;
   contactUsProps = contactUsStates[stateKey] ?? contactUsStates.Default;
 }
+
+let upcomingEventsProps: (typeof upcomingEventsStates)[keyof typeof upcomingEventsStates] | null = null;
+if (name && name.startsWith('UpcomingEvents')) {
+  const stateKey = (name === 'UpcomingEvents' ? 'Default' : name.slice('UpcomingEvents-'.length)) as keyof typeof upcomingEventsStates;
+  upcomingEventsProps = upcomingEventsStates[stateKey] ?? upcomingEventsStates.Default;
+}
+
+let boardOfDirectorsProps: (typeof boardOfDirectorsStates)[keyof typeof boardOfDirectorsStates] | null = null;
+if (name && name.startsWith('BoardOfDirectors')) {
+  const stateKey = (name === 'BoardOfDirectors' ? 'Default' : name.slice('BoardOfDirectors-'.length)) as keyof typeof boardOfDirectorsStates;
+  boardOfDirectorsProps = boardOfDirectorsStates[stateKey] ?? boardOfDirectorsStates.Default;
+}
 ---
 
 <html lang="en">
@@ -423,6 +473,20 @@ if (name && name.startsWith('ContactUs')) {
           <div style="width: 960px; max-width: 100%;">
             <ContactUs {...contactUsProps} />
           </div>
+        ) : name === 'Hero' ? (
+          <Hero />
+        ) : name === 'WhatsappCommunity' ? (
+          <WhatsappCommunity />
+        ) : name === 'GetInvolved' ? (
+          <GetInvolved />
+        ) : name === 'SupportUs' ? (
+          <SupportUs />
+        ) : name === 'EventGallery' ? (
+          <EventGallery />
+        ) : upcomingEventsProps ? (
+          <UpcomingEvents {...upcomingEventsProps} />
+        ) : boardOfDirectorsProps ? (
+          <BoardOfDirectors {...boardOfDirectorsProps} />
         ) : (
           <p>Unknown component: {name}</p>
         )

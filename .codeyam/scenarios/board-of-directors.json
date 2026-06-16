@@ -1,0 +1,12 @@
+{
+  "name": "Board of Directors",
+  "id": "fe0fcbcc-f519-4828-a927-ab3c8a1d9022",
+  "url": "/isolated-components/BoardOfDirectors",
+  "dimensions": [
+    "Desktop"
+  ],
+  "mocks": {},
+  "componentName": "BoardOfDirectors",
+  "scenarioType": "component",
+  "pageFilePath": "src/components/landing/BoardOfDirectors.astro"
+}

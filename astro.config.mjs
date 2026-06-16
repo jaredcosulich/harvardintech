@@ -52,6 +52,19 @@ if (process.argv.includes('dev')) {
   // always wins over our default convention.
   process.env.CODEYAM_CONTENT_ROOT ??= sandboxContent;
   process.env.CODEYAM_DATA_ROOT ??= sandboxData;
+
+  // Guarantee Vite's dependency optimizer pre-bundles React's *development*
+  // JSX runtime. If `astro dev` inherits NODE_ENV=production (or it's already
+  // baked into a stale optimize cache), esbuild constant-folds
+  // `process.env.NODE_ENV === 'production'` to `true` inside
+  // react/jsx-dev-runtime.js, bundling react-jsx-dev-runtime.production.js —
+  // where `exports.jsxDEV = void 0`. React islands then crash on hydration with
+  // "jsxDEV is not a function". Forcing development mode here (dev-only; build
+  // and check leave it untouched) keeps the optimizer on the dev runtime so
+  // hydration works. Do not remove — this is the guard, not dead code.
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'production') {
+    process.env.NODE_ENV = 'development';
+  }
 }
 
 // Astro static-site config for free GitHub Pages hosting.

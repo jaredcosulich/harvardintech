@@ -6,6 +6,7 @@
     "Desktop"
   ],
   "mocks": {},
-  "scenarioType": "application",
+  "componentName": "EmbedForm-Unconfigured",
+  "scenarioType": "component",
   "pageFilePath": "src/components/EmbedForm.astro"
 }

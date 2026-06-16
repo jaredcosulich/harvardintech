@@ -6,6 +6,6 @@
     "Desktop"
   ],
   "mocks": {},
-  "componentName": "DeployStatus",
+  "componentName": "DeployStatus-Failed",
   "scenarioType": "component"
 }

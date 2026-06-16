@@ -6,7 +6,8 @@
     "Desktop"
   ],
   "mocks": {},
-  "scenarioType": "application",
+  "componentName": "Greeting",
+  "scenarioType": "component",
   "pageFilePath": "src/components/Greeting.tsx",
   "interactions": [
     {

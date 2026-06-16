@@ -6,6 +6,6 @@
     "Desktop"
   ],
   "mocks": {},
-  "componentName": "CollectionCountCard",
+  "componentName": "CollectionCountCard-Empty",
   "scenarioType": "component"
 }

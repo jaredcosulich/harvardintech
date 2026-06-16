@@ -6,6 +6,6 @@
     "Desktop"
   ],
   "mocks": {},
-  "componentName": "DashboardSummary",
+  "componentName": "DashboardSummary-Empty",
   "scenarioType": "component"
 }

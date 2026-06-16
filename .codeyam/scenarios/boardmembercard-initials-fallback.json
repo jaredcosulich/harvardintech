@@ -6,6 +6,6 @@
     "Desktop"
   ],
   "mocks": {},
-  "componentName": "BoardMemberCard",
+  "componentName": "BoardMemberCard-Initials",
   "scenarioType": "component"
 }

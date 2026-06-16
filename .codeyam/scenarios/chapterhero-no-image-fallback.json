@@ -6,6 +6,6 @@
     "Desktop"
   ],
   "mocks": {},
-  "componentName": "ChapterHero",
+  "componentName": "ChapterHero-Fallback",
   "scenarioType": "component"
 }

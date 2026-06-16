@@ -6,6 +6,6 @@
     "Desktop"
   ],
   "mocks": {},
-  "componentName": "AdminGatePrompt",
+  "componentName": "AdminGatePrompt-Empty",
   "scenarioType": "component"
 }

@@ -1,5 +1,6 @@
 {
-  "lastFinalizedAt": "2026-06-16T00:16:22Z",
-  "lastFinalizedSha": "4cc75dd2f998640a8f179441d53cc5b3f516bea1",
+  "lastFinalizedAt": "2026-06-17T11:49:17Z",
+  "lastFinalizedSha": "0c26da4c2239332e1340cd146fb8899debb7a1af",
+  "lastFullFinalizeSha": "0c26da4c2239332e1340cd146fb8899debb7a1af",
   "deferred": []
 }

@@ -163,6 +163,24 @@
       "runner": "tests"
     },
     {
+      "description": "a production build (no override) reads the committed source dir",
+      "file": "src/lib/contentRoot.test.ts",
+      "format": "vitest",
+      "key": "contentRoot › defaults to src/content when the override is unset",
+      "line": 24,
+      "registeredAt": "2026-06-17T11:03:18.675832+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "when the editor points the app at a sandbox, the override wins",
+      "file": "src/lib/contentRoot.test.ts",
+      "format": "vitest",
+      "key": "contentRoot › returns CODEYAM_CONTENT_ROOT when it is set",
+      "line": 18,
+      "registeredAt": "2026-06-17T11:03:18.675832+00:00",
+      "runner": "tests"
+    },
+    {
       "description": "Zero entries shows the empty-state nudge, not a \"0 entries\" sentence.",
       "file": "src/lib/adminDashboard.test.ts",
       "format": "vitest",
@@ -223,6 +241,24 @@
       "key": "dashboardTotals › sums counts and reports the collection count",
       "line": 37,
       "registeredAt": "2026-06-14T10:43:08Z",
+      "runner": "tests"
+    },
+    {
+      "description": "a production build (no override) reads the committed data dir",
+      "file": "src/lib/contentRoot.test.ts",
+      "format": "vitest",
+      "key": "dataRoot › defaults to src/data when the override is unset",
+      "line": 44,
+      "registeredAt": "2026-06-17T11:03:18.675832+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "the singleton data dir follows the same sandbox redirect as content",
+      "file": "src/lib/contentRoot.test.ts",
+      "format": "vitest",
+      "key": "dataRoot › returns CODEYAM_DATA_ROOT when it is set",
+      "line": 38,
+      "registeredAt": "2026-06-17T11:03:18.675832+00:00",
       "runner": "tests"
     },
     {
@@ -961,6 +997,24 @@
       "key": "seeded team headshots › peter-boyce.md › points at an image that exists under public/",
       "line": 43,
       "registeredAt": "2026-06-15T12:22:55Z",
+      "runner": "tests"
+    },
+    {
+      "description": "settings + nav are read from the data root and parsed from JSON, so a sandbox data dir fully drives what the site renders",
+      "file": "src/lib/site.test.ts",
+      "format": "vitest",
+      "key": "site singletons › loads settings and nav from the data root as parsed JSON",
+      "line": 29,
+      "registeredAt": "2026-06-17T11:03:18.675832+00:00",
+      "runner": "tests"
+    },
+    {
+      "description": "a different data root yields different values — the loader is not pinned to a single committed file (the sandbox isolation guarantee at the read side)",
+      "file": "src/lib/site.test.ts",
+      "format": "vitest",
+      "key": "site singletons › reflects a second data root on re-import",
+      "line": 55,
+      "registeredAt": "2026-06-17T11:03:18.675832+00:00",
       "runner": "tests"
     },
     {

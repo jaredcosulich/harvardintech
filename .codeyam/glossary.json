@@ -183,10 +183,7 @@
     "description": "Returns the directory the content collections load from: the CODEYAM_CONTENT_ROOT sandbox during a codeyam session, else the committed src/content.",
     "filePath": "src/lib/contentRoot.ts",
     "name": "contentRoot",
-    "untestabilityReason": {
-      "justification": "env boundary — returns process.env.CODEYAM_CONTENT_ROOT ?? 'src/content'",
-      "kind": "platform-glue"
-    }
+    "testFile": "src/lib/contentRoot.test.ts"
   },
   {
     "description": "Builds the /admin dashboard summary sentence: an empty-state nudge at zero, otherwise the total entries and collection count with correct singular/plural grammar.",
@@ -204,10 +201,7 @@
     "description": "Returns the directory the JSON singletons (settings, nav) load from: the CODEYAM_DATA_ROOT sandbox during a codeyam session, else the committed src/data.",
     "filePath": "src/lib/contentRoot.ts",
     "name": "dataRoot",
-    "untestabilityReason": {
-      "justification": "env boundary — returns process.env.CODEYAM_DATA_ROOT ?? 'src/data'",
-      "kind": "platform-glue"
-    }
+    "testFile": "src/lib/contentRoot.test.ts"
   },
   {
     "description": "Derives the site base path from an admin URL pathname so the marker/view URLs resolve under both the custom-domain root and the project-subpath base modes.",
@@ -328,6 +322,12 @@
     "filePath": "src/lib/deployStatus.ts",
     "name": "runStartedMs",
     "testFile": "src/lib/deployStatus.test.ts"
+  },
+  {
+    "description": "Loads the editable settings/nav singletons from the resolved data root (sandbox-aware) via readSingleton: fs read + JSON.parse.",
+    "filePath": "src/lib/site.ts",
+    "name": "site",
+    "testFile": "src/lib/site.test.ts"
   },
   {
     "description": "Maps a social link icon field (twitter/facebook/email, case-insensitive) to its self-hosted asset path under public/images/social/. Returns null for unknown or missing icons so the Contact Us section degrades to a label-only link. Icons were downloaded from the original harvardintech.com site to keep the GitHub Pages build CDN-independent.",

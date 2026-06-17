@@ -234,6 +234,25 @@
     "testFile": "src/lib/gallery.test.ts"
   },
   {
+    "description": "Enumerates the blog collection into pre-rendered /blog/<id> routes, mapping each post entry to its slug param and props. Exercised by the blog-post-welcome route scenario.",
+    "filePath": "src/pages/blog/[slug].astro",
+    "name": "getStaticPaths",
+    "scenarios": [
+      "blog-post-welcome"
+    ]
+  },
+  {
+    "description": "Enumerates the chapters collection into pre-rendered /chapters/<id> routes, mapping each chapter entry to its slug param and props. Exercised by the chapter-route scenarios (the captured render proves the params resolve).",
+    "filePath": "src/pages/chapters/[slug].astro",
+    "name": "getStaticPaths",
+    "scenarios": [
+      "chapter-route-new-york-city",
+      "chapter-route-japan-with-gallery",
+      "chapter-route-san-francisco",
+      "chapter-route-los-angeles-fallback-email"
+    ]
+  },
+  {
     "description": "Dev-only helper that (re)creates the .codeyam/tmp/content-sandbox copy of src/content and src/data, so the codeyam dev server reads/seeds the sandbox and never the committed production markdown.",
     "filePath": "astro.config.mjs",
     "name": "initContentSandbox",

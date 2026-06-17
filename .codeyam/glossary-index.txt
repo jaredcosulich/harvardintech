@@ -1,4 +1,4 @@
-# regenerated from glossary.json on 2026-06-17T11:06:28Z; do not hand-edit
+# regenerated from glossary.json on 2026-06-17T11:20:16Z; do not hand-edit
 AdminDashboard :: src/pages/admin/index.astro :: tags=
 AdminGate :: src/components/admin/AdminGate.astro :: tags=
 AdminGatePrompt :: src/components/admin/AdminGatePrompt.astro :: tags=
@@ -29,6 +29,8 @@ filterActiveBoardMembers :: src/lib/team.ts :: tags= :: test=src/lib/team.test.t
 formatEventDate :: src/lib/events.ts :: tags= :: test=src/lib/events.test.ts
 galleryRevealImmediately :: src/lib/gallery.ts :: tags= :: test=src/lib/gallery.test.ts
 galleryStaggerDelay :: src/lib/gallery.ts :: tags= :: test=src/lib/gallery.test.ts
+getStaticPaths :: src/pages/blog/[slug].astro :: tags=
+getStaticPaths :: src/pages/chapters/[slug].astro :: tags=
 initContentSandbox :: astro.config.mjs :: tags=
 initGalleryReveal :: src/lib/gallery.ts :: tags= :: test=src/lib/gallery.test.ts
 initParallax :: src/lib/parallax.ts :: tags= :: test=src/lib/parallax.test.ts
